@@ -30,7 +30,7 @@ function generateInsights(
   const all = [...cnIndices, ...globalIndices, ...fx, ...commodities, ...crypto];
   const insights: Insight[] = [];
 
-  // 1. Consecutive moves: check if last 3+ history points move in the same direction
+  // 1. Consecutive moves
   for (const item of all) {
     if (item.history.length < 4) continue;
     const h = item.history;
@@ -52,20 +52,14 @@ function generateInsights(
     }
   }
 
-  // 2. Biggest mover (largest absolute change_pct)
+  // 2. Biggest mover
   if (all.length > 0) {
-    const sorted = [...all].sort(
-      (a, b) => Math.abs(b.change_pct) - Math.abs(a.change_pct)
-    );
+    const sorted = [...all].sort((a, b) => Math.abs(b.change_pct) - Math.abs(a.change_pct));
     const biggest = sorted[0];
-    const isGainer = biggest.change_pct >= 0;
     insights.push({
-      type: isGainer ? "bullish" : "bearish",
-      textKey: isGainer ? "insight.biggestGainer" : "insight.biggestLoser",
-      params: {
-        name: biggest.name,
-        pct: biggest.change_pct.toFixed(2),
-      },
+      type: biggest.change_pct >= 0 ? "bullish" : "bearish",
+      textKey: biggest.change_pct >= 0 ? "insight.biggestGainer" : "insight.biggestLoser",
+      params: { name: biggest.name, pct: Math.abs(biggest.change_pct).toFixed(2) },
       asset: biggest.name,
       symbol: biggest.symbol,
     });
@@ -77,116 +71,80 @@ function generateInsights(
     const histMax = Math.max(...item.history);
     const histMin = Math.min(...item.history);
     if (histMax === 0) continue;
-    const closeToHigh =
-      (histMax - item.close) / histMax < 0.02 && item.close <= histMax;
-    const closeToLow =
-      (item.close - histMin) / histMin < 0.02 && item.close >= histMin;
 
     if (item.close > histMax) {
       insights.push({
         type: "bullish",
         textKey: "insight.brokeHigh",
         params: { name: item.name, price: item.close.toLocaleString() },
-        asset: item.name,
-        symbol: item.symbol,
+        asset: item.name, symbol: item.symbol,
       });
-    } else if (closeToHigh) {
+    } else if ((histMax - item.close) / histMax < 0.02) {
       insights.push({
-        type: "bullish",
-        textKey: "insight.nearHigh",
-        params: { name: item.name },
-        asset: item.name,
-        symbol: item.symbol,
+        type: "bullish", textKey: "insight.nearHigh",
+        params: { name: item.name }, asset: item.name, symbol: item.symbol,
       });
     }
 
     if (item.close < histMin) {
       insights.push({
-        type: "bearish",
-        textKey: "insight.brokeLow",
+        type: "bearish", textKey: "insight.brokeLow",
         params: { name: item.name, price: item.close.toLocaleString() },
-        asset: item.name,
-        symbol: item.symbol,
+        asset: item.name, symbol: item.symbol,
       });
-    } else if (closeToLow) {
+    } else if ((item.close - histMin) / histMin < 0.02) {
       insights.push({
-        type: "bearish",
-        textKey: "insight.nearLow",
-        params: { name: item.name },
-        asset: item.name,
-        symbol: item.symbol,
+        type: "bearish", textKey: "insight.nearLow",
+        params: { name: item.name }, asset: item.name, symbol: item.symbol,
       });
     }
   }
 
-  // 4. Divergence: CN down but US up, or vice versa
+  // 4. Divergence
   if (cnIndices.length > 0 && globalIndices.length > 0) {
-    const cnAvg =
-      cnIndices.reduce((s, i) => s + i.change_pct, 0) / cnIndices.length;
-    const usItems = globalIndices.filter((i) =>
-      ["^GSPC", "^DJI", "^IXIC"].includes(i.symbol)
-    );
-    const usAvg =
-      usItems.length > 0
-        ? usItems.reduce((s, i) => s + i.change_pct, 0) / usItems.length
-        : globalIndices.reduce((s, i) => s + i.change_pct, 0) /
-          globalIndices.length;
+    const cnAvg = cnIndices.reduce((s, i) => s + i.change_pct, 0) / cnIndices.length;
+    const usItems = globalIndices.filter((i) => ["^GSPC", "^DJI", "^IXIC"].includes(i.symbol));
+    const usAvg = usItems.length > 0
+      ? usItems.reduce((s, i) => s + i.change_pct, 0) / usItems.length
+      : globalIndices.reduce((s, i) => s + i.change_pct, 0) / globalIndices.length;
 
     if (cnAvg < -0.3 && usAvg > 0.3) {
       insights.push({
-        type: "neutral",
-        textKey: "insight.divergence.cnDown",
+        type: "neutral", textKey: "insight.divergence.cnDown",
         params: { cnAvg: cnAvg.toFixed(2), usAvg: usAvg.toFixed(2) },
-        asset: "CN vs US",
-        symbol: "DIVERGENCE",
+        asset: "CN vs US", symbol: "DIVERGENCE",
       });
     } else if (cnAvg > 0.3 && usAvg < -0.3) {
       insights.push({
-        type: "neutral",
-        textKey: "insight.divergence.cnUp",
+        type: "neutral", textKey: "insight.divergence.cnUp",
         params: { cnAvg: cnAvg.toFixed(2), usAvg: usAvg.toFixed(2) },
-        asset: "CN vs US",
-        symbol: "DIVERGENCE",
+        asset: "CN vs US", symbol: "DIVERGENCE",
       });
     }
   }
 
-  // 5. Volatility spike: today's change > 2x average absolute change over history
+  // 5. Volatility spike
   for (const item of all) {
     if (item.history.length < 5) continue;
     const h = item.history;
-    const dailyChanges: number[] = [];
+    const changes: number[] = [];
     for (let i = 1; i < h.length; i++) {
-      if (h[i - 1] !== 0) {
-        dailyChanges.push(Math.abs((h[i] - h[i - 1]) / h[i - 1]) * 100);
-      }
+      if (h[i - 1] !== 0) changes.push(Math.abs((h[i] - h[i - 1]) / h[i - 1]) * 100);
     }
-    if (dailyChanges.length === 0) continue;
-    const avgChange =
-      dailyChanges.reduce((s, v) => s + v, 0) / dailyChanges.length;
-    if (avgChange > 0 && Math.abs(item.change_pct) > 2 * avgChange) {
+    if (changes.length === 0) continue;
+    const avg = changes.reduce((s, v) => s + v, 0) / changes.length;
+    if (avg > 0 && Math.abs(item.change_pct) > 2 * avg) {
       insights.push({
         type: item.change_pct >= 0 ? "bullish" : "bearish",
         textKey: "insight.volatility",
-        params: {
-          name: item.name,
-          changePct: Math.abs(item.change_pct).toFixed(2),
-          avgChange: avgChange.toFixed(2),
-        },
-        asset: item.name,
-        symbol: item.symbol,
+        params: { name: item.name, changePct: Math.abs(item.change_pct).toFixed(2), avgChange: avg.toFixed(2) },
+        asset: item.name, symbol: item.symbol,
       });
     }
   }
 
   return insights;
 }
-
-const DOT_COLORS: Record<Insight["type"], string> = {
-  bearish: "#ff1744",
-  bullish: "#00c853",
-  neutral: "#2979ff",
-};
 
 function interpolate(template: string, params: Record<string, string>): string {
   let result = template;
@@ -196,12 +154,29 @@ function interpolate(template: string, params: Record<string, string>): string {
   return result;
 }
 
+const SIGNAL_STYLES = {
+  bearish: {
+    dot: "#ff1744",
+    bg: "rgba(255, 23, 68, 0.08)",
+    border: "rgba(255, 23, 68, 0.2)",
+    arrow: "▼",
+  },
+  bullish: {
+    dot: "#00c853",
+    bg: "rgba(0, 200, 83, 0.08)",
+    border: "rgba(0, 200, 83, 0.2)",
+    arrow: "▲",
+  },
+  neutral: {
+    dot: "#2979ff",
+    bg: "rgba(41, 121, 255, 0.08)",
+    border: "rgba(41, 121, 255, 0.2)",
+    arrow: "●",
+  },
+};
+
 export default function InsightsCard({
-  cnIndices,
-  globalIndices,
-  fx,
-  commodities,
-  crypto,
+  cnIndices, globalIndices, fx, commodities, crypto,
 }: InsightsCardProps) {
   const { t } = useI18n();
 
@@ -210,7 +185,6 @@ export default function InsightsCard({
     [cnIndices, globalIndices, fx, commodities, crypto]
   );
 
-  // Show 4-6 insights, deduplicate by symbol+type, prioritize variety
   const displayed = useMemo(() => {
     const seen = new Set<string>();
     const result: Insight[] = [];
@@ -227,44 +201,73 @@ export default function InsightsCard({
   if (displayed.length === 0) return null;
 
   return (
-    <div className="bg-card border border-border rounded-lg p-4 animate-fade-in">
-      <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <circle cx="12" cy="12" r="10" />
-          <line x1="12" y1="16" x2="12" y2="12" />
-          <line x1="12" y1="8" x2="12.01" y2="8" />
+    <div
+      style={{
+        background: "#111827",
+        border: "1px solid #1e2235",
+        borderRadius: "10px",
+        padding: "20px",
+      }}
+    >
+      {/* Title */}
+      <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px" }}>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffc107" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
         </svg>
-        {t("insights.title")}
-      </h3>
-      <div className="space-y-2">
-        {displayed.map((ins, i) => (
-          <div
-            key={i}
-            className="flex items-start gap-2.5 py-1.5 border-b border-border/50 last:border-b-0"
-          >
-            <span
-              className="mt-1 w-2 h-2 rounded-full flex-shrink-0"
-              style={{ backgroundColor: DOT_COLORS[ins.type] }}
-            />
-            <div className="min-w-0">
-              <p className="text-xs text-secondary leading-relaxed">
-                {interpolate(t(ins.textKey), ins.params)}
-              </p>
-              <span className="text-[10px] text-muted font-mono">
-                {ins.symbol}
+        <span style={{ fontSize: "14px", fontWeight: 600, color: "#e8eaed" }}>
+          {t("insights.title")}
+        </span>
+        <span style={{ fontSize: "11px", color: "#5a5e72", marginLeft: "auto" }}>
+          {displayed.length} signals
+        </span>
+      </div>
+
+      {/* Insights grid */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "10px" }}>
+        {displayed.map((ins, i) => {
+          const style = SIGNAL_STYLES[ins.type];
+          return (
+            <div
+              key={i}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+                padding: "12px 16px",
+                background: style.bg,
+                border: `1px solid ${style.border}`,
+                borderRadius: "8px",
+              }}
+            >
+              {/* Signal indicator */}
+              <span style={{
+                fontSize: "16px",
+                color: style.dot,
+                fontWeight: 700,
+                width: "20px",
+                textAlign: "center",
+                flexShrink: 0,
+              }}>
+                {style.arrow}
               </span>
+
+              {/* Content */}
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <div style={{ fontSize: "13px", color: "#e8eaed", lineHeight: 1.4 }}>
+                  {interpolate(t(ins.textKey), ins.params)}
+                </div>
+                <div style={{
+                  fontSize: "10px",
+                  color: "#5a5e72",
+                  fontFamily: "var(--font-geist-mono), monospace",
+                  marginTop: "2px",
+                }}>
+                  {ins.symbol}
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

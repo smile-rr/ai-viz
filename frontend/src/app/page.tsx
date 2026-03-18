@@ -99,7 +99,7 @@ const MARKET_SECTIONS = new Set([
 ]);
 
 export default function Home() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [data, setData] = useState<MarketData | null>(null);
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const [reportsData, setReportsData] = useState<any>(null);
@@ -778,19 +778,55 @@ export default function Home() {
     { id: "tech-stack", label: t("arch.tab.techStack") },
   ];
 
-  const renderArchitecture = () => (
-    <>
-      <section>
-        <TabNav tabs={archTabs} activeTab={activeArchTab} onChange={setActiveArchTab} />
-      </section>
-      <section>
-        {activeArchTab === "star-schema" && <StarSchemaViz />}
-        {activeArchTab === "semantic-layer" && <SemanticLayerViz />}
-        {activeArchTab === "data-lineage" && <DataLineageViz />}
-        {activeArchTab === "tech-stack" && <TechStackViz />}
-      </section>
-    </>
-  );
+  const archTabDescriptions: Record<string, { en: string; zh: string }> = {
+    "star-schema": {
+      en: "Dimensional model following Kimball methodology. Fact tables store transactional metrics (prices, flows, macro indicators) while dimension tables provide context (dates, assets, markets). Click any table to explore its schema.",
+      zh: "基于 Kimball 方法论的维度建模。事实表存储交易指标（价格、资金流、宏观数据），维度表提供上下文（日期、资产、市场）。点击任意表查看详细结构。",
+    },
+    "semantic-layer": {
+      en: "Unified metric definitions ensuring consistent calculation across all dashboards. Each metric has a precise formula, unit, and source table — eliminating ambiguity like 'which return calculation are we using?'",
+      zh: "统一指标定义，确保所有仪表盘的计算口径一致。每个指标有精确的公式、单位和来源表 — 消除'我们用的是哪种收益率算法？'这样的歧义。",
+    },
+    "data-lineage": {
+      en: "End-to-end data traceability from source APIs to dashboard. Every metric can be traced back through transformation stages to its original data source — critical for audit and debugging.",
+      zh: "从数据源 API 到仪表盘的端到端数据追溯。每个指标都可以回溯到其原始数据源的各个转换阶段 — 对审计和调试至关重要。",
+    },
+    "tech-stack": {
+      en: "Cloud-native architecture with zero server cost. GitHub Actions for scheduling, Turso for edge database, Cloudflare Pages for CDN delivery. All open-source, all automated.",
+      zh: "零服务器成本的云原生架构。GitHub Actions 定时调度，Turso 边缘数据库，Cloudflare Pages CDN 分发。全部开源，全自动化。",
+    },
+  };
+
+  const renderArchitecture = () => {
+    const desc = archTabDescriptions[activeArchTab];
+    return (
+      <>
+        <section>
+          <TabNav tabs={archTabs} activeTab={activeArchTab} onChange={setActiveArchTab} />
+          {desc && (
+            <div style={{
+              marginTop: "12px",
+              padding: "14px 18px",
+              background: "rgba(41, 121, 255, 0.06)",
+              border: "1px solid rgba(41, 121, 255, 0.15)",
+              borderRadius: "8px",
+              fontSize: "13px",
+              lineHeight: 1.6,
+              color: "#8b8fa3",
+            }}>
+              {locale === "zh" ? desc.zh : desc.en}
+            </div>
+          )}
+        </section>
+        <section>
+          {activeArchTab === "star-schema" && <StarSchemaViz />}
+          {activeArchTab === "semantic-layer" && <SemanticLayerViz />}
+          {activeArchTab === "data-lineage" && <DataLineageViz />}
+          {activeArchTab === "tech-stack" && <TechStackViz />}
+        </section>
+      </>
+    );
+  };
 
   /* ──────────────────────────────────────────
      Section router
