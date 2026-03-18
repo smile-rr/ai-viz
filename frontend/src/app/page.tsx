@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import type { MarketData, MarketItem } from "@/types/market";
+import { useI18n } from "@/i18n/context";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import KpiCard from "@/components/KpiCard";
@@ -36,51 +37,70 @@ function cleanItems(items: MarketItem[]): MarketItem[] {
 }
 
 /* ────────────────────────────────────────────────
-   Section metadata
+   Section metadata (i18n-aware)
    ──────────────────────────────────────────────── */
-const SECTION_META: Record<string, { title: string; subtitle: string }> = {
-  overview: {
-    title: "Market Overview",
-    subtitle: "Global financial markets at a glance",
-  },
-  "cn-markets": {
-    title: "China Markets",
-    subtitle: "Shanghai, Shenzhen & Hong Kong indices — performance and trends",
-  },
-  global: {
-    title: "Global Markets",
-    subtitle: "Major world indices — S&P 500, Dow Jones, NASDAQ, Nikkei and more",
-  },
-  fx: {
-    title: "Foreign Exchange",
-    subtitle: "Major currency pair rates and 30-day trends",
-  },
-  commodities: {
-    title: "Commodities",
-    subtitle: "Gold, oil, silver and other commodity price movements",
-  },
-  crypto: {
-    title: "Cryptocurrency",
-    subtitle: "Bitcoin, Ethereum and digital asset market data",
-  },
-  reports: {
-    title: "Reports",
-    subtitle: "Auto-generated daily market summaries and periodic reviews",
-  },
-  quality: {
-    title: "Data Quality",
-    subtitle: "Pipeline health, data freshness, coverage matrix and validation checks",
-  },
-  architecture: {
-    title: "Data Architecture",
-    subtitle: "Star schema, semantic layer, data lineage & tech stack",
-  },
-};
+function getSectionMeta(
+  section: string,
+  t: (key: string) => string
+): { title: string; subtitle: string } {
+  const map: Record<string, { titleKey: string; subtitleKey: string }> = {
+    overview: {
+      titleKey: "page.overview.title",
+      subtitleKey: "page.overview.subtitle",
+    },
+    "cn-markets": {
+      titleKey: "page.cn.title",
+      subtitleKey: "page.cn.subtitle",
+    },
+    global: {
+      titleKey: "page.global.title",
+      subtitleKey: "page.global.subtitle",
+    },
+    fx: {
+      titleKey: "page.fx.title",
+      subtitleKey: "page.fx.subtitle",
+    },
+    commodities: {
+      titleKey: "page.commodities.title",
+      subtitleKey: "page.commodities.subtitle",
+    },
+    crypto: {
+      titleKey: "page.crypto.title",
+      subtitleKey: "page.crypto.subtitle",
+    },
+    reports: {
+      titleKey: "page.reports.title",
+      subtitleKey: "page.reports.subtitle",
+    },
+    quality: {
+      titleKey: "page.quality.title",
+      subtitleKey: "page.quality.subtitle",
+    },
+    architecture: {
+      titleKey: "page.architecture.title",
+      subtitleKey: "page.architecture.subtitle",
+    },
+  };
+
+  const entry = map[section] ?? map.overview;
+  return { title: t(entry.titleKey), subtitle: t(entry.subtitleKey) };
+}
+
+/** Sections that show auto-refresh countdown */
+const MARKET_SECTIONS = new Set([
+  "overview",
+  "cn-markets",
+  "global",
+  "fx",
+  "commodities",
+  "crypto",
+]);
 
 /** Auto-refresh interval in milliseconds (5 minutes) */
 const REFRESH_INTERVAL_MS = 5 * 60 * 1000;
 
 export default function Home() {
+  const { t } = useI18n();
   const [data, setData] = useState<MarketData | null>(null);
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const [reportsData, setReportsData] = useState<any>(null);
@@ -94,6 +114,8 @@ export default function Home() {
   const [countdown, setCountdown] = useState(REFRESH_INTERVAL_MS / 1000);
   const countdownRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const refreshTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const isMarketSection = MARKET_SECTIONS.has(activeSection);
 
   const fetchData = useCallback(async (silent = false) => {
     if (silent) {
@@ -213,7 +235,7 @@ export default function Home() {
   const allItems = [...cnIndices, ...globalIndices, ...fx, ...commodities, ...crypto];
 
   const sidebarWidth = sidebarOpen ? "pl-48" : "pl-14";
-  const meta = SECTION_META[activeSection] ?? SECTION_META.overview;
+  const meta = getSectionMeta(activeSection, t);
 
   /* ──────────────────────────────────────────
      Section-specific rendering helpers
@@ -768,7 +790,8 @@ export default function Home() {
         sidebarOpen={sidebarOpen}
         onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
         isRefreshing={isRefreshing}
-        refreshCountdown={formatCountdown(countdown)}
+        refreshCountdown={isMarketSection ? formatCountdown(countdown) : undefined}
+        showRefresh={isMarketSection}
       />
       <Sidebar
         open={sidebarOpen}
@@ -793,34 +816,38 @@ export default function Home() {
             <div className="flex items-center gap-2">
               {data?.generated_at && (
                 <span className="text-[10px] text-muted font-mono hidden md:inline">
-                  Updated: {data.generated_at}
+                  {t("header.updated")}: {data.generated_at}
                 </span>
               )}
-              <span className="text-[10px] text-muted font-mono hidden md:inline">
-                Next refresh in {formatCountdown(countdown)}
-              </span>
-              <button
-                onClick={handleManualRefresh}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-card border border-border text-xs text-secondary hover:text-foreground hover:border-border-hover transition-colors ${
-                  isRefreshing ? "animate-pulse" : ""
-                }`}
-              >
-                <svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className={isRefreshing ? "animate-spin" : ""}
+              {isMarketSection && (
+                <span className="text-[10px] text-muted font-mono hidden md:inline">
+                  {t("header.nextRefresh")} {formatCountdown(countdown)}
+                </span>
+              )}
+              {isMarketSection && (
+                <button
+                  onClick={handleManualRefresh}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-card border border-border text-xs text-secondary hover:text-foreground hover:border-border-hover transition-colors ${
+                    isRefreshing ? "animate-pulse" : ""
+                  }`}
                 >
-                  <polyline points="23 4 23 10 17 10" />
-                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
-                </svg>
-                {isRefreshing ? "Refreshing..." : "Refresh"}
-              </button>
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={isRefreshing ? "animate-spin" : ""}
+                  >
+                    <polyline points="23 4 23 10 17 10" />
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                  </svg>
+                  {isRefreshing ? t("header.refreshing") : t("header.refresh")}
+                </button>
+              )}
             </div>
           </div>
 
@@ -833,7 +860,7 @@ export default function Home() {
           {/* Footer */}
           <footer className="text-center py-6 border-t border-border">
             <p className="text-[10px] text-muted uppercase tracking-wider">
-              AI-VIZ Market Intelligence Terminal &middot; Data: AKShare &middot; Yahoo Finance &middot; Tushare &middot; For informational purposes only
+              {t("footer.disclaimer")}
             </p>
           </footer>
         </div>

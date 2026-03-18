@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useI18n } from "@/i18n/context";
 
 interface HeaderProps {
   date: string;
@@ -9,6 +10,7 @@ interface HeaderProps {
   onToggleSidebar: () => void;
   isRefreshing?: boolean;
   refreshCountdown?: string;
+  showRefresh?: boolean;
 }
 
 export default function Header({
@@ -18,18 +20,28 @@ export default function Header({
   onToggleSidebar,
   isRefreshing,
   refreshCountdown,
+  showRefresh = true,
 }: HeaderProps) {
+  const { locale, setLocale, t } = useI18n();
+
   // Show full timestamp if available, otherwise fall back to date-only formatting
   const displayTimestamp = generatedAt
     ? generatedAt
     : date
-      ? new Date(date + "T00:00:00").toLocaleDateString("en-US", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })
+      ? new Date(date + "T00:00:00").toLocaleDateString(
+          locale === "zh" ? "zh-CN" : "en-US",
+          {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }
+        )
       : "";
+
+  const toggleLocale = () => {
+    setLocale(locale === "en" ? "zh" : "en");
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-14 px-4 border-b border-border bg-[#0c0c14]/95 backdrop-blur-md">
@@ -71,7 +83,7 @@ export default function Header({
               AI-VIZ
             </span>
           </div>
-          <span className="text-xs text-muted font-mono">TERMINAL</span>
+          <span className="text-xs text-muted font-mono">{t("header.terminal")}</span>
         </div>
       </div>
 
@@ -90,14 +102,24 @@ export default function Header({
             }`}
           >
             <div className={`w-1.5 h-1.5 rounded-full bg-green ${isRefreshing ? "animate-ping" : ""}`} />
-            LIVE
+            {t("header.live")}
           </div>
-          <span className="hidden md:inline text-[10px] text-muted font-mono">
-            Auto-refresh: 5min
-            {refreshCountdown && (
-              <span className="ml-1 text-secondary">({refreshCountdown})</span>
-            )}
-          </span>
+          {/* Language toggle */}
+          <button
+            onClick={toggleLocale}
+            className="flex items-center justify-center px-2 py-1 rounded-md bg-card border border-border text-xs font-medium text-secondary hover:text-foreground hover:border-border-hover transition-colors"
+            title={locale === "en" ? "Switch to Chinese" : "Switch to English"}
+          >
+            {locale === "en" ? "\u4e2d" : "EN"}
+          </button>
+          {showRefresh && (
+            <span className="hidden md:inline text-[10px] text-muted font-mono">
+              {t("header.autoRefresh")}
+              {refreshCountdown && (
+                <span className="ml-1 text-secondary">({refreshCountdown})</span>
+              )}
+            </span>
+          )}
         </div>
       </div>
     </header>

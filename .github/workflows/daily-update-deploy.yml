@@ -1,0 +1,87 @@
+name: Daily Update & Deploy
+
+# Combined workflow: runs Python data pipeline, commits results,
+# builds Next.js frontend, and deploys to Cloudflare Pages.
+#
+# Required GitHub Secrets:
+#   TUSHARE_TOKEN         — Tushare API token for market data
+#   TURSO_DATABASE_URL    — Turso libsql database URL
+#   TURSO_AUTH_TOKEN      — Turso auth token
+#   CLOUDFLARE_API_TOKEN  — Cloudflare API token with Pages edit permission
+#   CLOUDFLARE_ACCOUNT_ID — Cloudflare account ID
+
+on:
+  schedule:
+    # Weekdays, Beijing 18:00 (UTC 10:00) — after A-share market close
+    - cron: '0 10 * * 1-5'
+  workflow_dispatch: # Manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  update-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # ── Python pipeline ──────────────────────────────────────
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install UV
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install Python dependencies
+        run: uv sync
+
+      - name: Run daily data pipeline
+        env:
+          TUSHARE_TOKEN: ${{ secrets.TUSHARE_TOKEN }}
+          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+        run: uv run python -m src.pipeline.daily
+
+      - name: Copy aggregated data to frontend
+        run: |
+          mkdir -p frontend/public/data
+          cp -r data/aggregated/* frontend/public/data/ 2>/dev/null || true
+
+      # ── Commit data ──────────────────────────────────────────
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/aggregated/ data/quality/ frontend/public/data/
+          git diff --staged --quiet || git commit -m "data: daily update $(date +%Y-%m-%d)"
+          git push
+
+      # ── Frontend build & deploy ──────────────────────────────
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Next.js static export
+        working-directory: frontend
+        run: pnpm build
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy frontend/out --project-name=ai-viz

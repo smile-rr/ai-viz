@@ -1,5 +1,8 @@
 name: Deploy Frontend to Cloudflare Pages
 
+# Standalone deploy — triggers on manual pushes to frontend or data.
+# For daily automated updates, use daily-update-deploy.yml instead.
+#
 # Required GitHub Secrets:
 #   CLOUDFLARE_API_TOKEN  — Cloudflare API token with Pages edit permission
 #   CLOUDFLARE_ACCOUNT_ID — Cloudflare account ID
@@ -10,6 +13,7 @@ on:
     paths:
       - 'frontend/**'
       - 'data/aggregated/**'
+  workflow_dispatch:
 
 jobs:
   deploy:

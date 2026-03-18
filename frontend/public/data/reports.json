@@ -2,24 +2,24 @@
   "daily_report": {
     "date": "2026-03-18",
     "generated_at": "2026-03-18 18:15:00 CST",
-    "summary": "Markets showed mixed signals today. Shanghai Composite declined 0.85% to 4,049.9 amid thin trading volume. S&P 500 gained 0.47% on continued tech strength. Gold touched $2,990 on safe-haven demand as USD/CNY remained stable at 7.23.",
+    "summary": "Markets showed mixed signals today. Shanghai Composite declined 0.85% to 4,049.9 amid broad A-share weakness. S&P 500 edged up 0.25% on selective buying. Gold held firm near $4,999 as USD/CNY rose 0.86% to 6.96. Brent crude surged 1.63% past $100.",
     "highlights": [
-      {"type": "bearish", "text": "Shanghai Composite dropped 0.85%, lowest close in 5 sessions"},
-      {"type": "bullish", "text": "S&P 500 rose 0.47%, extending 3-day winning streak"},
-      {"type": "neutral", "text": "USD/CNY stable at 7.23, within 0.1% range"},
-      {"type": "bullish", "text": "Gold near all-time high at $2,990, up 1.2%"},
+      {"type": "bearish", "text": "Shanghai Composite dropped 0.85%; broader A-shares hit harder with CSI 1000 down 2.33%"},
+      {"type": "bullish", "text": "S&P 500 rose 0.25%, Dow Jones +0.10% — US markets held steady"},
+      {"type": "neutral", "text": "USD/CNY climbed to 6.96, up 0.86% — watch for PBOC fixing guidance"},
+      {"type": "bullish", "text": "Brent crude surged 1.63% to $101.84 on supply concerns"},
       {"type": "bearish", "text": "Crypto markets quiet — BTC/ETH data pending settlement"}
     ],
     "market_movers": {
       "top_gainers": [
-        {"name": "Gold", "symbol": "GC=F", "change_pct": 1.2},
-        {"name": "S&P 500", "symbol": "^GSPC", "change_pct": 0.47},
-        {"name": "NASDAQ", "symbol": "^IXIC", "change_pct": 0.35}
+        {"name": "KOSPI", "symbol": "^KS11", "change_pct": 1.63},
+        {"name": "Brent Crude", "symbol": "BZ=F", "change_pct": 1.63},
+        {"name": "FTSE 100", "symbol": "^FTSE", "change_pct": 0.83}
       ],
       "top_losers": [
-        {"name": "上证指数", "symbol": "000001", "change_pct": -0.85},
-        {"name": "创业板指", "symbol": "399006", "change_pct": -1.12},
-        {"name": "Natural Gas", "symbol": "NG=F", "change_pct": -0.65}
+        {"name": "中证1000", "symbol": "000852", "change_pct": -2.33},
+        {"name": "创业板指", "symbol": "399006", "change_pct": -2.29},
+        {"name": "中证500", "symbol": "000905", "change_pct": -2.07}
       ]
     }
   },

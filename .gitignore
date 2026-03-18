@@ -23,7 +23,10 @@ data/raw/
 data/processed/
 *.parquet
 *.duckdb
+*.duckdb.wal
 *.db
+*.db-shm
+*.db-wal
 
 # Keep aggregated data for GitHub Pages
 !data/aggregated/
