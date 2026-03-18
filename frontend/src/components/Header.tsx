@@ -64,14 +64,14 @@ export default function Header({
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-14 px-4 border-b border-border bg-[#0c0c14]/95 backdrop-blur-md">
-      <div className="flex items-center gap-3">
+    <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-12 sm:h-14 px-2 sm:px-4 border-b border-border bg-[#0c0c14]/95 backdrop-blur-md">
+      <div className="flex items-center gap-2 sm:gap-3">
         <button
           onClick={onToggleSidebar}
-          className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-card transition-colors"
+          className="flex items-center justify-center w-9 h-9 sm:w-8 sm:h-8 rounded-md hover:bg-card transition-colors"
           aria-label="Toggle sidebar"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sm:w-[18px] sm:h-[18px]">
             {sidebarOpen ? (
               <>
                 <line x1="3" y1="6" x2="21" y2="6" />
@@ -87,20 +87,20 @@ export default function Header({
             )}
           </svg>
         </button>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <div className="flex items-center gap-1">
             <div
               className={`w-2 h-2 rounded-full ${marketStatus.isOpen ? "bg-green animate-pulse" : "bg-muted"}`}
             />
-            <span className="text-base font-bold tracking-wider text-foreground">
+            <span className="text-sm sm:text-base font-bold tracking-wider text-foreground">
               AI-VIZ
             </span>
           </div>
-          <span className="text-xs text-muted font-mono">{t("header.terminal")}</span>
+          <span className="text-xs text-muted font-mono hidden sm:inline">{t("header.terminal")}</span>
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1.5 sm:gap-3">
         {/* Data timestamp */}
         <div className="hidden sm:flex items-center gap-2 text-xs text-secondary">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -112,7 +112,7 @@ export default function Header({
 
         {/* Market status badge */}
         <div
-          className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium ${
+          className={`flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2 py-1 rounded-md text-[10px] sm:text-xs font-medium ${
             marketStatus.isOpen
               ? "bg-green-dim text-green"
               : "bg-card text-muted border border-border"
@@ -123,13 +123,14 @@ export default function Header({
               marketStatus.isOpen ? "bg-green" : "bg-muted"
             } ${isRefreshing ? "animate-ping" : ""}`}
           />
-          {locale === "zh" ? marketStatus.labelZh : marketStatus.label}
+          <span className="hidden sm:inline">{locale === "zh" ? marketStatus.labelZh : marketStatus.label}</span>
+          <span className="sm:hidden">{marketStatus.isOpen ? (locale === "zh" ? "开" : "Live") : (locale === "zh" ? "休" : "Off")}</span>
         </div>
 
         {/* Language toggle */}
         <button
           onClick={toggleLocale}
-          className="flex items-center justify-center px-2 py-1 rounded-md bg-card border border-border text-xs font-medium text-secondary hover:text-foreground hover:border-border-hover transition-colors"
+          className="flex items-center justify-center px-1.5 sm:px-2 py-1 rounded-md bg-card border border-border text-[10px] sm:text-xs font-medium text-secondary hover:text-foreground hover:border-border-hover transition-colors"
           title={locale === "en" ? "Switch to Chinese" : "Switch to English"}
         >
           {locale === "en" ? "\u4e2d" : "EN"}

@@ -104,12 +104,12 @@ export default function SemanticLayerViz() {
       </div>
 
       {/* Category Tabs */}
-      <div className="flex gap-1 mb-5 p-1 bg-[#0a0a0f] rounded-lg border border-border w-fit">
+      <div className="flex gap-1 mb-5 p-1 bg-[#0a0a0f] rounded-lg border border-border w-fit max-w-full overflow-x-auto">
         {Object.entries(categoryMeta).map(([key, cat]) => (
           <button
             key={key}
             onClick={() => { setActiveCategory(key); setExpandedMetric(null); }}
-            className={`px-4 py-1.5 rounded-md text-xs font-medium transition-all duration-200 ${
+            className={`px-4 py-1.5 rounded-md text-xs font-medium transition-all duration-200 flex-shrink-0 ${
               activeCategory === key
                 ? "text-foreground shadow-sm"
                 : "text-muted hover:text-secondary"

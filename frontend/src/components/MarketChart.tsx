@@ -90,9 +90,9 @@ export default function MarketChart({
       backgroundColor: "transparent",
       grid: {
         top: 45,
-        right: 16,
+        right: 8,
         bottom: 30,
-        left: 12,
+        left: 8,
         containLabel: true,
       },
       legend: {
@@ -194,7 +194,7 @@ export default function MarketChart({
 
   return (
     <div className="card p-4 animate-fade-in">
-      <div className="flex items-center justify-between mb-1">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
         <div className="flex items-baseline gap-2">
           <div className="section-title">{title}</div>
           {subtitle && <span className="text-[10px] text-muted">{subtitle}</span>}
@@ -208,6 +208,7 @@ export default function MarketChart({
       <ReactEChartsCore
         echarts={echarts}
         option={option}
+        className="w-full"
         style={{ height: `${height}px`, width: "100%" }}
         opts={{ renderer: "canvas" }}
         notMerge

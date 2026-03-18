@@ -24,9 +24,9 @@ export default function CommodityBar({ title, items }: CommodityBarProps) {
       backgroundColor: "transparent",
       grid: {
         top: 10,
-        right: 40,
+        right: 30,
         bottom: 10,
-        left: 10,
+        left: 4,
         containLabel: true,
       },
       tooltip: {
@@ -95,7 +95,7 @@ export default function CommodityBar({ title, items }: CommodityBarProps) {
       <ReactEChartsCore
         echarts={echarts}
         option={option}
-        style={{ height: `${Math.max(items.length * 50, 160)}px`, width: "100%" }}
+        style={{ height: `${Math.max(items.length * 44, 160)}px`, width: "100%" }}
         opts={{ renderer: "canvas" }}
         notMerge
         lazyUpdate

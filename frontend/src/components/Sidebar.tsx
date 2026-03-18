@@ -7,6 +7,7 @@ interface SidebarProps {
   open: boolean;
   activeSection: string;
   onNavigate: (section: string) => void;
+  onClose?: () => void;
 }
 
 interface NavItem {
@@ -139,15 +140,27 @@ const navGroups: NavGroup[] = [
   },
 ];
 
-export default function Sidebar({ open, activeSection, onNavigate }: SidebarProps) {
+export default function Sidebar({ open, activeSection, onNavigate, onClose }: SidebarProps) {
   const { t } = useI18n();
 
   return (
-    <aside
-      className={`fixed top-14 left-0 bottom-0 z-40 bg-[#0c0c14] border-r border-border transition-all duration-300 ease-in-out ${
-        open ? "w-48" : "w-14"
-      }`}
-    >
+    <>
+      {/* Mobile backdrop */}
+      {open && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          onClick={onClose}
+        />
+      )}
+      <aside
+        className={`fixed top-12 sm:top-14 left-0 bottom-0 z-40 bg-[#0c0c14] border-r border-border transition-all duration-300 ease-in-out
+          ${/* Mobile: slide in/out from left, always w-48 when open */""
+          } md:translate-x-0 ${
+            open
+              ? "w-48 translate-x-0"
+              : "md:w-14 -translate-x-full md:translate-x-0"
+          }`}
+      >
       <nav className="flex flex-col p-2 mt-2">
         {navGroups.map((group, groupIdx) => (
           <div key={group.groupKey}>
@@ -202,5 +215,6 @@ export default function Sidebar({ open, activeSection, onNavigate }: SidebarProp
         </div>
       )}
     </aside>
+    </>
   );
 }

@@ -227,8 +227,8 @@ export default function StarSchemaViz() {
 
   return (
     <div className="card p-6 animate-fade-in">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-8 h-8 rounded-lg bg-[#2979ff]/10 flex items-center justify-center">
+      <div className="flex flex-wrap items-center gap-3 mb-6">
+        <div className="w-8 h-8 rounded-lg bg-[#2979ff]/10 flex items-center justify-center flex-shrink-0">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2979ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2" />
             <line x1="12" y1="22" x2="12" y2="15.5" />
@@ -254,7 +254,7 @@ export default function StarSchemaViz() {
       {/* Star Schema Layout */}
       <div className="relative">
         {/* Dimension tables - top row */}
-        <div className="grid grid-cols-4 gap-3 mb-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
           {dimTables.map((t) => (
             <div key={t.name} className={`transition-opacity duration-300 ${isHighlighted(t.name) ? "opacity-100" : "opacity-25"}`}>
               <TableCard table={t} />
@@ -281,7 +281,7 @@ export default function StarSchemaViz() {
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-3 gap-3 mt-3 max-w-3xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-3 max-w-3xl mx-auto">
           {factTables.slice(4).map((t) => (
             <div key={t.name} className={`transition-opacity duration-300 ${isHighlighted(t.name) ? "opacity-100" : "opacity-25"}`}>
               <TableCard table={t} />
@@ -319,9 +319,9 @@ export default function StarSchemaViz() {
           </div>
 
           {/* Field-level detail table */}
-          <div className="px-5 py-3">
+          <div className="px-3 sm:px-5 py-3 overflow-x-auto">
             <div className="text-[10px] uppercase tracking-wider text-muted mb-2">{t("starSchema.fieldDetails")}</div>
-            <table className="w-full text-left">
+            <table className="w-full text-left min-w-[480px]">
               <thead>
                 <tr className="border-b border-border/50">
                   <th className="text-[10px] font-semibold text-muted uppercase tracking-wider py-2 pr-4 w-[140px]">{t("starSchema.col.field")}</th>

@@ -43,7 +43,7 @@ export default function Heatmap({ items }: HeatmapProps) {
     <div className="card p-4 animate-fade-in">
       <div className="section-title">{t("heatmap.title")}</div>
 
-      <div className="flex flex-wrap gap-1.5">
+      <div className="flex flex-wrap gap-1 sm:gap-1.5 overflow-x-auto">
         {sorted.map((item) => {
           const bg = getHeatColor(item.change_pct);
           const textColor = getTextColor(item.change_pct);
@@ -55,9 +55,9 @@ export default function Heatmap({ items }: HeatmapProps) {
               className="rounded-md flex flex-col items-center justify-center transition-transform hover:scale-105 cursor-default"
               style={{
                 background: bg,
-                minWidth: `${60 + size * 20}px`,
-                height: `${50 + size * 10}px`,
-                flex: `${size} 1 ${60 + size * 20}px`,
+                minWidth: `${40 + size * 14}px`,
+                height: `${42 + size * 8}px`,
+                flex: `${size} 1 ${40 + size * 14}px`,
               }}
               title={`${item.name} (${item.symbol}): ${item.close.toLocaleString()} | ${item.change_pct >= 0 ? "+" : ""}${item.change_pct.toFixed(2)}%`}
             >
@@ -68,7 +68,7 @@ export default function Heatmap({ items }: HeatmapProps) {
                 {item.name}
               </div>
               <div
-                className="text-sm font-bold font-mono"
+                className="text-xs sm:text-sm font-bold font-mono"
                 style={{ color: textColor }}
               >
                 {item.change_pct >= 0 ? "+" : ""}

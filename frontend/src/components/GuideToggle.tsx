@@ -41,7 +41,7 @@ export default function GuideToggle({ content }: GuideToggleProps) {
             background: "rgba(41, 121, 255, 0.06)",
             border: "1px solid rgba(41, 121, 255, 0.15)",
             borderRadius: "8px",
-            fontSize: "13px",
+            fontSize: "12px",
             lineHeight: 1.6,
             color: "#8b8fa3",
             zIndex: 10,

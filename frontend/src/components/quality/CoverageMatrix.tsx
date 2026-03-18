@@ -40,7 +40,7 @@ export default function CoverageMatrix({ coverage }: CoverageMatrixProps) {
         </span>
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full text-xs">
+        <table className="w-full text-xs min-w-[420px]">
           <thead>
             <tr className="border-b border-border">
               <th className="text-left py-2 px-3">{t("coverage.col.market")}</th>

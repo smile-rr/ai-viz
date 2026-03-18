@@ -46,7 +46,8 @@ function MiniSparkline({ data, positive }: { data: number[]; positive: boolean }
     <ReactEChartsCore
       echarts={echarts}
       option={option}
-      style={{ height: "24px", width: "80px" }}
+      style={{ height: "24px", width: "60px" }}
+      className="hidden sm:block"
       opts={{ renderer: "canvas" }}
       notMerge
       lazyUpdate
@@ -66,13 +67,13 @@ export default function DataTable({ title, items, formatPrice }: DataTableProps)
     <div className="card p-4 animate-fade-in">
       <div className="section-title">{title}</div>
       <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+        <table className="w-full text-xs sm:text-sm">
           <thead>
             <tr className="border-b border-border">
               <th className="text-left py-2 pr-4">{t("table.col.name")}</th>
               <th className="text-right py-2 pr-4">{t("table.col.price")}</th>
               <th className="text-right py-2 pr-4">{t("table.col.chgPct")}</th>
-              <th className="text-right py-2">{t("table.col.trend30d")}</th>
+              <th className="text-right py-2 hidden sm:table-cell">{t("table.col.trend30d")}</th>
             </tr>
           </thead>
           <tbody>
@@ -103,7 +104,7 @@ export default function DataTable({ title, items, formatPrice }: DataTableProps)
                       {item.change_pct.toFixed(2)}%
                     </span>
                   </td>
-                  <td className="text-right py-2.5">
+                  <td className="text-right py-2.5 hidden sm:table-cell">
                     <div className="flex justify-end">
                       <MiniSparkline data={item.history} positive={isPositive} />
                     </div>

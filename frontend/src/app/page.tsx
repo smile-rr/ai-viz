@@ -108,13 +108,20 @@ export default function Home() {
   /* eslint-enable @typescript-eslint/no-explicit-any */
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("overview");
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [activeArchTab, setActiveArchTab] = useState("star-schema");
   const [activeQualityTab, setActiveQualityTab] = useState("scorecard");
 
   const isMarketSection = MARKET_SECTIONS.has(activeSection);
+
+  // Set sidebar open on desktop on initial mount
+  useEffect(() => {
+    if (window.innerWidth >= 768) {
+      setSidebarOpen(true);
+    }
+  }, []);
 
   const fetchData = useCallback(async (silent = false) => {
     if (silent) {
@@ -166,6 +173,10 @@ export default function Home() {
     setActiveSection(section);
     // Scroll to top of main content when switching sections
     window.scrollTo({ top: 0, behavior: "smooth" });
+    // Auto-close sidebar on mobile
+    if (window.innerWidth < 768) {
+      setSidebarOpen(false);
+    }
   }, []);
 
   const cnIndices = data ? cleanItems(data.cn_indices) : [];
@@ -191,7 +202,8 @@ export default function Home() {
   // Collect all items for heatmap
   const allItems = [...cnIndices, ...globalIndices, ...fx, ...commodities, ...crypto];
 
-  const sidebarWidth = sidebarOpen ? "pl-48" : "pl-14";
+  // On mobile (< md), sidebar overlays so no padding needed
+  const sidebarWidth = sidebarOpen ? "md:pl-48" : "md:pl-14";
   const meta = getSectionMeta(activeSection, t);
 
   const guideKeyMap: Record<string, string> = {
@@ -705,7 +717,7 @@ export default function Home() {
         {/* Workflow banner */}
         <section>
           <div className="bg-card border border-border rounded-lg p-4 animate-fade-in">
-            <div className="flex items-center justify-center gap-0 flex-wrap">
+            <div className="flex items-center justify-start sm:justify-center gap-0 overflow-x-auto pb-2 sm:pb-0 sm:flex-wrap">
               {(
                 [
                   { key: "collect", label: t("quality.workflow.collect") },
@@ -881,12 +893,13 @@ export default function Home() {
         open={sidebarOpen}
         activeSection={activeSection}
         onNavigate={handleNavigate}
+        onClose={() => setSidebarOpen(false)}
       />
 
       <main
-        className={`pt-14 ${sidebarWidth} transition-all duration-300 ease-in-out`}
+        className={`pt-12 sm:pt-14 ${sidebarWidth} transition-all duration-300 ease-in-out`}
       >
-        <div className="p-4 lg:p-6 max-w-[1800px] mx-auto space-y-5">
+        <div className="p-3 sm:p-4 lg:p-6 max-w-[1800px] mx-auto space-y-5">
           {/* Page title */}
           <div className="flex items-center justify-between">
             <div className="relative">

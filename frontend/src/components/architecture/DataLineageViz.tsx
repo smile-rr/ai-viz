@@ -221,7 +221,7 @@ export default function DataLineageViz() {
       })()}
 
       {/* Summary stats */}
-      <div className="mt-4 pt-4 border-t border-border grid grid-cols-5 gap-3">
+      <div className="mt-4 pt-4 border-t border-border grid grid-cols-3 sm:grid-cols-5 gap-3">
         {layers.map((layer) => (
           <button
             key={layer.id}

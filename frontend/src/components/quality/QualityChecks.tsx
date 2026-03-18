@@ -112,7 +112,7 @@ export default function QualityChecks({ checks }: QualityChecksProps) {
                   <span className="text-xs text-foreground flex-1">
                     {check.name}
                   </span>
-                  <span className="text-[10px] text-muted font-mono">
+                  <span className="text-[10px] text-muted font-mono flex-shrink-0">
                     {check.details}
                   </span>
                 </div>

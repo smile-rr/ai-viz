@@ -18,7 +18,7 @@ export default function TimeRangeSelector({
   availableRanges,
 }: TimeRangeSelectorProps) {
   return (
-    <div className="flex gap-1">
+    <div className="flex gap-1 overflow-x-auto whitespace-nowrap">
       {ALL_RANGES.map((range) => {
         const isAvailable = !availableRanges || availableRanges.includes(range);
         const isActive = selected === range;
@@ -29,7 +29,7 @@ export default function TimeRangeSelector({
             disabled={!isAvailable}
             onClick={() => isAvailable && onChange(range)}
             className={`
-              px-2.5 py-0.5 rounded-full text-[11px] font-medium transition-colors
+              px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] sm:px-2.5 font-medium transition-colors flex-shrink-0
               ${
                 isActive
                   ? "bg-blue-600 text-white"

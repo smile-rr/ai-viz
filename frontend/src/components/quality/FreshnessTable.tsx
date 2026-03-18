@@ -47,7 +47,7 @@ export default function FreshnessTable({ items }: FreshnessTableProps) {
         {t("freshness.title")}
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full text-xs">
+        <table className="w-full text-xs min-w-[520px]">
           <thead>
             <tr className="border-b border-border">
               <th className="text-left py-2 px-3">{t("freshness.col.source")}</th>

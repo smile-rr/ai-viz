@@ -223,7 +223,7 @@ export default function InsightsCard({
       </div>
 
       {/* Insights grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "10px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(260px, 100%), 1fr))", gap: "10px" }}>
         {displayed.map((ins, i) => {
           const style = SIGNAL_STYLES[ins.type];
           return (
@@ -233,7 +233,7 @@ export default function InsightsCard({
                 display: "flex",
                 alignItems: "center",
                 gap: "12px",
-                padding: "12px 16px",
+                padding: "10px 12px",
                 background: style.bg,
                 border: `1px solid ${style.border}`,
                 borderRadius: "8px",

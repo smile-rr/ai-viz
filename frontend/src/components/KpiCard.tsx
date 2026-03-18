@@ -81,7 +81,7 @@ export default function KpiCard({
         </div>
       </div>
 
-      <div className="text-lg font-semibold font-mono tracking-tight mb-2" style={{ color }}>
+      <div className="text-base md:text-lg font-semibold font-mono tracking-tight mb-2" style={{ color }}>
         {displayPrice}
       </div>
 

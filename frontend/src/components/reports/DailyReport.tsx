@@ -97,7 +97,7 @@ export default function DailyReport({ report }: DailyReportProps) {
       </div>
 
       {/* Market Movers */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Top Gainers */}
         <div className="bg-card border border-border rounded-lg p-5">
           <div className="flex items-center gap-2 mb-4">

@@ -172,7 +172,7 @@ export default function TechStackViz() {
       {/* Architecture principles */}
       <div className="mt-6 pt-4 border-t border-border">
         <div className="text-[10px] uppercase tracking-wider text-muted mb-3">{t("techStack.principles")}</div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
           {[
             { icon: "M13 10V3L4 14h7v7l9-11h-7z", labelKey: "techStack.principle.batchFirst", descKey: "techStack.principle.batchFirst.desc" },
             { icon: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z", labelKey: "techStack.principle.schemaOnWrite", descKey: "techStack.principle.schemaOnWrite.desc" },
