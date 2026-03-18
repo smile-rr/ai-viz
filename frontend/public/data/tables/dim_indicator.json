@@ -1,0 +1,101 @@
+{
+  "table_name": "dim_indicator",
+  "row_count": 6,
+  "sample_size": 6,
+  "columns": [
+    {
+      "name": "indicator_key",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "name",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "name_cn",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "category",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "unit",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "frequency",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "source",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "description",
+      "type": "VARCHAR"
+    }
+  ],
+  "rows": [
+    {
+      "indicator_key": "gdp",
+      "name": "GDP",
+      "name_cn": "国内生产总值",
+      "category": "gdp",
+      "unit": "亿元",
+      "frequency": "quarterly",
+      "source": "AKShare",
+      "description": "国内生产总值"
+    },
+    {
+      "indicator_key": "cpi",
+      "name": "CPI",
+      "name_cn": "居民消费价格指数",
+      "category": "cpi",
+      "unit": "percent",
+      "frequency": "monthly",
+      "source": "AKShare",
+      "description": "CPI同比变动"
+    },
+    {
+      "indicator_key": "pmi",
+      "name": "PMI",
+      "name_cn": "制造业采购经理指数",
+      "category": "pmi",
+      "unit": "index",
+      "frequency": "monthly",
+      "source": "AKShare",
+      "description": "制造业PMI，50以上为扩张"
+    },
+    {
+      "indicator_key": "money_supply_m2",
+      "name": "M2",
+      "name_cn": "广义货币供应量",
+      "category": "money_supply",
+      "unit": "亿元",
+      "frequency": "monthly",
+      "source": "AKShare",
+      "description": "M2货币供应量"
+    },
+    {
+      "indicator_key": "shibor_on",
+      "name": "SHIBOR O/N",
+      "name_cn": "上海银行间同业拆放利率",
+      "category": "rate",
+      "unit": "percent",
+      "frequency": "daily",
+      "source": "AKShare",
+      "description": "隔夜SHIBOR"
+    },
+    {
+      "indicator_key": "us_fed_rate",
+      "name": "Fed Funds Rate",
+      "name_cn": "美联储基准利率",
+      "category": "rate",
+      "unit": "percent",
+      "frequency": "as_needed",
+      "source": "FRED",
+      "description": "联邦基金目标利率"
+    }
+  ]
+}

@@ -1,0 +1,1114 @@
+{
+  "table_name": "fact_commodity",
+  "row_count": 155,
+  "sample_size": 155,
+  "columns": [
+    {
+      "name": "date_key",
+      "type": "DATE"
+    },
+    {
+      "name": "asset_key",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "price",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "change_pct",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "volume",
+      "type": "BIGINT"
+    }
+  ],
+  "rows": [
+    {
+      "date_key": "2026-03-17",
+      "asset_key": "CL=F",
+      "price": 93.5,
+      "change_pct": null,
+      "volume": 35937
+    },
+    {
+      "date_key": "2026-03-17",
+      "asset_key": "SI=F",
+      "price": 78.94999694824219,
+      "change_pct": null,
+      "volume": 4048
+    },
+    {
+      "date_key": "2026-03-17",
+      "asset_key": "BZ=F",
+      "price": 101.83999633789062,
+      "change_pct": null,
+      "volume": 3287
+    },
+    {
+      "date_key": "2026-03-17",
+      "asset_key": "NG=F",
+      "price": 2.9660000801086426,
+      "change_pct": null,
+      "volume": 4981
+    },
+    {
+      "date_key": "2026-03-17",
+      "asset_key": "GC=F",
+      "price": 4999.39990234375,
+      "change_pct": null,
+      "volume": 13784
+    },
+    {
+      "date_key": "2026-03-16",
+      "asset_key": "SI=F",
+      "price": 80.26300048828125,
+      "change_pct": null,
+      "volume": 91
+    },
+    {
+      "date_key": "2026-03-16",
+      "asset_key": "NG=F",
+      "price": 3.0230000019073486,
+      "change_pct": null,
+      "volume": 130165
+    },
+    {
+      "date_key": "2026-03-16",
+      "asset_key": "GC=F",
+      "price": 4994.0,
+      "change_pct": null,
+      "volume": 130
+    },
+    {
+      "date_key": "2026-03-16",
+      "asset_key": "BZ=F",
+      "price": 100.20999908447266,
+      "change_pct": null,
+      "volume": 77839
+    },
+    {
+      "date_key": "2026-03-16",
+      "asset_key": "CL=F",
+      "price": 93.5,
+      "change_pct": null,
+      "volume": 455454
+    },
+    {
+      "date_key": "2026-03-13",
+      "asset_key": "BZ=F",
+      "price": 103.13999938964844,
+      "change_pct": null,
+      "volume": 71698
+    },
+    {
+      "date_key": "2026-03-13",
+      "asset_key": "NG=F",
+      "price": 3.13100004196167,
+      "change_pct": null,
+      "volume": 129471
+    },
+    {
+      "date_key": "2026-03-13",
+      "asset_key": "SI=F",
+      "price": 80.91400146484375,
+      "change_pct": null,
+      "volume": 856
+    },
+    {
+      "date_key": "2026-03-13",
+      "asset_key": "GC=F",
+      "price": 5052.5,
+      "change_pct": null,
+      "volume": 479
+    },
+    {
+      "date_key": "2026-03-13",
+      "asset_key": "CL=F",
+      "price": 98.70999908447266,
+      "change_pct": null,
+      "volume": 436700
+    },
+    {
+      "date_key": "2026-03-12",
+      "asset_key": "GC=F",
+      "price": 5115.7998046875,
+      "change_pct": null,
+      "volume": 410
+    },
+    {
+      "date_key": "2026-03-12",
+      "asset_key": "NG=F",
+      "price": 3.2330000400543213,
+      "change_pct": null,
+      "volume": 150134
+    },
+    {
+      "date_key": "2026-03-12",
+      "asset_key": "BZ=F",
+      "price": 100.45999908447266,
+      "change_pct": null,
+      "volume": 92219
+    },
+    {
+      "date_key": "2026-03-12",
+      "asset_key": "CL=F",
+      "price": 95.7300033569336,
+      "change_pct": null,
+      "volume": 548999
+    },
+    {
+      "date_key": "2026-03-12",
+      "asset_key": "SI=F",
+      "price": 84.66999816894531,
+      "change_pct": null,
+      "volume": 284
+    },
+    {
+      "date_key": "2026-03-11",
+      "asset_key": "BZ=F",
+      "price": 91.9800033569336,
+      "change_pct": null,
+      "volume": 101940
+    },
+    {
+      "date_key": "2026-03-11",
+      "asset_key": "GC=F",
+      "price": 5167.39990234375,
+      "change_pct": null,
+      "volume": 633
+    },
+    {
+      "date_key": "2026-03-11",
+      "asset_key": "NG=F",
+      "price": 3.2090001106262207,
+      "change_pct": null,
+      "volume": 141651
+    },
+    {
+      "date_key": "2026-03-11",
+      "asset_key": "SI=F",
+      "price": 85.06500244140625,
+      "change_pct": null,
+      "volume": 1455
+    },
+    {
+      "date_key": "2026-03-11",
+      "asset_key": "CL=F",
+      "price": 87.25,
+      "change_pct": null,
+      "volume": 538020
+    },
+    {
+      "date_key": "2026-03-10",
+      "asset_key": "SI=F",
+      "price": 89.08300018310547,
+      "change_pct": null,
+      "volume": 106
+    },
+    {
+      "date_key": "2026-03-10",
+      "asset_key": "GC=F",
+      "price": 5229.7001953125,
+      "change_pct": null,
+      "volume": 4300
+    },
+    {
+      "date_key": "2026-03-10",
+      "asset_key": "BZ=F",
+      "price": 87.80000305175781,
+      "change_pct": null,
+      "volume": 144614
+    },
+    {
+      "date_key": "2026-03-10",
+      "asset_key": "CL=F",
+      "price": 83.44999694824219,
+      "change_pct": null,
+      "volume": 801564
+    },
+    {
+      "date_key": "2026-03-10",
+      "asset_key": "NG=F",
+      "price": 3.0199999809265137,
+      "change_pct": null,
+      "volume": 205911
+    },
+    {
+      "date_key": "2026-03-09",
+      "asset_key": "BZ=F",
+      "price": 98.95999908447266,
+      "change_pct": null,
+      "volume": 235965
+    },
+    {
+      "date_key": "2026-03-09",
+      "asset_key": "GC=F",
+      "price": 5091.5,
+      "change_pct": null,
+      "volume": 639
+    },
+    {
+      "date_key": "2026-03-09",
+      "asset_key": "NG=F",
+      "price": 3.119999885559082,
+      "change_pct": null,
+      "volume": 233306
+    },
+    {
+      "date_key": "2026-03-09",
+      "asset_key": "SI=F",
+      "price": 84.03199768066406,
+      "change_pct": null,
+      "volume": 497
+    },
+    {
+      "date_key": "2026-03-09",
+      "asset_key": "CL=F",
+      "price": 94.7699966430664,
+      "change_pct": null,
+      "volume": 1107193
+    },
+    {
+      "date_key": "2026-03-06",
+      "asset_key": "CL=F",
+      "price": 90.9000015258789,
+      "change_pct": null,
+      "volume": 996251
+    },
+    {
+      "date_key": "2026-03-06",
+      "asset_key": "GC=F",
+      "price": 5146.10009765625,
+      "change_pct": null,
+      "volume": 148
+    },
+    {
+      "date_key": "2026-03-06",
+      "asset_key": "BZ=F",
+      "price": 92.69000244140625,
+      "change_pct": null,
+      "volume": 197523
+    },
+    {
+      "date_key": "2026-03-06",
+      "asset_key": "NG=F",
+      "price": 3.186000108718872,
+      "change_pct": null,
+      "volume": 196840
+    },
+    {
+      "date_key": "2026-03-06",
+      "asset_key": "SI=F",
+      "price": 83.81600189208984,
+      "change_pct": null,
+      "volume": 282
+    },
+    {
+      "date_key": "2026-03-05",
+      "asset_key": "BZ=F",
+      "price": 85.41000366210938,
+      "change_pct": null,
+      "volume": 146018
+    },
+    {
+      "date_key": "2026-03-05",
+      "asset_key": "GC=F",
+      "price": 5065.2998046875,
+      "change_pct": null,
+      "volume": 1701
+    },
+    {
+      "date_key": "2026-03-05",
+      "asset_key": "CL=F",
+      "price": 81.01000213623047,
+      "change_pct": null,
+      "volume": 707030
+    },
+    {
+      "date_key": "2026-03-05",
+      "asset_key": "SI=F",
+      "price": 81.68699645996094,
+      "change_pct": null,
+      "volume": 597
+    },
+    {
+      "date_key": "2026-03-05",
+      "asset_key": "NG=F",
+      "price": 3.003000020980835,
+      "change_pct": null,
+      "volume": 148177
+    },
+    {
+      "date_key": "2026-03-04",
+      "asset_key": "CL=F",
+      "price": 74.66000366210938,
+      "change_pct": null,
+      "volume": 617822
+    },
+    {
+      "date_key": "2026-03-04",
+      "asset_key": "NG=F",
+      "price": 2.9170000553131104,
+      "change_pct": null,
+      "volume": 155742
+    },
+    {
+      "date_key": "2026-03-04",
+      "asset_key": "SI=F",
+      "price": 82.63300323486328,
+      "change_pct": null,
+      "volume": 502
+    },
+    {
+      "date_key": "2026-03-04",
+      "asset_key": "GC=F",
+      "price": 5120.2001953125,
+      "change_pct": null,
+      "volume": 679
+    },
+    {
+      "date_key": "2026-03-04",
+      "asset_key": "BZ=F",
+      "price": 81.4000015258789,
+      "change_pct": null,
+      "volume": 152390
+    },
+    {
+      "date_key": "2026-03-03",
+      "asset_key": "GC=F",
+      "price": 5107.39990234375,
+      "change_pct": null,
+      "volume": 1776
+    },
+    {
+      "date_key": "2026-03-03",
+      "asset_key": "NG=F",
+      "price": 3.053999900817871,
+      "change_pct": null,
+      "volume": 225190
+    },
+    {
+      "date_key": "2026-03-03",
+      "asset_key": "BZ=F",
+      "price": 81.4000015258789,
+      "change_pct": null,
+      "volume": 229556
+    },
+    {
+      "date_key": "2026-03-03",
+      "asset_key": "CL=F",
+      "price": 74.55999755859375,
+      "change_pct": null,
+      "volume": 1009753
+    },
+    {
+      "date_key": "2026-03-03",
+      "asset_key": "SI=F",
+      "price": 82.9229965209961,
+      "change_pct": null,
+      "volume": 1600
+    },
+    {
+      "date_key": "2026-03-02",
+      "asset_key": "BZ=F",
+      "price": 77.73999786376953,
+      "change_pct": null,
+      "volume": 143671
+    },
+    {
+      "date_key": "2026-03-02",
+      "asset_key": "NG=F",
+      "price": 2.9600000381469727,
+      "change_pct": null,
+      "volume": 174543
+    },
+    {
+      "date_key": "2026-03-02",
+      "asset_key": "GC=F",
+      "price": 5294.39990234375,
+      "change_pct": null,
+      "volume": 72
+    },
+    {
+      "date_key": "2026-03-02",
+      "asset_key": "CL=F",
+      "price": 71.2300033569336,
+      "change_pct": null,
+      "volume": 881329
+    },
+    {
+      "date_key": "2026-03-02",
+      "asset_key": "SI=F",
+      "price": 88.28399658203125,
+      "change_pct": null,
+      "volume": 1338
+    },
+    {
+      "date_key": "2026-02-27",
+      "asset_key": "BZ=F",
+      "price": 72.4800033569336,
+      "change_pct": null,
+      "volume": 79435
+    },
+    {
+      "date_key": "2026-02-27",
+      "asset_key": "NG=F",
+      "price": 2.8589999675750732,
+      "change_pct": null,
+      "volume": 109106
+    },
+    {
+      "date_key": "2026-02-27",
+      "asset_key": "SI=F",
+      "price": 92.68199920654297,
+      "change_pct": null,
+      "volume": 1134
+    },
+    {
+      "date_key": "2026-02-27",
+      "asset_key": "CL=F",
+      "price": 67.0199966430664,
+      "change_pct": null,
+      "volume": 437053
+    },
+    {
+      "date_key": "2026-02-27",
+      "asset_key": "GC=F",
+      "price": 5230.5,
+      "change_pct": null,
+      "volume": 354
+    },
+    {
+      "date_key": "2026-02-26",
+      "asset_key": "BZ=F",
+      "price": 70.75,
+      "change_pct": null,
+      "volume": 17725
+    },
+    {
+      "date_key": "2026-02-26",
+      "asset_key": "CL=F",
+      "price": 65.20999908447266,
+      "change_pct": null,
+      "volume": 498542
+    },
+    {
+      "date_key": "2026-02-26",
+      "asset_key": "GC=F",
+      "price": 5176.5,
+      "change_pct": null,
+      "volume": 1520
+    },
+    {
+      "date_key": "2026-02-26",
+      "asset_key": "NG=F",
+      "price": 2.8269999027252197,
+      "change_pct": null,
+      "volume": 139781
+    },
+    {
+      "date_key": "2026-02-26",
+      "asset_key": "SI=F",
+      "price": 86.99800109863281,
+      "change_pct": null,
+      "volume": 6626
+    },
+    {
+      "date_key": "2026-02-25",
+      "asset_key": "SI=F",
+      "price": 90.93900299072266,
+      "change_pct": null,
+      "volume": 36156
+    },
+    {
+      "date_key": "2026-02-25",
+      "asset_key": "GC=F",
+      "price": 5206.39990234375,
+      "change_pct": null,
+      "volume": 1772
+    },
+    {
+      "date_key": "2026-02-25",
+      "asset_key": "BZ=F",
+      "price": 70.8499984741211,
+      "change_pct": null,
+      "volume": 18491
+    },
+    {
+      "date_key": "2026-02-25",
+      "asset_key": "NG=F",
+      "price": 2.9690001010894775,
+      "change_pct": null,
+      "volume": 133499
+    },
+    {
+      "date_key": "2026-02-25",
+      "asset_key": "CL=F",
+      "price": 65.41999816894531,
+      "change_pct": null,
+      "volume": 306780
+    },
+    {
+      "date_key": "2026-02-24",
+      "asset_key": "NG=F",
+      "price": 2.9149999618530273,
+      "change_pct": null,
+      "volume": 69623
+    },
+    {
+      "date_key": "2026-02-24",
+      "asset_key": "SI=F",
+      "price": 87.45700073242188,
+      "change_pct": null,
+      "volume": 268
+    },
+    {
+      "date_key": "2026-02-24",
+      "asset_key": "BZ=F",
+      "price": 70.7699966430664,
+      "change_pct": null,
+      "volume": 37988
+    },
+    {
+      "date_key": "2026-02-24",
+      "asset_key": "GC=F",
+      "price": 5155.7998046875,
+      "change_pct": null,
+      "volume": 88
+    },
+    {
+      "date_key": "2026-02-24",
+      "asset_key": "CL=F",
+      "price": 65.62999725341797,
+      "change_pct": null,
+      "volume": 312124
+    },
+    {
+      "date_key": "2026-02-23",
+      "asset_key": "CL=F",
+      "price": 66.30999755859375,
+      "change_pct": null,
+      "volume": 270365
+    },
+    {
+      "date_key": "2026-02-23",
+      "asset_key": "SI=F",
+      "price": 86.52300262451172,
+      "change_pct": null,
+      "volume": 41
+    },
+    {
+      "date_key": "2026-02-23",
+      "asset_key": "BZ=F",
+      "price": 71.48999786376953,
+      "change_pct": null,
+      "volume": 28933
+    },
+    {
+      "date_key": "2026-02-23",
+      "asset_key": "GC=F",
+      "price": 5204.7001953125,
+      "change_pct": null,
+      "volume": 779
+    },
+    {
+      "date_key": "2026-02-23",
+      "asset_key": "NG=F",
+      "price": 2.984999895095825,
+      "change_pct": null,
+      "volume": 55412
+    },
+    {
+      "date_key": "2026-02-20",
+      "asset_key": "SI=F",
+      "price": 82.28299713134766,
+      "change_pct": null,
+      "volume": 30
+    },
+    {
+      "date_key": "2026-02-20",
+      "asset_key": "BZ=F",
+      "price": 71.76000213623047,
+      "change_pct": null,
+      "volume": 40579
+    },
+    {
+      "date_key": "2026-02-20",
+      "asset_key": "CL=F",
+      "price": 66.38999938964844,
+      "change_pct": null,
+      "volume": 351351
+    },
+    {
+      "date_key": "2026-02-20",
+      "asset_key": "GC=F",
+      "price": 5059.2998046875,
+      "change_pct": null,
+      "volume": 134
+    },
+    {
+      "date_key": "2026-02-20",
+      "asset_key": "NG=F",
+      "price": 3.046999931335449,
+      "change_pct": null,
+      "volume": 90717
+    },
+    {
+      "date_key": "2026-02-19",
+      "asset_key": "CL=F",
+      "price": 66.43000030517578,
+      "change_pct": null,
+      "volume": 113408
+    },
+    {
+      "date_key": "2026-02-19",
+      "asset_key": "GC=F",
+      "price": 4975.89990234375,
+      "change_pct": null,
+      "volume": 37
+    },
+    {
+      "date_key": "2026-02-19",
+      "asset_key": "NG=F",
+      "price": 2.996000051498413,
+      "change_pct": null,
+      "volume": 120477
+    },
+    {
+      "date_key": "2026-02-19",
+      "asset_key": "SI=F",
+      "price": 77.56500244140625,
+      "change_pct": null,
+      "volume": 208
+    },
+    {
+      "date_key": "2026-02-19",
+      "asset_key": "BZ=F",
+      "price": 71.66000366210938,
+      "change_pct": null,
+      "volume": 73081
+    },
+    {
+      "date_key": "2026-02-18",
+      "asset_key": "GC=F",
+      "price": 4986.5,
+      "change_pct": null,
+      "volume": 544
+    },
+    {
+      "date_key": "2026-02-18",
+      "asset_key": "BZ=F",
+      "price": 70.3499984741211,
+      "change_pct": null,
+      "volume": 56115
+    },
+    {
+      "date_key": "2026-02-18",
+      "asset_key": "NG=F",
+      "price": 3.010999917984009,
+      "change_pct": null,
+      "volume": 142497
+    },
+    {
+      "date_key": "2026-02-18",
+      "asset_key": "SI=F",
+      "price": 77.50900268554688,
+      "change_pct": null,
+      "volume": 18
+    },
+    {
+      "date_key": "2026-02-18",
+      "asset_key": "CL=F",
+      "price": 65.19000244140625,
+      "change_pct": null,
+      "volume": 115379
+    },
+    {
+      "date_key": "2026-02-17",
+      "asset_key": "CL=F",
+      "price": 62.33000183105469,
+      "change_pct": null,
+      "volume": 328727
+    },
+    {
+      "date_key": "2026-02-17",
+      "asset_key": "SI=F",
+      "price": 73.4469985961914,
+      "change_pct": null,
+      "volume": 61
+    },
+    {
+      "date_key": "2026-02-17",
+      "asset_key": "BZ=F",
+      "price": 67.41999816894531,
+      "change_pct": null,
+      "volume": 74745
+    },
+    {
+      "date_key": "2026-02-17",
+      "asset_key": "NG=F",
+      "price": 3.0309998989105225,
+      "change_pct": null,
+      "volume": 183610
+    },
+    {
+      "date_key": "2026-02-17",
+      "asset_key": "GC=F",
+      "price": 4882.89990234375,
+      "change_pct": null,
+      "volume": 540
+    },
+    {
+      "date_key": "2026-02-13",
+      "asset_key": "BZ=F",
+      "price": 67.75,
+      "change_pct": null,
+      "volume": 42167
+    },
+    {
+      "date_key": "2026-02-13",
+      "asset_key": "SI=F",
+      "price": 77.85099792480469,
+      "change_pct": null,
+      "volume": 63
+    },
+    {
+      "date_key": "2026-02-13",
+      "asset_key": "GC=F",
+      "price": 5022.0,
+      "change_pct": null,
+      "volume": 232
+    },
+    {
+      "date_key": "2026-02-13",
+      "asset_key": "NG=F",
+      "price": 3.243000030517578,
+      "change_pct": null,
+      "volume": 125822
+    },
+    {
+      "date_key": "2026-02-13",
+      "asset_key": "CL=F",
+      "price": 62.88999938964844,
+      "change_pct": null,
+      "volume": 255793
+    },
+    {
+      "date_key": "2026-02-12",
+      "asset_key": "SI=F",
+      "price": 75.5459976196289,
+      "change_pct": null,
+      "volume": 78
+    },
+    {
+      "date_key": "2026-02-12",
+      "asset_key": "CL=F",
+      "price": 62.84000015258789,
+      "change_pct": null,
+      "volume": 369303
+    },
+    {
+      "date_key": "2026-02-12",
+      "asset_key": "GC=F",
+      "price": 4923.7001953125,
+      "change_pct": null,
+      "volume": 484
+    },
+    {
+      "date_key": "2026-02-12",
+      "asset_key": "BZ=F",
+      "price": 67.5199966430664,
+      "change_pct": null,
+      "volume": 48058
+    },
+    {
+      "date_key": "2026-02-12",
+      "asset_key": "NG=F",
+      "price": 3.2170000076293945,
+      "change_pct": null,
+      "volume": 222258
+    },
+    {
+      "date_key": "2026-02-11",
+      "asset_key": "GC=F",
+      "price": 5071.60009765625,
+      "change_pct": null,
+      "volume": 2681
+    },
+    {
+      "date_key": "2026-02-11",
+      "asset_key": "SI=F",
+      "price": 83.75399780273438,
+      "change_pct": null,
+      "volume": 11
+    },
+    {
+      "date_key": "2026-02-11",
+      "asset_key": "CL=F",
+      "price": 64.62999725341797,
+      "change_pct": null,
+      "volume": 340194
+    },
+    {
+      "date_key": "2026-02-11",
+      "asset_key": "BZ=F",
+      "price": 69.4000015258789,
+      "change_pct": null,
+      "volume": 49482
+    },
+    {
+      "date_key": "2026-02-11",
+      "asset_key": "NG=F",
+      "price": 3.1589999198913574,
+      "change_pct": null,
+      "volume": 174848
+    },
+    {
+      "date_key": "2026-02-10",
+      "asset_key": "BZ=F",
+      "price": 68.80000305175781,
+      "change_pct": null,
+      "volume": 45779
+    },
+    {
+      "date_key": "2026-02-10",
+      "asset_key": "GC=F",
+      "price": 5003.7998046875,
+      "change_pct": null,
+      "volume": 281
+    },
+    {
+      "date_key": "2026-02-10",
+      "asset_key": "CL=F",
+      "price": 63.959999084472656,
+      "change_pct": null,
+      "volume": 276292
+    },
+    {
+      "date_key": "2026-02-10",
+      "asset_key": "NG=F",
+      "price": 3.115000009536743,
+      "change_pct": null,
+      "volume": 175754
+    },
+    {
+      "date_key": "2026-02-10",
+      "asset_key": "SI=F",
+      "price": 80.21800231933594,
+      "change_pct": null,
+      "volume": 112
+    },
+    {
+      "date_key": "2026-02-09",
+      "asset_key": "SI=F",
+      "price": 82.06500244140625,
+      "change_pct": null,
+      "volume": 443
+    },
+    {
+      "date_key": "2026-02-09",
+      "asset_key": "CL=F",
+      "price": 64.36000061035156,
+      "change_pct": null,
+      "volume": 298005
+    },
+    {
+      "date_key": "2026-02-09",
+      "asset_key": "GC=F",
+      "price": 5050.89990234375,
+      "change_pct": null,
+      "volume": 170
+    },
+    {
+      "date_key": "2026-02-09",
+      "asset_key": "NG=F",
+      "price": 3.138000011444092,
+      "change_pct": null,
+      "volume": 211763
+    },
+    {
+      "date_key": "2026-02-09",
+      "asset_key": "BZ=F",
+      "price": 69.04000091552734,
+      "change_pct": null,
+      "volume": 51346
+    },
+    {
+      "date_key": "2026-02-06",
+      "asset_key": "BZ=F",
+      "price": 68.05000305175781,
+      "change_pct": null,
+      "volume": 79538
+    },
+    {
+      "date_key": "2026-02-06",
+      "asset_key": "NG=F",
+      "price": 3.421999931335449,
+      "change_pct": null,
+      "volume": 215129
+    },
+    {
+      "date_key": "2026-02-06",
+      "asset_key": "SI=F",
+      "price": 76.73500061035156,
+      "change_pct": null,
+      "volume": 118
+    },
+    {
+      "date_key": "2026-02-06",
+      "asset_key": "CL=F",
+      "price": 63.54999923706055,
+      "change_pct": null,
+      "volume": 448924
+    },
+    {
+      "date_key": "2026-02-06",
+      "asset_key": "GC=F",
+      "price": 4951.2001953125,
+      "change_pct": null,
+      "volume": 1386
+    },
+    {
+      "date_key": "2026-02-05",
+      "asset_key": "CL=F",
+      "price": 63.290000915527344,
+      "change_pct": null,
+      "volume": 389763
+    },
+    {
+      "date_key": "2026-02-05",
+      "asset_key": "BZ=F",
+      "price": 67.55000305175781,
+      "change_pct": null,
+      "volume": 65248
+    },
+    {
+      "date_key": "2026-02-05",
+      "asset_key": "NG=F",
+      "price": 3.509000062942505,
+      "change_pct": null,
+      "volume": 202389
+    },
+    {
+      "date_key": "2026-02-05",
+      "asset_key": "GC=F",
+      "price": 4861.39990234375,
+      "change_pct": null,
+      "volume": 793
+    },
+    {
+      "date_key": "2026-02-05",
+      "asset_key": "SI=F",
+      "price": 76.52899932861328,
+      "change_pct": null,
+      "volume": 422
+    },
+    {
+      "date_key": "2026-02-04",
+      "asset_key": "CL=F",
+      "price": 65.13999938964844,
+      "change_pct": null,
+      "volume": 446588
+    },
+    {
+      "date_key": "2026-02-04",
+      "asset_key": "GC=F",
+      "price": 4920.39990234375,
+      "change_pct": null,
+      "volume": 3886
+    },
+    {
+      "date_key": "2026-02-04",
+      "asset_key": "NG=F",
+      "price": 3.4649999141693115,
+      "change_pct": null,
+      "volume": 194662
+    },
+    {
+      "date_key": "2026-02-04",
+      "asset_key": "SI=F",
+      "price": 84.16500091552734,
+      "change_pct": null,
+      "volume": 158
+    },
+    {
+      "date_key": "2026-02-04",
+      "asset_key": "BZ=F",
+      "price": 69.45999908447266,
+      "change_pct": null,
+      "volume": 98236
+    },
+    {
+      "date_key": "2026-02-03",
+      "asset_key": "NG=F",
+      "price": 3.311000108718872,
+      "change_pct": null,
+      "volume": 238550
+    },
+    {
+      "date_key": "2026-02-03",
+      "asset_key": "BZ=F",
+      "price": 67.33000183105469,
+      "change_pct": null,
+      "volume": 83736
+    },
+    {
+      "date_key": "2026-02-03",
+      "asset_key": "CL=F",
+      "price": 63.209999084472656,
+      "change_pct": null,
+      "volume": 381144
+    },
+    {
+      "date_key": "2026-02-03",
+      "asset_key": "GC=F",
+      "price": 4903.7001953125,
+      "change_pct": null,
+      "volume": 1213
+    },
+    {
+      "date_key": "2026-02-03",
+      "asset_key": "SI=F",
+      "price": 83.04199981689453,
+      "change_pct": null,
+      "volume": 840
+    },
+    {
+      "date_key": "2026-02-02",
+      "asset_key": "GC=F",
+      "price": 4622.5,
+      "change_pct": null,
+      "volume": 3588
+    },
+    {
+      "date_key": "2026-02-02",
+      "asset_key": "SI=F",
+      "price": 76.77799987792969,
+      "change_pct": null,
+      "volume": 388
+    },
+    {
+      "date_key": "2026-02-02",
+      "asset_key": "CL=F",
+      "price": 62.13999938964844,
+      "change_pct": null,
+      "volume": 414083
+    },
+    {
+      "date_key": "2026-02-02",
+      "asset_key": "BZ=F",
+      "price": 66.30000305175781,
+      "change_pct": null,
+      "volume": 80104
+    },
+    {
+      "date_key": "2026-02-02",
+      "asset_key": "NG=F",
+      "price": 3.236999988555908,
+      "change_pct": null,
+      "volume": 554857
+    }
+  ]
+}

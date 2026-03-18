@@ -187,6 +187,22 @@ export const translations = {
     "arch.tab.semanticLayer": "Semantic Layer",
     "arch.tab.dataLineage": "Data Lineage",
     "arch.tab.techStack": "Tech Stack",
+    "arch.tab.dataExplorer": "Data Explorer",
+
+    // ── Data Explorer ──
+    "dataExplorer.title": "Data Explorer",
+    "dataExplorer.tables": "tables",
+    "dataExplorer.dimensions": "Dimensions",
+    "dataExplorer.facts": "Facts",
+    "dataExplorer.rows": "rows",
+    "dataExplorer.showing": "Showing {count} of {total}",
+    "dataExplorer.filter": "Filter all columns...",
+    "dataExplorer.page": "Page",
+    "dataExplorer.of": "of",
+    "dataExplorer.noData": "No data available for this table",
+    "dataExplorer.loading": "Loading table data...",
+    "dataExplorer.selectTable": "Select a table",
+    "dataExplorer.emptyTable": "Empty table",
 
     // ── StarSchemaViz ──
     "starSchema.title": "Star Schema Model",
@@ -677,6 +693,22 @@ export const translations = {
     "arch.tab.semanticLayer": "语义层",
     "arch.tab.dataLineage": "数据血缘",
     "arch.tab.techStack": "技术栈",
+    "arch.tab.dataExplorer": "数据浏览器",
+
+    // ── Data Explorer ──
+    "dataExplorer.title": "数据浏览器",
+    "dataExplorer.tables": "个表",
+    "dataExplorer.dimensions": "维度表",
+    "dataExplorer.facts": "事实表",
+    "dataExplorer.rows": "行",
+    "dataExplorer.showing": "显示 {count} / {total}",
+    "dataExplorer.filter": "搜索所有列...",
+    "dataExplorer.page": "页",
+    "dataExplorer.of": "/",
+    "dataExplorer.noData": "该表暂无数据",
+    "dataExplorer.loading": "加载表数据...",
+    "dataExplorer.selectTable": "选择一个表",
+    "dataExplorer.emptyTable": "空表",
 
     // ── StarSchemaViz ──
     "starSchema.title": "星型模型",

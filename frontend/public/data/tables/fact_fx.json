@@ -1,0 +1,793 @@
+{
+  "table_name": "fact_fx",
+  "row_count": 128,
+  "sample_size": 128,
+  "columns": [
+    {
+      "name": "date_key",
+      "type": "DATE"
+    },
+    {
+      "name": "pair",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "rate",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "change_pct",
+      "type": "DOUBLE"
+    }
+  ],
+  "rows": [
+    {
+      "date_key": "2026-03-17",
+      "pair": "EURUSD=X",
+      "rate": 1.1499539613723755,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-17",
+      "pair": "USDJPY=X",
+      "rate": 159.10499572753906,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-17",
+      "pair": "USDCNY=X",
+      "rate": 6.95550012588501,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-17",
+      "pair": "GBPUSD=X",
+      "rate": 1.3314337730407715,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-16",
+      "pair": "USDCNY=X",
+      "rate": 6.896100044250488,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-16",
+      "pair": "EURUSD=X",
+      "rate": 1.1435105800628662,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-16",
+      "pair": "USDJPY=X",
+      "rate": 159.5679931640625,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-16",
+      "pair": "GBPUSD=X",
+      "rate": 1.3247665166854858,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-13",
+      "pair": "EURUSD=X",
+      "rate": 1.1521666049957275,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-13",
+      "pair": "USDJPY=X",
+      "rate": 159.20599365234375,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-13",
+      "pair": "GBPUSD=X",
+      "rate": 1.335250735282898,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-13",
+      "pair": "USDCNY=X",
+      "rate": 6.868899822235107,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-12",
+      "pair": "GBPUSD=X",
+      "rate": 1.338186502456665,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-12",
+      "pair": "USDCNY=X",
+      "rate": 6.865499973297119,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-12",
+      "pair": "USDJPY=X",
+      "rate": 159.0749969482422,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-12",
+      "pair": "EURUSD=X",
+      "rate": 1.1543211936950684,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-11",
+      "pair": "GBPUSD=X",
+      "rate": 1.3419036865234375,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-11",
+      "pair": "USDJPY=X",
+      "rate": 158.11399841308594,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-11",
+      "pair": "EURUSD=X",
+      "rate": 1.1611299514770508,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-11",
+      "pair": "USDCNY=X",
+      "rate": 6.876500129699707,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-10",
+      "pair": "USDCNY=X",
+      "rate": 6.910999774932861,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-10",
+      "pair": "USDJPY=X",
+      "rate": 157.84800720214844,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-10",
+      "pair": "EURUSD=X",
+      "rate": 1.1617234945297241,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-10",
+      "pair": "GBPUSD=X",
+      "rate": 1.3424980640411377,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-09",
+      "pair": "USDJPY=X",
+      "rate": 158.427001953125,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-09",
+      "pair": "GBPUSD=X",
+      "rate": 1.3301055431365967,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-09",
+      "pair": "EURUSD=X",
+      "rate": 1.152325987815857,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-09",
+      "pair": "USDCNY=X",
+      "rate": 6.896500110626221,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-06",
+      "pair": "EURUSD=X",
+      "rate": 1.1608065366744995,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-06",
+      "pair": "GBPUSD=X",
+      "rate": 1.3357375860214233,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-06",
+      "pair": "USDCNY=X",
+      "rate": 6.896999835968018,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-06",
+      "pair": "USDJPY=X",
+      "rate": 157.53399658203125,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-05",
+      "pair": "USDJPY=X",
+      "rate": 156.98300170898438,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-05",
+      "pair": "USDCNY=X",
+      "rate": 6.896999835968018,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-05",
+      "pair": "EURUSD=X",
+      "rate": 1.1635618209838867,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-05",
+      "pair": "GBPUSD=X",
+      "rate": 1.3369520902633667,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-04",
+      "pair": "USDJPY=X",
+      "rate": 157.7729949951172,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-04",
+      "pair": "EURUSD=X",
+      "rate": 1.161224365234375,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-04",
+      "pair": "GBPUSD=X",
+      "rate": 1.3353630304336548,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-04",
+      "pair": "USDCNY=X",
+      "rate": 6.899700164794922,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-03",
+      "pair": "USDJPY=X",
+      "rate": 157.2570037841797,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-03",
+      "pair": "GBPUSD=X",
+      "rate": 1.3410578966140747,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-03",
+      "pair": "EURUSD=X",
+      "rate": 1.1697274446487427,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-03",
+      "pair": "USDCNY=X",
+      "rate": 6.881999969482422,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-02",
+      "pair": "EURUSD=X",
+      "rate": 1.1759449243545532,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-02",
+      "pair": "USDJPY=X",
+      "rate": 156.63299560546875,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-02",
+      "pair": "USDCNY=X",
+      "rate": 6.857900142669678,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-03-02",
+      "pair": "GBPUSD=X",
+      "rate": 1.3406623601913452,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-27",
+      "pair": "EURUSD=X",
+      "rate": 1.1803030967712402,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-27",
+      "pair": "USDCNY=X",
+      "rate": 6.84089994430542,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-27",
+      "pair": "GBPUSD=X",
+      "rate": 1.3491452932357788,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-27",
+      "pair": "USDJPY=X",
+      "rate": 155.85899353027344,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-26",
+      "pair": "GBPUSD=X",
+      "rate": 1.3558034896850586,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-26",
+      "pair": "EURUSD=X",
+      "rate": 1.181516408920288,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-26",
+      "pair": "USDJPY=X",
+      "rate": 156.1999969482422,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-26",
+      "pair": "USDCNY=X",
+      "rate": 6.869200229644775,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-25",
+      "pair": "EURUSD=X",
+      "rate": 1.1775233745574951,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-25",
+      "pair": "USDCNY=X",
+      "rate": 6.8831000328063965,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-25",
+      "pair": "GBPUSD=X",
+      "rate": 1.3497462272644043,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-25",
+      "pair": "USDJPY=X",
+      "rate": 155.8800048828125,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-24",
+      "pair": "USDJPY=X",
+      "rate": 154.63499450683594,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-24",
+      "pair": "EURUSD=X",
+      "rate": 1.1793843507766724,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-24",
+      "pair": "USDCNY=X",
+      "rate": 6.9079999923706055,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-24",
+      "pair": "GBPUSD=X",
+      "rate": 1.34969162940979,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-23",
+      "pair": "USDJPY=X",
+      "rate": 154.33900451660156,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-23",
+      "pair": "EURUSD=X",
+      "rate": 1.1834739446640015,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-23",
+      "pair": "USDCNY=X",
+      "rate": 6.9079999923706055,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-23",
+      "pair": "GBPUSD=X",
+      "rate": 1.3533265590667725,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-20",
+      "pair": "USDCNY=X",
+      "rate": 6.908100128173828,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-20",
+      "pair": "USDJPY=X",
+      "rate": 155.16000366210938,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-20",
+      "pair": "GBPUSD=X",
+      "rate": 1.3461124897003174,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-20",
+      "pair": "EURUSD=X",
+      "rate": 1.1769136190414429,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-19",
+      "pair": "GBPUSD=X",
+      "rate": 1.349582314491272,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-19",
+      "pair": "USDCNY=X",
+      "rate": 6.9079999923706055,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-19",
+      "pair": "USDJPY=X",
+      "rate": 154.6929931640625,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-19",
+      "pair": "EURUSD=X",
+      "rate": 1.1788839101791382,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-18",
+      "pair": "EURUSD=X",
+      "rate": 1.185185194015503,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-18",
+      "pair": "GBPUSD=X",
+      "rate": 1.3564472198486328,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-18",
+      "pair": "USDJPY=X",
+      "rate": 153.1490020751953,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-18",
+      "pair": "USDCNY=X",
+      "rate": 6.9079999923706055,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-17",
+      "pair": "USDJPY=X",
+      "rate": 153.60899353027344,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-17",
+      "pair": "EURUSD=X",
+      "rate": 1.1849884986877441,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-17",
+      "pair": "GBPUSD=X",
+      "rate": 1.3627691268920898,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-17",
+      "pair": "USDCNY=X",
+      "rate": 6.9079999923706055,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-16",
+      "pair": "USDJPY=X",
+      "rate": 152.7790069580078,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-16",
+      "pair": "EURUSD=X",
+      "rate": 1.1867464780807495,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-16",
+      "pair": "GBPUSD=X",
+      "rate": 1.3647778034210205,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-16",
+      "pair": "USDCNY=X",
+      "rate": 6.9079999923706055,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-13",
+      "pair": "USDCNY=X",
+      "rate": 6.900100231170654,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-13",
+      "pair": "EURUSD=X",
+      "rate": 1.1868449449539185,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-13",
+      "pair": "USDJPY=X",
+      "rate": 152.8209991455078,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-13",
+      "pair": "GBPUSD=X",
+      "rate": 1.3620266914367676,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-12",
+      "pair": "USDJPY=X",
+      "rate": 153.2689971923828,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-12",
+      "pair": "USDCNY=X",
+      "rate": 6.912499904632568,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-12",
+      "pair": "GBPUSD=X",
+      "rate": 1.362399697303772,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-12",
+      "pair": "EURUSD=X",
+      "rate": 1.1876062154769897,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-11",
+      "pair": "USDJPY=X",
+      "rate": 154.48199462890625,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-11",
+      "pair": "GBPUSD=X",
+      "rate": 1.3634566068649292,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-11",
+      "pair": "USDCNY=X",
+      "rate": 6.910600185394287,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-11",
+      "pair": "EURUSD=X",
+      "rate": 1.1889617443084717,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-10",
+      "pair": "EURUSD=X",
+      "rate": 1.1904053688049316,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-10",
+      "pair": "GBPUSD=X",
+      "rate": 1.368344783782959,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-10",
+      "pair": "USDJPY=X",
+      "rate": 156.1320037841797,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-10",
+      "pair": "USDCNY=X",
+      "rate": 6.921999931335449,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-09",
+      "pair": "EURUSD=X",
+      "rate": 1.182578206062317,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-09",
+      "pair": "GBPUSD=X",
+      "rate": 1.3608959913253784,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-09",
+      "pair": "USDJPY=X",
+      "rate": 157.24400329589844,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-09",
+      "pair": "USDCNY=X",
+      "rate": 6.938799858093262,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-06",
+      "pair": "USDJPY=X",
+      "rate": 156.78399658203125,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-06",
+      "pair": "GBPUSD=X",
+      "rate": 1.3520822525024414,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-06",
+      "pair": "USDCNY=X",
+      "rate": 6.93779993057251,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-06",
+      "pair": "EURUSD=X",
+      "rate": 1.177786946296692,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-05",
+      "pair": "USDJPY=X",
+      "rate": 156.91700744628906,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-05",
+      "pair": "GBPUSD=X",
+      "rate": 1.3644611835479736,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-05",
+      "pair": "EURUSD=X",
+      "rate": 1.180163860321045,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-05",
+      "pair": "USDCNY=X",
+      "rate": 6.937699794769287,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-04",
+      "pair": "USDCNY=X",
+      "rate": 6.937699794769287,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-04",
+      "pair": "GBPUSD=X",
+      "rate": 1.3697504997253418,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-04",
+      "pair": "EURUSD=X",
+      "rate": 1.1816140413284302,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-04",
+      "pair": "USDJPY=X",
+      "rate": 155.7989959716797,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-03",
+      "pair": "EURUSD=X",
+      "rate": 1.1798714399337769,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-03",
+      "pair": "USDJPY=X",
+      "rate": 155.4429931640625,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-03",
+      "pair": "USDCNY=X",
+      "rate": 6.946300029754639,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-03",
+      "pair": "GBPUSD=X",
+      "rate": 1.367315649986267,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-02",
+      "pair": "USDCNY=X",
+      "rate": 6.951000213623047,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-02",
+      "pair": "GBPUSD=X",
+      "rate": 1.3679141998291016,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-02",
+      "pair": "EURUSD=X",
+      "rate": 1.1849182844161987,
+      "change_pct": null
+    },
+    {
+      "date_key": "2026-02-02",
+      "pair": "USDJPY=X",
+      "rate": 155.20199584960938,
+      "change_pct": null
+    }
+  ]
+}

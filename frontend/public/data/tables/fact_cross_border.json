@@ -1,0 +1,28 @@
+{
+  "table_name": "fact_cross_border",
+  "row_count": 0,
+  "sample_size": 0,
+  "columns": [
+    {
+      "name": "date_key",
+      "type": "DATE"
+    },
+    {
+      "name": "direction",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "net_buy",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "buy_amount",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "sell_amount",
+      "type": "DOUBLE"
+    }
+  ],
+  "rows": []
+}

@@ -1,0 +1,349 @@
+{
+  "table_name": "dim_asset",
+  "row_count": 25,
+  "sample_size": 25,
+  "columns": [
+    {
+      "name": "asset_key",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "name",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "asset_type",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "exchange",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "market",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "sector",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "industry",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "currency",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "list_date",
+      "type": "DATE"
+    },
+    {
+      "name": "status",
+      "type": "VARCHAR"
+    }
+  ],
+  "rows": [
+    {
+      "asset_key": "000001",
+      "name": "上证指数",
+      "asset_type": "index",
+      "exchange": "SSE",
+      "market": "CN",
+      "sector": null,
+      "industry": null,
+      "currency": "CNY",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "399001",
+      "name": "深证成指",
+      "asset_type": "index",
+      "exchange": "SZSE",
+      "market": "CN",
+      "sector": null,
+      "industry": null,
+      "currency": "CNY",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "399006",
+      "name": "创业板指",
+      "asset_type": "index",
+      "exchange": "SZSE",
+      "market": "CN",
+      "sector": null,
+      "industry": null,
+      "currency": "CNY",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "000300",
+      "name": "沪深300",
+      "asset_type": "index",
+      "exchange": "SSE",
+      "market": "CN",
+      "sector": null,
+      "industry": null,
+      "currency": "CNY",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "000905",
+      "name": "中证500",
+      "asset_type": "index",
+      "exchange": "SSE",
+      "market": "CN",
+      "sector": null,
+      "industry": null,
+      "currency": "CNY",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "000852",
+      "name": "中证1000",
+      "asset_type": "index",
+      "exchange": "SSE",
+      "market": "CN",
+      "sector": null,
+      "industry": null,
+      "currency": "CNY",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "^GSPC",
+      "name": "S&P 500",
+      "asset_type": "index",
+      "exchange": "NYSE",
+      "market": "US",
+      "sector": null,
+      "industry": null,
+      "currency": "USD",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "^DJI",
+      "name": "Dow Jones",
+      "asset_type": "index",
+      "exchange": "NYSE",
+      "market": "US",
+      "sector": null,
+      "industry": null,
+      "currency": "USD",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "^IXIC",
+      "name": "NASDAQ",
+      "asset_type": "index",
+      "exchange": "NYSE",
+      "market": "US",
+      "sector": null,
+      "industry": null,
+      "currency": "USD",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "^FTSE",
+      "name": "FTSE 100",
+      "asset_type": "index",
+      "exchange": "LSE",
+      "market": "EU",
+      "sector": null,
+      "industry": null,
+      "currency": "USD",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "^GDAXI",
+      "name": "DAX",
+      "asset_type": "index",
+      "exchange": "XETRA",
+      "market": "EU",
+      "sector": null,
+      "industry": null,
+      "currency": "USD",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "^N225",
+      "name": "Nikkei 225",
+      "asset_type": "index",
+      "exchange": "TSE",
+      "market": "JP",
+      "sector": null,
+      "industry": null,
+      "currency": "USD",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "^HSI",
+      "name": "Hang Seng",
+      "asset_type": "index",
+      "exchange": "HKEX",
+      "market": "HK",
+      "sector": null,
+      "industry": null,
+      "currency": "USD",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "^KS11",
+      "name": "KOSPI",
+      "asset_type": "index",
+      "exchange": "KRX",
+      "market": "KR",
+      "sector": null,
+      "industry": null,
+      "currency": "USD",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "USDCNY=X",
+      "name": "USD/CNY",
+      "asset_type": "fx",
+      "exchange": "FX",
+      "market": "GLOBAL",
+      "sector": null,
+      "industry": null,
+      "currency": "USD",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "EURUSD=X",
+      "name": "EUR/USD",
+      "asset_type": "fx",
+      "exchange": "FX",
+      "market": "GLOBAL",
+      "sector": null,
+      "industry": null,
+      "currency": "USD",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "USDJPY=X",
+      "name": "USD/JPY",
+      "asset_type": "fx",
+      "exchange": "FX",
+      "market": "GLOBAL",
+      "sector": null,
+      "industry": null,
+      "currency": "USD",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "GBPUSD=X",
+      "name": "GBP/USD",
+      "asset_type": "fx",
+      "exchange": "FX",
+      "market": "GLOBAL",
+      "sector": null,
+      "industry": null,
+      "currency": "USD",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "GC=F",
+      "name": "Gold",
+      "asset_type": "commodity",
+      "exchange": "NYMEX",
+      "market": "GLOBAL",
+      "sector": null,
+      "industry": null,
+      "currency": "USD",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "SI=F",
+      "name": "Silver",
+      "asset_type": "commodity",
+      "exchange": "NYMEX",
+      "market": "GLOBAL",
+      "sector": null,
+      "industry": null,
+      "currency": "USD",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "CL=F",
+      "name": "Crude Oil WTI",
+      "asset_type": "commodity",
+      "exchange": "NYMEX",
+      "market": "GLOBAL",
+      "sector": null,
+      "industry": null,
+      "currency": "USD",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "BZ=F",
+      "name": "Brent Crude",
+      "asset_type": "commodity",
+      "exchange": "NYMEX",
+      "market": "GLOBAL",
+      "sector": null,
+      "industry": null,
+      "currency": "USD",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "NG=F",
+      "name": "Natural Gas",
+      "asset_type": "commodity",
+      "exchange": "NYMEX",
+      "market": "GLOBAL",
+      "sector": null,
+      "industry": null,
+      "currency": "USD",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "BTC-USD",
+      "name": "Bitcoin",
+      "asset_type": "crypto",
+      "exchange": "CRYPTO",
+      "market": "GLOBAL",
+      "sector": null,
+      "industry": null,
+      "currency": "USD",
+      "list_date": null,
+      "status": "active"
+    },
+    {
+      "asset_key": "ETH-USD",
+      "name": "Ethereum",
+      "asset_type": "crypto",
+      "exchange": "CRYPTO",
+      "market": "GLOBAL",
+      "sector": null,
+      "industry": null,
+      "currency": "USD",
+      "list_date": null,
+      "status": "active"
+    }
+  ]
+}

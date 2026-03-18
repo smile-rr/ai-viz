@@ -1,0 +1,36 @@
+{
+  "table_name": "fact_fund_flow",
+  "row_count": 0,
+  "sample_size": 0,
+  "columns": [
+    {
+      "name": "date_key",
+      "type": "DATE"
+    },
+    {
+      "name": "sector",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "net_inflow",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "main_inflow",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "main_outflow",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "retail_inflow",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "retail_outflow",
+      "type": "DOUBLE"
+    }
+  ],
+  "rows": []
+}

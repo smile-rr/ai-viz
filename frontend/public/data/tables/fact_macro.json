@@ -1,0 +1,28 @@
+{
+  "table_name": "fact_macro",
+  "row_count": 0,
+  "sample_size": 0,
+  "columns": [
+    {
+      "name": "date_key",
+      "type": "DATE"
+    },
+    {
+      "name": "indicator_key",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "value",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "yoy_change",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "mom_change",
+      "type": "DOUBLE"
+    }
+  ],
+  "rows": []
+}

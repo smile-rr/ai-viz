@@ -1,0 +1,70 @@
+{
+  "tables": [
+    {
+      "name": "dim_asset",
+      "row_count": 25,
+      "column_count": 10,
+      "type": "dimension"
+    },
+    {
+      "name": "dim_date",
+      "row_count": 2634,
+      "column_count": 10,
+      "type": "dimension"
+    },
+    {
+      "name": "dim_indicator",
+      "row_count": 6,
+      "column_count": 8,
+      "type": "dimension"
+    },
+    {
+      "name": "dim_market",
+      "row_count": 7,
+      "column_count": 7,
+      "type": "dimension"
+    },
+    {
+      "name": "fact_commodity",
+      "row_count": 155,
+      "column_count": 5,
+      "type": "fact"
+    },
+    {
+      "name": "fact_cross_border",
+      "row_count": 0,
+      "column_count": 5,
+      "type": "fact"
+    },
+    {
+      "name": "fact_fund_flow",
+      "row_count": 0,
+      "column_count": 7,
+      "type": "fact"
+    },
+    {
+      "name": "fact_fx",
+      "row_count": 128,
+      "column_count": 4,
+      "type": "fact"
+    },
+    {
+      "name": "fact_index",
+      "row_count": 34976,
+      "column_count": 10,
+      "type": "fact"
+    },
+    {
+      "name": "fact_macro",
+      "row_count": 0,
+      "column_count": 5,
+      "type": "fact"
+    },
+    {
+      "name": "fact_price",
+      "row_count": 90,
+      "column_count": 10,
+      "type": "fact"
+    }
+  ]
+}

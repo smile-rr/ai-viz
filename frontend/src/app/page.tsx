@@ -23,6 +23,7 @@ import StarSchemaViz from "@/components/architecture/StarSchemaViz";
 import SemanticLayerViz from "@/components/architecture/SemanticLayerViz";
 import DataLineageViz from "@/components/architecture/DataLineageViz";
 import TechStackViz from "@/components/architecture/TechStackViz";
+import DataExplorer from "@/components/architecture/DataExplorer";
 import InsightsCard from "@/components/InsightsCard";
 import TabNav from "@/components/TabNav";
 import GuideToggle from "@/components/GuideToggle";
@@ -801,6 +802,7 @@ export default function Home() {
     { id: "semantic-layer", label: t("arch.tab.semanticLayer") },
     { id: "data-lineage", label: t("arch.tab.dataLineage") },
     { id: "tech-stack", label: t("arch.tab.techStack") },
+    { id: "data-explorer", label: t("arch.tab.dataExplorer") },
   ];
 
   const archTabDescriptions: Record<string, { en: string; zh: string }> = {
@@ -819,6 +821,10 @@ export default function Home() {
     "tech-stack": {
       en: "Cloud-native architecture with zero server cost. GitHub Actions for scheduling, Turso for edge database, Cloudflare Pages for CDN delivery. All open-source, all automated.",
       zh: "零服务器成本的云原生架构。GitHub Actions 定时调度，Turso 边缘数据库，Cloudflare Pages CDN 分发。全部开源，全自动化。",
+    },
+    "data-explorer": {
+      en: "Browse actual data stored in the dimensional model. Each table shows sample rows with sorting, filtering, and pagination. Fact tables show the most recent 200 records.",
+      zh: "浏览维度模型中的实际数据。每个表显示样本行，支持排序、过滤和分页。事实表显示最近200条记录。",
     },
   };
 
@@ -848,6 +854,7 @@ export default function Home() {
           {activeArchTab === "semantic-layer" && <SemanticLayerViz />}
           {activeArchTab === "data-lineage" && <DataLineageViz />}
           {activeArchTab === "tech-stack" && <TechStackViz />}
+          {activeArchTab === "data-explorer" && <DataExplorer />}
         </section>
       </>
     );

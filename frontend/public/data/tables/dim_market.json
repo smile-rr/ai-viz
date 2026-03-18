@@ -1,0 +1,100 @@
+{
+  "table_name": "dim_market",
+  "row_count": 7,
+  "sample_size": 7,
+  "columns": [
+    {
+      "name": "market_key",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "market_name",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "region",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "timezone",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "currency",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "open_time",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "close_time",
+      "type": "VARCHAR"
+    }
+  ],
+  "rows": [
+    {
+      "market_key": "CN",
+      "market_name": "China A-Shares",
+      "region": "Asia",
+      "timezone": "Asia/Shanghai",
+      "currency": "CNY",
+      "open_time": "09:30",
+      "close_time": "15:00"
+    },
+    {
+      "market_key": "US",
+      "market_name": "United States",
+      "region": "Americas",
+      "timezone": "America/New_York",
+      "currency": "USD",
+      "open_time": "09:30",
+      "close_time": "16:00"
+    },
+    {
+      "market_key": "HK",
+      "market_name": "Hong Kong",
+      "region": "Asia",
+      "timezone": "Asia/Hong_Kong",
+      "currency": "HKD",
+      "open_time": "09:30",
+      "close_time": "16:00"
+    },
+    {
+      "market_key": "EU",
+      "market_name": "Europe",
+      "region": "Europe",
+      "timezone": "Europe/London",
+      "currency": "EUR",
+      "open_time": "08:00",
+      "close_time": "16:30"
+    },
+    {
+      "market_key": "JP",
+      "market_name": "Japan",
+      "region": "Asia",
+      "timezone": "Asia/Tokyo",
+      "currency": "JPY",
+      "open_time": "09:00",
+      "close_time": "15:00"
+    },
+    {
+      "market_key": "KR",
+      "market_name": "South Korea",
+      "region": "Asia",
+      "timezone": "Asia/Seoul",
+      "currency": "KRW",
+      "open_time": "09:00",
+      "close_time": "15:30"
+    },
+    {
+      "market_key": "GLOBAL",
+      "market_name": "Global/Cross-market",
+      "region": "Global",
+      "timezone": "UTC",
+      "currency": "USD",
+      "open_time": "00:00",
+      "close_time": "23:59"
+    }
+  ]
+}
