@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo, useState, useCallback } from "react";
+import { useI18n } from "@/i18n/context";
 import ReactEChartsCore from "echarts-for-react/lib/core";
 import * as echarts from "echarts/core";
 import { LineChart } from "echarts/charts";
@@ -41,6 +42,7 @@ export default function MarketChart({
   height = 320,
   normalized: forceNormalized,
 }: MarketChartProps) {
+  const { t } = useI18n();
   const [timeRange, setTimeRange] = useState("1M");
 
   // Determine which ranges are available based on the shortest history
@@ -187,8 +189,8 @@ export default function MarketChart({
     const closes = slicedItems.map((i) => i.close).filter(Boolean);
     const maxClose = Math.max(...closes);
     const minClose = Math.min(...closes);
-    return (maxClose / (minClose || 1) > 3) ? "(Normalized %)" : "";
-  }, [slicedItems]);
+    return (maxClose / (minClose || 1) > 3) ? t("chart.normalized") : "";
+  }, [slicedItems, t]);
 
   return (
     <div className="card p-4 animate-fade-in">

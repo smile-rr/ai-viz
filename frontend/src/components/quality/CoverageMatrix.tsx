@@ -1,21 +1,23 @@
 "use client";
 
 import React from "react";
+import { useI18n } from "@/i18n/context";
 
 interface CoverageMatrixProps {
   coverage: Record<string, Record<string, boolean>>;
 }
 
-const assetLabels: Record<string, string> = {
-  equity: "Equity",
-  index: "Index",
-  macro: "Macro",
-  fx: "FX",
-  commodity: "Commodity",
-  crypto: "Crypto",
+const assetLabelKeys: Record<string, string> = {
+  equity: "coverage.asset.equity",
+  index: "coverage.asset.index",
+  macro: "coverage.asset.macro",
+  fx: "coverage.asset.fx",
+  commodity: "coverage.asset.commodity",
+  crypto: "coverage.asset.crypto",
 };
 
 export default function CoverageMatrix({ coverage }: CoverageMatrixProps) {
+  const { t } = useI18n();
   const markets = Object.keys(coverage);
   const assetClasses = markets.length > 0 ? Object.keys(coverage[markets[0]]) : [];
 
@@ -31,7 +33,7 @@ export default function CoverageMatrix({ coverage }: CoverageMatrixProps) {
     <div className="card p-4">
       <div className="flex items-center justify-between mb-3">
         <div className="text-[10px] uppercase tracking-wider text-muted">
-          Coverage Matrix
+          {t("coverage.title")}
         </div>
         <span className="text-[10px] font-mono text-secondary">
           {coveredCells}/{totalCells} ({coveragePct}%)
@@ -41,10 +43,10 @@ export default function CoverageMatrix({ coverage }: CoverageMatrixProps) {
         <table className="w-full text-xs">
           <thead>
             <tr className="border-b border-border">
-              <th className="text-left py-2 px-3">Market</th>
+              <th className="text-left py-2 px-3">{t("coverage.col.market")}</th>
               {assetClasses.map((ac) => (
                 <th key={ac} className="text-center py-2 px-3">
-                  {assetLabels[ac] ?? ac}
+                  {assetLabelKeys[ac] ? t(assetLabelKeys[ac]) : ac}
                 </th>
               ))}
             </tr>

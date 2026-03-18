@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useI18n } from "@/i18n/context";
 
 interface QualityScorecardProps {
   score: number;
@@ -17,6 +18,7 @@ export default function QualityScorecard({
   warnCount,
   failCount,
 }: QualityScorecardProps) {
+  const { t } = useI18n();
   const radius = 70;
   const strokeWidth = 10;
   const circumference = 2 * Math.PI * radius;
@@ -37,7 +39,7 @@ export default function QualityScorecard({
   return (
     <div className="card p-6 flex flex-col items-center gap-4">
       <div className="text-[10px] uppercase tracking-wider text-muted self-start">
-        Overall Quality Score
+        {t("quality.overallScore")}
       </div>
 
       <div className="relative">
@@ -99,7 +101,7 @@ export default function QualityScorecard({
             style={{ background: "var(--accent-green)" }}
           />
           <span className="text-xs text-secondary">
-            {passCount} Passed
+            {passCount} {t("quality.passed")}
           </span>
         </div>
         <div className="flex items-center gap-1.5">
@@ -108,7 +110,7 @@ export default function QualityScorecard({
             style={{ background: "var(--accent-gold)" }}
           />
           <span className="text-xs text-secondary">
-            {warnCount} Warnings
+            {warnCount} {t("quality.warnings")}
           </span>
         </div>
         <div className="flex items-center gap-1.5">
@@ -117,13 +119,13 @@ export default function QualityScorecard({
             style={{ background: "var(--accent-red)" }}
           />
           <span className="text-xs text-secondary">
-            {failCount} Failed
+            {failCount} {t("quality.failed")}
           </span>
         </div>
       </div>
 
       <div className="text-[10px] text-muted font-mono mt-1" style={{ color: colorDim }}>
-        Last checked: {generatedAt}
+        {t("quality.lastChecked")} {generatedAt}
       </div>
     </div>
   );

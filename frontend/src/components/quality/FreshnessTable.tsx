@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useI18n } from "@/i18n/context";
 
 interface FreshnessItem {
   source: string;
@@ -14,47 +15,52 @@ interface FreshnessTableProps {
   items: FreshnessItem[];
 }
 
-const statusConfig: Record<string, { label: string; bg: string; text: string; dot: string }> = {
+const statusStyle: Record<string, { bg: string; text: string; dot: string }> = {
   fresh: {
-    label: "Fresh",
     bg: "var(--accent-green-dim)",
     text: "var(--accent-green)",
     dot: "var(--accent-green)",
   },
   stale: {
-    label: "Stale",
     bg: "rgba(255, 193, 7, 0.12)",
     text: "var(--accent-gold)",
     dot: "var(--accent-gold)",
   },
   error: {
-    label: "Error",
     bg: "var(--accent-red-dim)",
     text: "var(--accent-red)",
     dot: "var(--accent-red)",
   },
 };
 
+const statusLabelKeys: Record<string, string> = {
+  fresh: "freshness.status.fresh",
+  stale: "freshness.status.stale",
+  error: "freshness.status.error",
+};
+
 export default function FreshnessTable({ items }: FreshnessTableProps) {
+  const { t } = useI18n();
   return (
     <div className="card p-4">
       <div className="text-[10px] uppercase tracking-wider text-muted mb-3">
-        Data Freshness
+        {t("freshness.title")}
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-xs">
           <thead>
             <tr className="border-b border-border">
-              <th className="text-left py-2 px-3">Source</th>
-              <th className="text-left py-2 px-3">Market</th>
-              <th className="text-left py-2 px-3">Last Update</th>
-              <th className="text-left py-2 px-3">Status</th>
-              <th className="text-left py-2 px-3">Frequency</th>
+              <th className="text-left py-2 px-3">{t("freshness.col.source")}</th>
+              <th className="text-left py-2 px-3">{t("freshness.col.market")}</th>
+              <th className="text-left py-2 px-3">{t("freshness.col.lastUpdate")}</th>
+              <th className="text-left py-2 px-3">{t("freshness.col.status")}</th>
+              <th className="text-left py-2 px-3">{t("freshness.col.frequency")}</th>
             </tr>
           </thead>
           <tbody>
             {items.map((item, idx) => {
-              const cfg = statusConfig[item.status] ?? statusConfig.error;
+              const cfg = statusStyle[item.status] ?? statusStyle.error;
+              const statusLabel = t(statusLabelKeys[item.status] ?? statusLabelKeys.error);
               return (
                 <tr
                   key={idx}
@@ -78,7 +84,7 @@ export default function FreshnessTable({ items }: FreshnessTableProps) {
                         className="w-1.5 h-1.5 rounded-full"
                         style={{ background: cfg.dot }}
                       />
-                      {cfg.label}
+                      {statusLabel}
                     </span>
                   </td>
                   <td className="py-2.5 px-3 text-muted">{item.frequency}</td>

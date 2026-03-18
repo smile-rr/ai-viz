@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
+import { useI18n } from "@/i18n/context";
 import ReactEChartsCore from "echarts-for-react/lib/core";
 import * as echarts from "echarts/core";
 import { LineChart } from "echarts/charts";
@@ -54,6 +55,7 @@ function MiniSparkline({ data, positive }: { data: number[]; positive: boolean }
 }
 
 export default function DataTable({ title, items, formatPrice }: DataTableProps) {
+  const { t } = useI18n();
   const fmt = (n: number) => {
     if (formatPrice) return formatPrice(n);
     if (n >= 1000) return n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -67,10 +69,10 @@ export default function DataTable({ title, items, formatPrice }: DataTableProps)
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border">
-              <th className="text-left py-2 pr-4">Name</th>
-              <th className="text-right py-2 pr-4">Price</th>
-              <th className="text-right py-2 pr-4">Chg%</th>
-              <th className="text-right py-2">30D Trend</th>
+              <th className="text-left py-2 pr-4">{t("table.col.name")}</th>
+              <th className="text-right py-2 pr-4">{t("table.col.price")}</th>
+              <th className="text-right py-2 pr-4">{t("table.col.chgPct")}</th>
+              <th className="text-right py-2">{t("table.col.trend30d")}</th>
             </tr>
           </thead>
           <tbody>

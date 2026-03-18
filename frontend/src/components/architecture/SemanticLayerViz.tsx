@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useI18n } from "@/i18n/context";
 
 interface Metric {
   name: string;
@@ -39,6 +40,7 @@ const unitLabels: Record<string, string> = {
 };
 
 export default function SemanticLayerViz() {
+  const { t } = useI18n();
   const [data, setData] = useState<SemanticData | null>(null);
   const [activeCategory, setActiveCategory] = useState("price");
 
@@ -71,8 +73,8 @@ export default function SemanticLayerViz() {
           </svg>
         </div>
         <div>
-          <h3 className="text-sm font-semibold">Semantic Layer</h3>
-          <p className="text-[10px] text-muted">{data.metrics.length} metrics across {Object.keys(categoryMeta).length} categories</p>
+          <h3 className="text-sm font-semibold">{t("semantic.title")}</h3>
+          <p className="text-[10px] text-muted">{t("semantic.subtitle").replace("{count}", String(data.metrics.length)).replace("{categories}", String(Object.keys(categoryMeta).length))}</p>
         </div>
       </div>
 
@@ -134,7 +136,7 @@ export default function SemanticLayerViz() {
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffc107" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="9" y1="21" x2="9" y2="9" />
           </svg>
-          <span className="text-xs font-semibold">Analysis Dimensions</span>
+          <span className="text-xs font-semibold">{t("semantic.analysisDimensions")}</span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {data.dimensions.map((dim) => (

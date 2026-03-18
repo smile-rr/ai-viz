@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useI18n } from "@/i18n/context";
 
 interface TableInfo {
   rows: number;
@@ -12,13 +13,14 @@ interface TableStatsProps {
 }
 
 export default function TableStats({ tables }: TableStatsProps) {
+  const { t } = useI18n();
   const entries = Object.entries(tables);
   const maxRows = Math.max(...entries.map(([, t]) => t.rows), 1);
 
   return (
     <div className="card p-4">
       <div className="text-[10px] uppercase tracking-wider text-muted mb-4">
-        Table Statistics
+        {t("tableStats.title")}
       </div>
       <div className="space-y-3">
         {entries.map(([name, info]) => {
@@ -40,8 +42,8 @@ export default function TableStats({ tables }: TableStatsProps) {
                 <div className="flex items-center gap-3">
                   <span className="text-[10px] font-mono text-secondary">
                     {info.rows === 0
-                      ? "No data"
-                      : info.rows.toLocaleString() + " rows"}
+                      ? t("tableStats.noData")
+                      : info.rows.toLocaleString() + " " + t("tableStats.rows")}
                   </span>
                   <span className="text-[10px] font-mono text-muted">
                     {info.last_update ?? "--"}
@@ -76,14 +78,14 @@ export default function TableStats({ tables }: TableStatsProps) {
             className="w-2 h-2 rounded-full"
             style={{ background: "var(--accent-blue)" }}
           />
-          <span className="text-[10px] text-muted">Has data</span>
+          <span className="text-[10px] text-muted">{t("tableStats.hasData")}</span>
         </div>
         <div className="flex items-center gap-1.5">
           <span
             className="w-2 h-2 rounded-full"
             style={{ background: "var(--border-color)" }}
           />
-          <span className="text-[10px] text-muted">Empty / Not configured</span>
+          <span className="text-[10px] text-muted">{t("tableStats.empty")}</span>
         </div>
       </div>
     </div>

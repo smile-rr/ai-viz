@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import type { MarketData, MarketItem } from "@/types/market";
 import { useI18n } from "@/i18n/context";
 import Header from "@/components/Header";
@@ -98,9 +98,6 @@ const MARKET_SECTIONS = new Set([
   "crypto",
 ]);
 
-/** Auto-refresh interval in milliseconds (5 minutes) */
-const REFRESH_INTERVAL_MS = 5 * 60 * 1000;
-
 export default function Home() {
   const { t } = useI18n();
   const [data, setData] = useState<MarketData | null>(null);
@@ -115,9 +112,6 @@ export default function Home() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [activeArchTab, setActiveArchTab] = useState("star-schema");
   const [activeQualityTab, setActiveQualityTab] = useState("scorecard");
-  const [countdown, setCountdown] = useState(REFRESH_INTERVAL_MS / 1000);
-  const countdownRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const refreshTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const isMarketSection = MARKET_SECTIONS.has(activeSection);
 
@@ -141,11 +135,6 @@ export default function Home() {
     }
   }, []);
 
-  // Reset countdown
-  const resetCountdown = useCallback(() => {
-    setCountdown(REFRESH_INTERVAL_MS / 1000);
-  }, []);
-
   // Initial fetch
   useEffect(() => {
     fetchData();
@@ -167,47 +156,10 @@ export default function Home() {
       .catch(() => {/* quality data is optional */});
   }, []);
 
-  // Auto-refresh interval
-  useEffect(() => {
-    refreshTimerRef.current = setInterval(() => {
-      fetchData(true);
-      resetCountdown();
-    }, REFRESH_INTERVAL_MS);
-
-    return () => {
-      if (refreshTimerRef.current) clearInterval(refreshTimerRef.current);
-    };
-  }, [fetchData, resetCountdown]);
-
-  // Countdown ticker (updates every second)
-  useEffect(() => {
-    countdownRef.current = setInterval(() => {
-      setCountdown((prev) => (prev <= 1 ? REFRESH_INTERVAL_MS / 1000 : prev - 1));
-    }, 1000);
-
-    return () => {
-      if (countdownRef.current) clearInterval(countdownRef.current);
-    };
-  }, []);
-
-  // Format countdown as M:SS
-  const formatCountdown = (seconds: number) => {
-    const m = Math.floor(seconds / 60);
-    const s = seconds % 60;
-    return `${m}:${s.toString().padStart(2, "0")}`;
-  };
-
-  // Manual refresh handler — resets auto-refresh timer
+  // Manual refresh handler
   const handleManualRefresh = useCallback(() => {
     fetchData(true);
-    resetCountdown();
-    // Reset the auto-refresh interval
-    if (refreshTimerRef.current) clearInterval(refreshTimerRef.current);
-    refreshTimerRef.current = setInterval(() => {
-      fetchData(true);
-      resetCountdown();
-    }, REFRESH_INTERVAL_MS);
-  }, [fetchData, resetCountdown]);
+  }, [fetchData]);
 
   const handleNavigate = useCallback((section: string) => {
     setActiveSection(section);
@@ -282,20 +234,20 @@ export default function Home() {
         <section>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <MarketChart
-              title="China Markets — 30 Day Trend"
+              title={t("chart.cn.30d")}
               items={cnIndices.slice(0, 4)}
               colors={["#2979ff", "#00c853", "#ff9100", "#e040fb"]}
             />
             {cnIndices.length > 4 && (
               <MarketChart
-                title="China Markets — Extended"
+                title={t("chart.cn.extended")}
                 items={cnIndices.slice(4, 8)}
                 colors={["#00e5ff", "#ffc107", "#69f0ae", "#ff5252"]}
               />
             )}
             {cnIndices.length <= 4 && globalIndices.length > 0 && (
               <MarketChart
-                title="Global Markets — 30 Day Trend"
+                title={t("chart.global.30d")}
                 items={globalIndices.slice(0, 4)}
                 colors={["#00e5ff", "#ffc107", "#ff5252", "#69f0ae"]}
               />
@@ -309,13 +261,13 @@ export default function Home() {
         <section>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <MarketChart
-              title="Global Markets — 30 Day Trend"
+              title={t("chart.global.30d")}
               items={globalIndices.slice(0, 4)}
               colors={["#00e5ff", "#ffc107", "#ff5252", "#69f0ae"]}
             />
             {globalIndices.length > 4 && (
               <MarketChart
-                title="Global Markets — Extended"
+                title={t("chart.global.extended")}
                 items={globalIndices.slice(4, 8)}
                 colors={["#2979ff", "#e040fb", "#ff9100", "#00c853"]}
               />
@@ -329,19 +281,19 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {fx.length > 0 && (
             <DataTable
-              title="Foreign Exchange"
+              title={t("table.fx.title")}
               items={fx}
               formatPrice={(n) => n.toFixed(4)}
             />
           )}
           {commodities.length > 0 && (
             <CommodityBar
-              title="Commodities — Daily Change"
+              title={t("table.commodity.dailyChange")}
               items={commodities}
             />
           )}
           {crypto.length > 0 && (
-            <DataTable title="Cryptocurrency" items={crypto} />
+            <DataTable title={t("table.crypto.title")} items={crypto} />
           )}
         </div>
       </section>
@@ -380,7 +332,7 @@ export default function Home() {
       {cnIndices.length > 0 && (
         <section>
           <MarketChart
-            title="All China Indices — 30 Day Trend"
+            title={t("chart.cn.all")}
             items={cnIndices}
             colors={["#2979ff", "#00c853", "#ff9100", "#e040fb", "#00e5ff", "#ffc107", "#69f0ae", "#ff5252"]}
             height={420}
@@ -393,12 +345,12 @@ export default function Home() {
         <section>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <MarketChart
-              title="Main Board Indices"
+              title={t("chart.cn.mainBoard")}
               items={cnIndices.slice(0, 4)}
               colors={["#2979ff", "#00c853", "#ff9100", "#e040fb"]}
             />
             <MarketChart
-              title="Extended Indices"
+              title={t("chart.cn.extendedIndices")}
               items={cnIndices.slice(4)}
               colors={["#00e5ff", "#ffc107", "#69f0ae", "#ff5252"]}
             />
@@ -409,7 +361,7 @@ export default function Home() {
       {/* Detailed data table */}
       {cnIndices.length > 0 && (
         <section>
-          <DataTable title="China Indices — Detailed View" items={cnIndices} />
+          <DataTable title={t("table.cn.detail")} items={cnIndices} />
         </section>
       )}
 
@@ -447,7 +399,7 @@ export default function Home() {
       {globalIndices.length > 0 && (
         <section>
           <MarketChart
-            title="Global Indices — 30 Day Trend"
+            title={t("chart.global.all")}
             items={globalIndices}
             colors={["#00e5ff", "#ffc107", "#ff5252", "#69f0ae", "#2979ff", "#e040fb", "#ff9100", "#00c853"]}
             height={420}
@@ -460,12 +412,12 @@ export default function Home() {
         <section>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <MarketChart
-              title="Americas & Europe"
+              title={t("chart.global.americas")}
               items={globalIndices.slice(0, 4)}
               colors={["#00e5ff", "#ffc107", "#ff5252", "#69f0ae"]}
             />
             <MarketChart
-              title="Asia-Pacific & Others"
+              title={t("chart.global.asiaPacific")}
               items={globalIndices.slice(4)}
               colors={["#2979ff", "#e040fb", "#ff9100", "#00c853"]}
             />
@@ -476,7 +428,7 @@ export default function Home() {
       {/* Data table */}
       {globalIndices.length > 0 && (
         <section>
-          <DataTable title="Global Indices — Detailed View" items={globalIndices} />
+          <DataTable title={t("table.global.detail")} items={globalIndices} />
         </section>
       )}
 
@@ -515,7 +467,7 @@ export default function Home() {
       {fx.length > 0 && (
         <section>
           <MarketChart
-            title="FX Rate Trends — 30 Day"
+            title={t("chart.fx.trends")}
             items={fx}
             colors={["#2979ff", "#00c853", "#ff9100", "#e040fb", "#00e5ff", "#ffc107", "#69f0ae", "#ff5252"]}
             height={420}
@@ -528,12 +480,12 @@ export default function Home() {
         <section>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <MarketChart
-              title="Major Pairs"
+              title={t("chart.fx.major")}
               items={fx.slice(0, Math.ceil(fx.length / 2))}
               colors={["#2979ff", "#00c853", "#ff9100", "#e040fb"]}
             />
             <MarketChart
-              title="Cross Pairs"
+              title={t("chart.fx.cross")}
               items={fx.slice(Math.ceil(fx.length / 2))}
               colors={["#00e5ff", "#ffc107", "#69f0ae", "#ff5252"]}
             />
@@ -545,7 +497,7 @@ export default function Home() {
       {fx.length > 0 && (
         <section>
           <DataTable
-            title="Foreign Exchange — Detailed View"
+            title={t("table.fx.detail")}
             items={fx}
             formatPrice={(n) => n.toFixed(4)}
           />
@@ -579,7 +531,7 @@ export default function Home() {
       {commodities.length > 0 && (
         <section>
           <MarketChart
-            title="Commodity Price Trends — 30 Day"
+            title={t("chart.commodity.trends")}
             items={commodities}
             colors={["#ffc107", "#ff9100", "#00c853", "#2979ff", "#e040fb", "#00e5ff"]}
             height={420}
@@ -592,11 +544,11 @@ export default function Home() {
         <section>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <CommodityBar
-              title="Commodities — Daily Change"
+              title={t("table.commodity.dailyChange")}
               items={commodities}
             />
             <DataTable
-              title="Commodities — Detailed View"
+              title={t("table.commodity.detail")}
               items={commodities}
             />
           </div>
@@ -637,7 +589,7 @@ export default function Home() {
       {crypto.length > 0 && (
         <section>
           <MarketChart
-            title="Crypto — 30 Day Trend"
+            title={t("chart.crypto.30d")}
             items={crypto}
             colors={["#ff9100", "#2979ff", "#00c853", "#e040fb", "#00e5ff", "#ffc107"]}
             height={420}
@@ -652,7 +604,7 @@ export default function Home() {
             {crypto.slice(0, 2).map((coin, idx) => (
               <MarketChart
                 key={coin.symbol}
-                title={`${coin.name} — 30 Day Price`}
+                title={t("chart.crypto.price30d").replace("{name}", coin.name)}
                 items={[coin]}
                 colors={[["#ff9100", "#2979ff"][idx]]}
                 normalized={false}
@@ -665,7 +617,7 @@ export default function Home() {
       {/* Data table */}
       {crypto.length > 0 && (
         <section>
-          <DataTable title="Cryptocurrency — Detailed View" items={crypto} />
+          <DataTable title={t("table.crypto.detail")} items={crypto} />
         </section>
       )}
 
@@ -694,7 +646,7 @@ export default function Home() {
       {!reportsData && (
         <section>
           <div className="bg-card border border-border rounded-lg p-8 text-center">
-            <p className="text-sm text-muted">No reports data available.</p>
+            <p className="text-sm text-muted">{t("report.noData")}</p>
           </div>
         </section>
       )}
@@ -703,11 +655,11 @@ export default function Home() {
 
   /** Data Quality — monitoring dashboard */
   const qualityTabs = [
-    { id: "scorecard", label: "Scorecard" },
-    { id: "freshness", label: "Freshness" },
-    { id: "coverage", label: "Coverage" },
-    { id: "checks", label: "Checks" },
-    { id: "tables", label: "Tables" },
+    { id: "scorecard", label: t("quality.tab.scorecard") },
+    { id: "freshness", label: t("quality.tab.freshness") },
+    { id: "coverage", label: t("quality.tab.coverage") },
+    { id: "checks", label: t("quality.tab.checks") },
+    { id: "tables", label: t("quality.tab.tables") },
   ];
 
   const renderQuality = () => {
@@ -715,7 +667,7 @@ export default function Home() {
       return (
         <section>
           <div className="bg-card border border-border rounded-lg p-8 text-center">
-            <p className="text-sm text-muted">No quality data available.</p>
+            <p className="text-sm text-muted">{t("quality.noData")}</p>
           </div>
         </section>
       );
@@ -743,11 +695,11 @@ export default function Home() {
             <div className="flex items-center justify-center gap-0 flex-wrap">
               {(
                 [
-                  { key: "collect", label: "Collect" },
-                  { key: "validate", label: "Validate" },
-                  { key: "store", label: "Store" },
-                  { key: "serve", label: "Serve" },
-                  { key: "monitor", label: "Monitor" },
+                  { key: "collect", label: t("quality.workflow.collect") },
+                  { key: "validate", label: t("quality.workflow.validate") },
+                  { key: "store", label: t("quality.workflow.store") },
+                  { key: "serve", label: t("quality.workflow.serve") },
+                  { key: "monitor", label: t("quality.workflow.monitor") },
                 ] as const
               ).map((stage, i) => (
                 <React.Fragment key={stage.key}>
@@ -820,10 +772,10 @@ export default function Home() {
 
   /** Architecture — data modeling showcase */
   const archTabs = [
-    { id: "star-schema", label: "Star Schema" },
-    { id: "semantic-layer", label: "Semantic Layer" },
-    { id: "data-lineage", label: "Data Lineage" },
-    { id: "tech-stack", label: "Tech Stack" },
+    { id: "star-schema", label: t("arch.tab.starSchema") },
+    { id: "semantic-layer", label: t("arch.tab.semanticLayer") },
+    { id: "data-lineage", label: t("arch.tab.dataLineage") },
+    { id: "tech-stack", label: t("arch.tab.techStack") },
   ];
 
   const renderArchitecture = () => (
@@ -875,8 +827,6 @@ export default function Home() {
         sidebarOpen={sidebarOpen}
         onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
         isRefreshing={isRefreshing}
-        refreshCountdown={isMarketSection ? formatCountdown(countdown) : undefined}
-        showRefresh={isMarketSection}
       />
       <Sidebar
         open={sidebarOpen}
@@ -902,11 +852,6 @@ export default function Home() {
               {data?.generated_at && (
                 <span className="text-[10px] text-muted font-mono hidden md:inline">
                   {t("header.updated")}: {data.generated_at}
-                </span>
-              )}
-              {isMarketSection && (
-                <span className="text-[10px] text-muted font-mono hidden md:inline">
-                  {t("header.nextRefresh")} {formatCountdown(countdown)}
                 </span>
               )}
               {isMarketSection && (

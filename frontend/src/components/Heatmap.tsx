@@ -2,6 +2,7 @@
 
 import React from "react";
 import type { MarketItem } from "@/types/market";
+import { useI18n } from "@/i18n/context";
 
 interface HeatmapProps {
   items: MarketItem[];
@@ -35,11 +36,12 @@ function getCellSize(item: MarketItem, allItems: MarketItem[]): number {
 }
 
 export default function Heatmap({ items }: HeatmapProps) {
+  const { t } = useI18n();
   const sorted = [...items].sort((a, b) => b.change_pct - a.change_pct);
 
   return (
     <div className="card p-4 animate-fade-in">
-      <div className="section-title">Market Heatmap — All Assets by Daily Change</div>
+      <div className="section-title">{t("heatmap.title")}</div>
 
       <div className="flex flex-wrap gap-1.5">
         {sorted.map((item) => {

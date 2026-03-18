@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { useI18n } from "@/i18n/context";
 
 interface HeaderProps {
@@ -9,8 +9,34 @@ interface HeaderProps {
   sidebarOpen: boolean;
   onToggleSidebar: () => void;
   isRefreshing?: boolean;
-  refreshCountdown?: string;
-  showRefresh?: boolean;
+}
+
+/** Check if a market is currently in trading hours */
+function getMarketStatus(): { label: string; labelZh: string; isOpen: boolean } {
+  const now = new Date();
+  const utcH = now.getUTCHours();
+  const utcM = now.getUTCMinutes();
+  const utcMinutes = utcH * 60 + utcM;
+  const day = now.getUTCDay(); // 0=Sun, 6=Sat
+
+  if (day === 0 || day === 6) {
+    return { label: "Markets Closed", labelZh: "休市", isOpen: false };
+  }
+
+  // A-share: 01:30–07:00 UTC (09:30–15:00 CST)
+  if (utcMinutes >= 90 && utcMinutes <= 420) {
+    return { label: "CN Trading", labelZh: "A股交易中", isOpen: true };
+  }
+  // US: 14:30–21:00 UTC (09:30–16:00 ET)
+  if (utcMinutes >= 870 && utcMinutes <= 1260) {
+    return { label: "US Trading", labelZh: "美股交易中", isOpen: true };
+  }
+  // EU: 08:00–16:30 UTC
+  if (utcMinutes >= 480 && utcMinutes <= 990) {
+    return { label: "EU Trading", labelZh: "欧洲交易中", isOpen: true };
+  }
+
+  return { label: "After Hours", labelZh: "盘后", isOpen: false };
 }
 
 export default function Header({
@@ -19,25 +45,19 @@ export default function Header({
   sidebarOpen,
   onToggleSidebar,
   isRefreshing,
-  refreshCountdown,
-  showRefresh = true,
 }: HeaderProps) {
   const { locale, setLocale, t } = useI18n();
 
-  // Show full timestamp if available, otherwise fall back to date-only formatting
   const displayTimestamp = generatedAt
     ? generatedAt
     : date
       ? new Date(date + "T00:00:00").toLocaleDateString(
           locale === "zh" ? "zh-CN" : "en-US",
-          {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          }
+          { weekday: "long", year: "numeric", month: "long", day: "numeric" }
         )
       : "";
+
+  const marketStatus = useMemo(() => getMarketStatus(), []);
 
   const toggleLocale = () => {
     setLocale(locale === "en" ? "zh" : "en");
@@ -51,16 +71,7 @@ export default function Header({
           className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-card transition-colors"
           aria-label="Toggle sidebar"
         >
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             {sidebarOpen ? (
               <>
                 <line x1="3" y1="6" x2="21" y2="6" />
@@ -78,7 +89,9 @@ export default function Header({
         </button>
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1">
-            <div className="w-2 h-2 rounded-full bg-green animate-pulse" />
+            <div
+              className={`w-2 h-2 rounded-full ${marketStatus.isOpen ? "bg-green animate-pulse" : "bg-muted"}`}
+            />
             <span className="text-base font-bold tracking-wider text-foreground">
               AI-VIZ
             </span>
@@ -87,7 +100,8 @@ export default function Header({
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
+        {/* Data timestamp */}
         <div className="hidden sm:flex items-center gap-2 text-xs text-secondary">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="10" />
@@ -95,32 +109,31 @@ export default function Header({
           </svg>
           <span className="font-mono">{displayTimestamp}</span>
         </div>
-        <div className="flex items-center gap-2">
+
+        {/* Market status badge */}
+        <div
+          className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium ${
+            marketStatus.isOpen
+              ? "bg-green-dim text-green"
+              : "bg-card text-muted border border-border"
+          } ${isRefreshing ? "animate-pulse" : ""}`}
+        >
           <div
-            className={`flex items-center gap-1.5 px-2 py-1 rounded-md bg-green-dim text-green text-xs font-medium ${
-              isRefreshing ? "animate-pulse" : ""
-            }`}
-          >
-            <div className={`w-1.5 h-1.5 rounded-full bg-green ${isRefreshing ? "animate-ping" : ""}`} />
-            {t("header.live")}
-          </div>
-          {/* Language toggle */}
-          <button
-            onClick={toggleLocale}
-            className="flex items-center justify-center px-2 py-1 rounded-md bg-card border border-border text-xs font-medium text-secondary hover:text-foreground hover:border-border-hover transition-colors"
-            title={locale === "en" ? "Switch to Chinese" : "Switch to English"}
-          >
-            {locale === "en" ? "\u4e2d" : "EN"}
-          </button>
-          {showRefresh && (
-            <span className="hidden md:inline text-[10px] text-muted font-mono">
-              {t("header.autoRefresh")}
-              {refreshCountdown && (
-                <span className="ml-1 text-secondary">({refreshCountdown})</span>
-              )}
-            </span>
-          )}
+            className={`w-1.5 h-1.5 rounded-full ${
+              marketStatus.isOpen ? "bg-green" : "bg-muted"
+            } ${isRefreshing ? "animate-ping" : ""}`}
+          />
+          {locale === "zh" ? marketStatus.labelZh : marketStatus.label}
         </div>
+
+        {/* Language toggle */}
+        <button
+          onClick={toggleLocale}
+          className="flex items-center justify-center px-2 py-1 rounded-md bg-card border border-border text-xs font-medium text-secondary hover:text-foreground hover:border-border-hover transition-colors"
+          title={locale === "en" ? "Switch to Chinese" : "Switch to English"}
+        >
+          {locale === "en" ? "\u4e2d" : "EN"}
+        </button>
       </div>
     </header>
   );

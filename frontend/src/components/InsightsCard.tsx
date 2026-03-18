@@ -2,6 +2,7 @@
 
 import React, { useMemo } from "react";
 import type { MarketItem } from "@/types/market";
+import { useI18n } from "@/i18n/context";
 
 interface InsightsCardProps {
   cnIndices: MarketItem[];
@@ -13,7 +14,8 @@ interface InsightsCardProps {
 
 interface Insight {
   type: "bearish" | "bullish" | "neutral";
-  text: string;
+  textKey: string;
+  params: Record<string, string>;
   asset: string;
   symbol: string;
 }
@@ -42,7 +44,8 @@ function generateInsights(
     if (streak >= 3) {
       insights.push({
         type: lastDir === "up" ? "bullish" : "bearish",
-        text: `${item.name} ${lastDir === "up" ? "advanced" : "declined"} for ${streak} consecutive sessions`,
+        textKey: lastDir === "up" ? "insight.consecutive.up" : "insight.consecutive.down",
+        params: { name: item.name, streak: String(streak) },
         asset: item.name,
         symbol: item.symbol,
       });
@@ -55,11 +58,14 @@ function generateInsights(
       (a, b) => Math.abs(b.change_pct) - Math.abs(a.change_pct)
     );
     const biggest = sorted[0];
-    const label =
-      biggest.change_pct >= 0 ? "biggest gainer" : "biggest loser";
+    const isGainer = biggest.change_pct >= 0;
     insights.push({
-      type: biggest.change_pct >= 0 ? "bullish" : "bearish",
-      text: `${biggest.name} was the ${label} at ${biggest.change_pct >= 0 ? "+" : ""}${biggest.change_pct.toFixed(2)}%`,
+      type: isGainer ? "bullish" : "bearish",
+      textKey: isGainer ? "insight.biggestGainer" : "insight.biggestLoser",
+      params: {
+        name: biggest.name,
+        pct: biggest.change_pct.toFixed(2),
+      },
       asset: biggest.name,
       symbol: biggest.symbol,
     });
@@ -79,14 +85,16 @@ function generateInsights(
     if (item.close > histMax) {
       insights.push({
         type: "bullish",
-        text: `${item.name} broke above its 30-day high at ${item.close.toLocaleString()}`,
+        textKey: "insight.brokeHigh",
+        params: { name: item.name, price: item.close.toLocaleString() },
         asset: item.name,
         symbol: item.symbol,
       });
     } else if (closeToHigh) {
       insights.push({
         type: "bullish",
-        text: `${item.name} is trading near its 30-day high`,
+        textKey: "insight.nearHigh",
+        params: { name: item.name },
         asset: item.name,
         symbol: item.symbol,
       });
@@ -95,14 +103,16 @@ function generateInsights(
     if (item.close < histMin) {
       insights.push({
         type: "bearish",
-        text: `${item.name} fell below its 30-day low at ${item.close.toLocaleString()}`,
+        textKey: "insight.brokeLow",
+        params: { name: item.name, price: item.close.toLocaleString() },
         asset: item.name,
         symbol: item.symbol,
       });
     } else if (closeToLow) {
       insights.push({
         type: "bearish",
-        text: `${item.name} is trading near its 30-day low`,
+        textKey: "insight.nearLow",
+        params: { name: item.name },
         asset: item.name,
         symbol: item.symbol,
       });
@@ -125,14 +135,16 @@ function generateInsights(
     if (cnAvg < -0.3 && usAvg > 0.3) {
       insights.push({
         type: "neutral",
-        text: `Market divergence: China markets down (avg ${cnAvg.toFixed(2)}%) while US markets up (avg +${usAvg.toFixed(2)}%)`,
+        textKey: "insight.divergence.cnDown",
+        params: { cnAvg: cnAvg.toFixed(2), usAvg: usAvg.toFixed(2) },
         asset: "CN vs US",
         symbol: "DIVERGENCE",
       });
     } else if (cnAvg > 0.3 && usAvg < -0.3) {
       insights.push({
         type: "neutral",
-        text: `Market divergence: China markets up (avg +${cnAvg.toFixed(2)}%) while US markets down (avg ${usAvg.toFixed(2)}%)`,
+        textKey: "insight.divergence.cnUp",
+        params: { cnAvg: cnAvg.toFixed(2), usAvg: usAvg.toFixed(2) },
         asset: "CN vs US",
         symbol: "DIVERGENCE",
       });
@@ -155,7 +167,12 @@ function generateInsights(
     if (avgChange > 0 && Math.abs(item.change_pct) > 2 * avgChange) {
       insights.push({
         type: item.change_pct >= 0 ? "bullish" : "bearish",
-        text: `${item.name} volatility spike: ${Math.abs(item.change_pct).toFixed(2)}% move vs ${avgChange.toFixed(2)}% avg`,
+        textKey: "insight.volatility",
+        params: {
+          name: item.name,
+          changePct: Math.abs(item.change_pct).toFixed(2),
+          avgChange: avgChange.toFixed(2),
+        },
         asset: item.name,
         symbol: item.symbol,
       });
@@ -171,6 +188,14 @@ const DOT_COLORS: Record<Insight["type"], string> = {
   neutral: "#2979ff",
 };
 
+function interpolate(template: string, params: Record<string, string>): string {
+  let result = template;
+  for (const [key, value] of Object.entries(params)) {
+    result = result.replace(`{${key}}`, value);
+  }
+  return result;
+}
+
 export default function InsightsCard({
   cnIndices,
   globalIndices,
@@ -178,6 +203,8 @@ export default function InsightsCard({
   commodities,
   crypto,
 }: InsightsCardProps) {
+  const { t } = useI18n();
+
   const insights = useMemo(
     () => generateInsights(cnIndices, globalIndices, fx, commodities, crypto),
     [cnIndices, globalIndices, fx, commodities, crypto]
@@ -188,7 +215,7 @@ export default function InsightsCard({
     const seen = new Set<string>();
     const result: Insight[] = [];
     for (const ins of insights) {
-      const key = `${ins.symbol}-${ins.type}-${ins.text.substring(0, 30)}`;
+      const key = `${ins.symbol}-${ins.type}-${ins.textKey}`;
       if (seen.has(key)) continue;
       seen.add(key);
       result.push(ins);
@@ -216,7 +243,7 @@ export default function InsightsCard({
           <line x1="12" y1="16" x2="12" y2="12" />
           <line x1="12" y1="8" x2="12.01" y2="8" />
         </svg>
-        Market Insights
+        {t("insights.title")}
       </h3>
       <div className="space-y-2">
         {displayed.map((ins, i) => (
@@ -230,7 +257,7 @@ export default function InsightsCard({
             />
             <div className="min-w-0">
               <p className="text-xs text-secondary leading-relaxed">
-                {ins.text}
+                {interpolate(t(ins.textKey), ins.params)}
               </p>
               <span className="text-[10px] text-muted font-mono">
                 {ins.symbol}

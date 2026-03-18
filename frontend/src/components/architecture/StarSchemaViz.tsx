@@ -1,33 +1,35 @@
 "use client";
 
 import React, { useState } from "react";
+import { useI18n } from "@/i18n/context";
 
 interface TableDef {
   name: string;
   type: "fact" | "dimension";
   columns: string[];
   rowCount: string;
-  description: string;
+  descKey: string;
 }
 
 const factTables: TableDef[] = [
-  { name: "fact_price", type: "fact", columns: ["date_key", "asset_key", "open", "high", "low", "close", "volume", "change_pct"], rowCount: "~2.5M", description: "Daily OHLCV price data" },
-  { name: "fact_index", type: "fact", columns: ["date_key", "index_key", "pe_ttm", "pb", "dividend_yield", "turnover"], rowCount: "~180K", description: "Index valuation metrics" },
-  { name: "fact_macro", type: "fact", columns: ["date_key", "indicator_key", "value", "yoy_change", "mom_change"], rowCount: "~50K", description: "Macroeconomic indicators" },
-  { name: "fact_fx", type: "fact", columns: ["date_key", "pair_key", "rate", "bid", "ask", "change_pct"], rowCount: "~300K", description: "FX pair exchange rates" },
-  { name: "fact_commodity", type: "fact", columns: ["date_key", "commodity_key", "price", "volume", "open_interest"], rowCount: "~200K", description: "Commodity futures data" },
-  { name: "fact_fund_flow", type: "fact", columns: ["date_key", "sector_key", "main_inflow", "main_outflow", "retail_net"], rowCount: "~120K", description: "Sector fund flow data" },
-  { name: "fact_cross_border", type: "fact", columns: ["date_key", "channel_key", "buy_amount", "sell_amount", "net_amount"], rowCount: "~15K", description: "Northbound/Southbound flows" },
+  { name: "fact_price", type: "fact", columns: ["date_key", "asset_key", "open", "high", "low", "close", "volume", "change_pct"], rowCount: "~2.5M", descKey: "starSchema.desc.fact_price" },
+  { name: "fact_index", type: "fact", columns: ["date_key", "index_key", "pe_ttm", "pb", "dividend_yield", "turnover"], rowCount: "~180K", descKey: "starSchema.desc.fact_index" },
+  { name: "fact_macro", type: "fact", columns: ["date_key", "indicator_key", "value", "yoy_change", "mom_change"], rowCount: "~50K", descKey: "starSchema.desc.fact_macro" },
+  { name: "fact_fx", type: "fact", columns: ["date_key", "pair_key", "rate", "bid", "ask", "change_pct"], rowCount: "~300K", descKey: "starSchema.desc.fact_fx" },
+  { name: "fact_commodity", type: "fact", columns: ["date_key", "commodity_key", "price", "volume", "open_interest"], rowCount: "~200K", descKey: "starSchema.desc.fact_commodity" },
+  { name: "fact_fund_flow", type: "fact", columns: ["date_key", "sector_key", "main_inflow", "main_outflow", "retail_net"], rowCount: "~120K", descKey: "starSchema.desc.fact_fund_flow" },
+  { name: "fact_cross_border", type: "fact", columns: ["date_key", "channel_key", "buy_amount", "sell_amount", "net_amount"], rowCount: "~15K", descKey: "starSchema.desc.fact_cross_border" },
 ];
 
 const dimTables: TableDef[] = [
-  { name: "dim_date", type: "dimension", columns: ["date_key", "year", "quarter", "month", "week", "is_trading_day", "lunar_date"], rowCount: "~15K", description: "Date dimension with trading calendar" },
-  { name: "dim_asset", type: "dimension", columns: ["asset_key", "symbol", "name", "asset_class", "exchange", "sector", "region"], rowCount: "~8K", description: "Asset master data" },
-  { name: "dim_market", type: "dimension", columns: ["market_key", "name", "country", "timezone", "currency", "open_time", "close_time"], rowCount: "~30", description: "Market/Exchange reference" },
-  { name: "dim_indicator", type: "dimension", columns: ["indicator_key", "name", "category", "frequency", "unit", "source"], rowCount: "~200", description: "Macro indicator definitions" },
+  { name: "dim_date", type: "dimension", columns: ["date_key", "year", "quarter", "month", "week", "is_trading_day", "lunar_date"], rowCount: "~15K", descKey: "starSchema.desc.dim_date" },
+  { name: "dim_asset", type: "dimension", columns: ["asset_key", "symbol", "name", "asset_class", "exchange", "sector", "region"], rowCount: "~8K", descKey: "starSchema.desc.dim_asset" },
+  { name: "dim_market", type: "dimension", columns: ["market_key", "name", "country", "timezone", "currency", "open_time", "close_time"], rowCount: "~30", descKey: "starSchema.desc.dim_market" },
+  { name: "dim_indicator", type: "dimension", columns: ["indicator_key", "name", "category", "frequency", "unit", "source"], rowCount: "~200", descKey: "starSchema.desc.dim_indicator" },
 ];
 
 export default function StarSchemaViz() {
+  const { t } = useI18n();
   const [selectedTable, setSelectedTable] = useState<TableDef | null>(null);
 
   const TableCard = ({ table, style }: { table: TableDef; style?: React.CSSProperties }) => {
@@ -49,9 +51,9 @@ export default function StarSchemaViz() {
           {isFact ? "FACT" : "DIM"}
         </div>
         <div className="text-sm font-semibold text-foreground mb-1">{table.name}</div>
-        <div className="text-[10px] text-muted mb-2">{table.description}</div>
+        <div className="text-[10px] text-muted mb-2">{t(table.descKey)}</div>
         <div className="flex items-center justify-between">
-          <span className="text-[10px] font-mono text-secondary">{table.columns.length} cols</span>
+          <span className="text-[10px] font-mono text-secondary">{table.columns.length} {t("starSchema.cols")}</span>
           <span className={`text-[10px] font-mono ${isFact ? "text-[#5a9aff]" : "text-[#4ae08a]"}`}>{table.rowCount} rows</span>
         </div>
       </button>
@@ -90,17 +92,17 @@ export default function StarSchemaViz() {
           </svg>
         </div>
         <div>
-          <h3 className="text-sm font-semibold">Star Schema Model</h3>
-          <p className="text-[10px] text-muted">Click any table to explore relationships</p>
+          <h3 className="text-sm font-semibold">{t("starSchema.title")}</h3>
+          <p className="text-[10px] text-muted">{t("starSchema.subtitle")}</p>
         </div>
         <div className="ml-auto flex items-center gap-4">
           <div className="flex items-center gap-1.5">
             <div className="w-2.5 h-2.5 rounded-sm bg-[#2979ff]" />
-            <span className="text-[10px] text-secondary">Fact Tables</span>
+            <span className="text-[10px] text-secondary">{t("starSchema.factTables")}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="w-2.5 h-2.5 rounded-sm bg-[#00c853]" />
-            <span className="text-[10px] text-secondary">Dimensions</span>
+            <span className="text-[10px] text-secondary">{t("starSchema.dimensions")}</span>
           </div>
         </div>
       </div>
@@ -121,7 +123,7 @@ export default function StarSchemaViz() {
           <div className="flex items-center gap-2">
             <div className="h-px w-16 bg-gradient-to-r from-transparent via-[#00c853]/40 to-[#2979ff]/40" />
             <div className="text-[9px] text-muted uppercase tracking-widest px-2 py-1 rounded border border-border bg-[#0a0a0f]">
-              foreign key joins
+              {t("starSchema.fkJoins")}
             </div>
             <div className="h-px w-16 bg-gradient-to-r from-[#2979ff]/40 via-[#00c853]/40 to-transparent" />
           </div>
@@ -150,7 +152,7 @@ export default function StarSchemaViz() {
           <div className="flex items-center gap-2 mb-3">
             <div className={`w-2 h-2 rounded-full ${selectedTable.type === "fact" ? "bg-[#2979ff]" : "bg-[#00c853]"}`} />
             <span className="text-sm font-semibold font-mono">{selectedTable.name}</span>
-            <span className="text-[10px] text-muted ml-2">{selectedTable.description}</span>
+            <span className="text-[10px] text-muted ml-2">{t(selectedTable.descKey)}</span>
           </div>
           <div className="flex flex-wrap gap-1.5">
             {selectedTable.columns.map((col, i) => (
@@ -168,7 +170,7 @@ export default function StarSchemaViz() {
           </div>
           {(highlightedDims.length > 0 || highlightedFacts.length > 0) && (
             <div className="mt-3 pt-3 border-t border-border">
-              <span className="text-[10px] text-muted uppercase tracking-wider">Related tables: </span>
+              <span className="text-[10px] text-muted uppercase tracking-wider">{t("starSchema.relatedTables")} </span>
               {[...highlightedDims, ...highlightedFacts].map(name => (
                 <span key={name} className="text-[11px] font-mono text-secondary ml-2">{name}</span>
               ))}

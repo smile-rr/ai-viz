@@ -1,18 +1,19 @@
 "use client";
 
 import React from "react";
+import { useI18n } from "@/i18n/context";
 
 interface LineageNode {
   name: string;
-  description: string;
+  descKey: string;
   detail: string;
   color: string;
 }
 
 interface LineageLayer {
   id: string;
-  label: string;
-  sublabel: string;
+  labelKey: string;
+  sublabelKey: string;
   nodes: LineageNode[];
   bgColor: string;
   borderColor: string;
@@ -22,72 +23,73 @@ interface LineageLayer {
 const layers: LineageLayer[] = [
   {
     id: "source",
-    label: "Data Sources",
-    sublabel: "Collection",
+    labelKey: "lineage.layer.source",
+    sublabelKey: "lineage.layer.source.sub",
     bgColor: "rgba(255,193,7,0.06)",
     borderColor: "rgba(255,193,7,0.2)",
     accentColor: "#ffc107",
     nodes: [
-      { name: "AKShare", description: "CN Markets", detail: "Daily 18:00 CST", color: "#ffc107" },
-      { name: "yfinance", description: "Global Markets", detail: "Daily 06:00 UTC", color: "#ff9100" },
-      { name: "Tushare", description: "CN Fundamentals", detail: "Daily 20:00 CST", color: "#ffab40" },
+      { name: "AKShare", descKey: "lineage.node.akshare", detail: "Daily 18:00 CST", color: "#ffc107" },
+      { name: "yfinance", descKey: "lineage.node.yfinance", detail: "Daily 06:00 UTC", color: "#ff9100" },
+      { name: "Tushare", descKey: "lineage.node.tushare", detail: "Daily 20:00 CST", color: "#ffab40" },
     ],
   },
   {
     id: "ods",
-    label: "ODS",
-    sublabel: "Raw Landing",
+    labelKey: "lineage.layer.ods",
+    sublabelKey: "lineage.layer.ods.sub",
     bgColor: "rgba(224,64,251,0.06)",
     borderColor: "rgba(224,64,251,0.2)",
     accentColor: "#e040fb",
     nodes: [
-      { name: "ods_cn_index", description: "Raw CN indices", detail: "JSON / CSV", color: "#e040fb" },
-      { name: "ods_global_quote", description: "Raw global quotes", detail: "JSON", color: "#ce93d8" },
-      { name: "ods_macro_raw", description: "Raw macro data", detail: "CSV / API", color: "#ba68c8" },
+      { name: "ods_cn_index", descKey: "lineage.node.ods_cn_index", detail: "JSON / CSV", color: "#e040fb" },
+      { name: "ods_global_quote", descKey: "lineage.node.ods_global_quote", detail: "JSON", color: "#ce93d8" },
+      { name: "ods_macro_raw", descKey: "lineage.node.ods_macro_raw", detail: "CSV / API", color: "#ba68c8" },
     ],
   },
   {
     id: "dwd",
-    label: "DWD",
-    sublabel: "Cleaned & Typed",
+    labelKey: "lineage.layer.dwd",
+    sublabelKey: "lineage.layer.dwd.sub",
     bgColor: "rgba(41,121,255,0.06)",
     borderColor: "rgba(41,121,255,0.2)",
     accentColor: "#2979ff",
     nodes: [
-      { name: "dwd_price", description: "Standardized OHLCV", detail: "Polars transform", color: "#2979ff" },
-      { name: "dwd_index", description: "Typed index data", detail: "DuckDB validation", color: "#448aff" },
-      { name: "dwd_macro", description: "Cleaned macro series", detail: "Dedup + fill", color: "#5a9aff" },
+      { name: "dwd_price", descKey: "lineage.node.dwd_price", detail: "Polars transform", color: "#2979ff" },
+      { name: "dwd_index", descKey: "lineage.node.dwd_index", detail: "DuckDB validation", color: "#448aff" },
+      { name: "dwd_macro", descKey: "lineage.node.dwd_macro", detail: "Dedup + fill", color: "#5a9aff" },
     ],
   },
   {
     id: "dws",
-    label: "DWS",
-    sublabel: "Aggregated Facts",
+    labelKey: "lineage.layer.dws",
+    sublabelKey: "lineage.layer.dws.sub",
     bgColor: "rgba(0,200,83,0.06)",
     borderColor: "rgba(0,200,83,0.2)",
     accentColor: "#00c853",
     nodes: [
-      { name: "fact_price", description: "Price fact table", detail: "~2.5M rows", color: "#00c853" },
-      { name: "fact_index", description: "Index valuations", detail: "~180K rows", color: "#4caf50" },
-      { name: "fact_macro", description: "Macro indicators", detail: "~50K rows", color: "#69f0ae" },
-      { name: "fact_fx", description: "FX rates", detail: "~300K rows", color: "#00e676" },
+      { name: "fact_price", descKey: "lineage.node.fact_price", detail: "~2.5M rows", color: "#00c853" },
+      { name: "fact_index", descKey: "lineage.node.fact_index", detail: "~180K rows", color: "#4caf50" },
+      { name: "fact_macro", descKey: "lineage.node.fact_macro", detail: "~50K rows", color: "#69f0ae" },
+      { name: "fact_fx", descKey: "lineage.node.fact_fx", detail: "~300K rows", color: "#00e676" },
     ],
   },
   {
     id: "serving",
-    label: "Serving",
-    sublabel: "Dashboard JSON",
+    labelKey: "lineage.layer.serving",
+    sublabelKey: "lineage.layer.serving.sub",
     bgColor: "rgba(0,229,255,0.06)",
     borderColor: "rgba(0,229,255,0.2)",
     accentColor: "#00e5ff",
     nodes: [
-      { name: "market_summary", description: "Dashboard payload", detail: "< 500KB JSON", color: "#00e5ff" },
-      { name: "semantic_layer", description: "Metric definitions", detail: "YAML config", color: "#00bcd4" },
+      { name: "market_summary", descKey: "lineage.node.market_summary", detail: "< 500KB JSON", color: "#00e5ff" },
+      { name: "semantic_layer", descKey: "lineage.node.semantic_layer", detail: "YAML config", color: "#00bcd4" },
     ],
   },
 ];
 
 export default function DataLineageViz() {
+  const { t } = useI18n();
   return (
     <div className="card p-6 animate-fade-in">
       <div className="flex items-center gap-3 mb-6">
@@ -98,8 +100,8 @@ export default function DataLineageViz() {
           </svg>
         </div>
         <div>
-          <h3 className="text-sm font-semibold">Data Lineage</h3>
-          <p className="text-[10px] text-muted">End-to-end data flow from source to dashboard</p>
+          <h3 className="text-sm font-semibold">{t("lineage.title")}</h3>
+          <p className="text-[10px] text-muted">{t("lineage.subtitle")}</p>
         </div>
       </div>
 
@@ -112,8 +114,8 @@ export default function DataLineageViz() {
               <div className="flex-1 min-w-[160px]">
                 {/* Layer header */}
                 <div className="text-center mb-3">
-                  <div className="text-xs font-semibold" style={{ color: layer.accentColor }}>{layer.label}</div>
-                  <div className="text-[9px] text-muted uppercase tracking-wider">{layer.sublabel}</div>
+                  <div className="text-xs font-semibold" style={{ color: layer.accentColor }}>{t(layer.labelKey)}</div>
+                  <div className="text-[9px] text-muted uppercase tracking-wider">{t(layer.sublabelKey)}</div>
                 </div>
                 {/* Nodes */}
                 <div
@@ -129,7 +131,7 @@ export default function DataLineageViz() {
                         <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: node.color, boxShadow: `0 0 4px ${node.color}` }} />
                         <span className="text-[11px] font-mono font-semibold text-foreground">{node.name}</span>
                       </div>
-                      <div className="text-[10px] text-secondary">{node.description}</div>
+                      <div className="text-[10px] text-secondary">{t(node.descKey)}</div>
                       <div className="text-[9px] text-muted mt-1 font-mono">{node.detail}</div>
                     </div>
                   ))}
@@ -185,7 +187,7 @@ export default function DataLineageViz() {
         {layers.map((layer) => (
           <div key={layer.id} className="text-center">
             <div className="text-lg font-semibold" style={{ color: layer.accentColor }}>{layer.nodes.length}</div>
-            <div className="text-[10px] text-muted">{layer.label} Tables</div>
+            <div className="text-[10px] text-muted">{t(layer.labelKey)} {t("lineage.tables")}</div>
           </div>
         ))}
       </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useI18n } from "@/i18n/context";
 
 interface ArchiveEntry {
   date: string;
@@ -12,22 +13,20 @@ interface ReportArchiveProps {
   entries: ArchiveEntry[];
 }
 
-const typeBadge: Record<string, { label: string; classes: string }> = {
-  daily: {
-    label: "Daily",
-    classes: "bg-blue-500/15 text-blue-400 border-blue-500/30",
-  },
-  weekly: {
-    label: "Weekly",
-    classes: "bg-purple-500/15 text-purple-400 border-purple-500/30",
-  },
-  monthly: {
-    label: "Monthly",
-    classes: "bg-yellow-500/15 text-yellow-400 border-yellow-500/30",
-  },
+const typeBadgeClasses: Record<string, string> = {
+  daily: "bg-blue-500/15 text-blue-400 border-blue-500/30",
+  weekly: "bg-purple-500/15 text-purple-400 border-purple-500/30",
+  monthly: "bg-yellow-500/15 text-yellow-400 border-yellow-500/30",
+};
+
+const typeBadgeKeys: Record<string, string> = {
+  daily: "archive.type.daily",
+  weekly: "archive.type.weekly",
+  monthly: "archive.type.monthly",
 };
 
 export default function ReportArchive({ entries }: ReportArchiveProps) {
+  const { t } = useI18n();
   return (
     <div className="bg-card border border-border rounded-lg overflow-hidden">
       <div className="px-5 py-4 border-b border-border">
@@ -39,21 +38,22 @@ export default function ReportArchive({ entries }: ReportArchiveProps) {
             <line x1="16" y1="17" x2="8" y2="17" />
             <polyline points="10 9 9 9 8 9" />
           </svg>
-          <span className="text-xs font-semibold uppercase tracking-wider text-muted">Report Archive</span>
+          <span className="text-xs font-semibold uppercase tracking-wider text-muted">{t("archive.title")}</span>
         </div>
       </div>
 
       <table className="w-full">
         <thead>
           <tr className="border-b border-border bg-[#0a0a12]">
-            <th className="text-left text-[10px] uppercase tracking-wider text-muted font-medium px-5 py-2.5">Date</th>
-            <th className="text-left text-[10px] uppercase tracking-wider text-muted font-medium px-5 py-2.5">Type</th>
-            <th className="text-left text-[10px] uppercase tracking-wider text-muted font-medium px-5 py-2.5">Title</th>
+            <th className="text-left text-[10px] uppercase tracking-wider text-muted font-medium px-5 py-2.5">{t("archive.col.date")}</th>
+            <th className="text-left text-[10px] uppercase tracking-wider text-muted font-medium px-5 py-2.5">{t("archive.col.type")}</th>
+            <th className="text-left text-[10px] uppercase tracking-wider text-muted font-medium px-5 py-2.5">{t("archive.col.title")}</th>
           </tr>
         </thead>
         <tbody>
           {entries.map((entry, i) => {
-            const badge = typeBadge[entry.type] ?? typeBadge.daily;
+            const badgeClasses = typeBadgeClasses[entry.type] ?? typeBadgeClasses.daily;
+            const badgeLabel = t(typeBadgeKeys[entry.type] ?? typeBadgeKeys.daily);
             return (
               <tr
                 key={`${entry.date}-${entry.type}-${i}`}
@@ -64,9 +64,9 @@ export default function ReportArchive({ entries }: ReportArchiveProps) {
                 <td className="px-5 py-3 text-xs font-mono text-secondary">{entry.date}</td>
                 <td className="px-5 py-3">
                   <span
-                    className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider border ${badge.classes}`}
+                    className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider border ${badgeClasses}`}
                   >
-                    {badge.label}
+                    {badgeLabel}
                   </span>
                 </td>
                 <td className="px-5 py-3 text-sm text-secondary">{entry.title}</td>

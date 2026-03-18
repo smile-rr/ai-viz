@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useI18n } from "@/i18n/context";
 
 interface Check {
   name: string;
@@ -13,10 +14,10 @@ interface QualityChecksProps {
   checks: Check[];
 }
 
-const categoryLabels: Record<string, string> = {
-  completeness: "Completeness",
-  validity: "Validity",
-  consistency: "Consistency",
+const categoryLabelKeys: Record<string, string> = {
+  completeness: "checks.category.completeness",
+  validity: "checks.category.validity",
+  consistency: "checks.category.consistency",
 };
 
 const categoryIcons: Record<string, React.ReactNode> = {
@@ -65,6 +66,7 @@ const statusIcon = (status: string) => {
 };
 
 export default function QualityChecks({ checks }: QualityChecksProps) {
+  const { t } = useI18n();
   // Group by category
   const grouped: Record<string, Check[]> = {};
   for (const check of checks) {
@@ -75,7 +77,7 @@ export default function QualityChecks({ checks }: QualityChecksProps) {
   return (
     <div className="card p-4">
       <div className="text-[10px] uppercase tracking-wider text-muted mb-4">
-        Quality Checks
+        {t("checks.title")}
       </div>
       <div className="space-y-5">
         {Object.entries(grouped).map(([category, categoryChecks]) => (
@@ -85,11 +87,11 @@ export default function QualityChecks({ checks }: QualityChecksProps) {
                 {categoryIcons[category]}
               </span>
               <span className="text-xs font-semibold uppercase tracking-wider text-secondary">
-                {categoryLabels[category] ?? category}
+                {categoryLabelKeys[category] ? t(categoryLabelKeys[category]) : category}
               </span>
               <span className="text-[10px] text-muted font-mono ml-auto">
                 {categoryChecks.filter((c) => c.status === "pass").length}/
-                {categoryChecks.length} passed
+                {categoryChecks.length} {t("checks.passed")}
               </span>
             </div>
             <div className="space-y-1">

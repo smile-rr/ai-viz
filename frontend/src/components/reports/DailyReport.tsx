@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useI18n } from "@/i18n/context";
 
 interface Highlight {
   type: "bullish" | "bearish" | "neutral";
@@ -47,6 +48,7 @@ const highlightIcon: Record<string, React.ReactNode> = {
 };
 
 export default function DailyReport({ report }: DailyReportProps) {
+  const { t } = useI18n();
   return (
     <div className="space-y-5">
       {/* Report Header */}
@@ -55,25 +57,25 @@ export default function DailyReport({ report }: DailyReportProps) {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="inline-block w-1 h-5 bg-blue-500 rounded-full" />
-              <h2 className="text-lg font-semibold tracking-tight">Daily Market Brief</h2>
+              <h2 className="text-lg font-semibold tracking-tight">{t("report.dailyBrief")}</h2>
             </div>
             <p className="text-xs text-muted font-mono ml-3">{report.date}</p>
           </div>
           <div className="text-right">
-            <span className="text-[10px] uppercase tracking-wider text-muted block">Generated</span>
+            <span className="text-[10px] uppercase tracking-wider text-muted block">{t("report.generated")}</span>
             <span className="text-xs text-secondary font-mono">{report.generated_at}</span>
           </div>
         </div>
 
         {/* Summary */}
         <div className="bg-[#0a0a12] border border-border/50 rounded-md p-4 mb-5">
-          <div className="text-[10px] uppercase tracking-wider text-muted mb-2">Executive Summary</div>
+          <div className="text-[10px] uppercase tracking-wider text-muted mb-2">{t("report.executiveSummary")}</div>
           <p className="text-sm text-secondary leading-relaxed">{report.summary}</p>
         </div>
 
         {/* Highlights */}
         <div>
-          <div className="text-[10px] uppercase tracking-wider text-muted mb-3">Key Highlights</div>
+          <div className="text-[10px] uppercase tracking-wider text-muted mb-3">{t("report.keyHighlights")}</div>
           <div className="space-y-2">
             {report.highlights.map((h, i) => (
               <div
@@ -103,7 +105,7 @@ export default function DailyReport({ report }: DailyReportProps) {
               <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
               <polyline points="17 6 23 6 23 12" />
             </svg>
-            <span className="text-xs font-semibold uppercase tracking-wider text-green-400">Top Gainers</span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-green-400">{t("report.topGainers")}</span>
           </div>
           <div className="space-y-0">
             {report.market_movers.top_gainers.map((m, i) => (
@@ -132,7 +134,7 @@ export default function DailyReport({ report }: DailyReportProps) {
               <polyline points="23 18 13.5 8.5 8.5 13.5 1 6" />
               <polyline points="17 18 23 18 23 12" />
             </svg>
-            <span className="text-xs font-semibold uppercase tracking-wider text-red-400">Top Losers</span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-red-400">{t("report.topLosers")}</span>
           </div>
           <div className="space-y-0">
             {report.market_movers.top_losers.map((m, i) => (
