@@ -2,9 +2,9 @@ name: Daily Data Pipeline
 
 on:
   schedule:
-    # 每日北京时间 18:00 (UTC 10:00) — A股收盘后
+    # Weekdays, Beijing 18:00 (UTC 10:00) — after A-share market close
     - cron: '0 10 * * 1-5'
-  workflow_dispatch:  # 手动触发
+  workflow_dispatch: # Manual trigger
 
 permissions:
   contents: write
@@ -31,12 +31,19 @@ jobs:
       - name: Run daily pipeline
         env:
           TUSHARE_TOKEN: ${{ secrets.TUSHARE_TOKEN }}
+          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
         run: uv run python -m src.pipeline.daily
 
-      - name: Commit aggregated data
+      - name: Copy aggregated data to frontend
+        run: |
+          mkdir -p frontend/public/data
+          cp -r data/aggregated/* frontend/public/data/ 2>/dev/null || true
+
+      - name: Commit updated data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/aggregated/ data/quality/
+          git add data/aggregated/ data/quality/ frontend/public/data/
           git diff --staged --quiet || git commit -m "data: daily update $(date +%Y-%m-%d)"
           git push

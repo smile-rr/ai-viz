@@ -109,11 +109,24 @@ class AKShareCollector(BaseCollector):
         return result
 
     def collect_sector_fund_flow(self) -> pl.DataFrame:
-        """Collect sector fund flow data."""
+        """Collect sector fund flow data.
+
+        Uses stock_fund_flow_industry (同花顺) as primary source because
+        stock_sector_fund_flow_rank (东方财富) has persistent connection issues.
+        Falls back to stock_sector_fund_flow_rank if the primary source fails.
+        """
+        try:
+            df_pd = ak.stock_fund_flow_industry(symbol="即时")
+            df = pl.from_pandas(df_pd)
+            self.log(f"Sector fund flow: {len(df)} rows")
+            return df
+        except Exception:
+            pass
+
         try:
             df_pd = ak.stock_sector_fund_flow_rank(indicator="今日")
             df = pl.from_pandas(df_pd)
-            self.log(f"Sector fund flow: {len(df)} rows")
+            self.log(f"Sector fund flow (fallback): {len(df)} rows")
             return df
         except Exception as e:
             self.log(f"Failed sector fund flow: {e}")
@@ -122,7 +135,7 @@ class AKShareCollector(BaseCollector):
     def collect_northbound_flow(self) -> pl.DataFrame:
         """Collect northbound (沪深港通) capital flow."""
         try:
-            df_pd = ak.stock_hsgt_north_net_flow_in_em(symbol="北上")
+            df_pd = ak.stock_hsgt_hist_em(symbol="北向资金")
             df = pl.from_pandas(df_pd)
             self.log(f"Northbound flow: {len(df)} rows")
             return df

@@ -1,0 +1,50 @@
+name: Deploy Frontend to Cloudflare Pages
+
+# Required GitHub Secrets:
+#   CLOUDFLARE_API_TOKEN  — Cloudflare API token with Pages edit permission
+#   CLOUDFLARE_ACCOUNT_ID — Cloudflare account ID
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - 'data/aggregated/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: pnpm install --frozen-lockfile
+
+      - name: Copy data to frontend public dir
+        run: |
+          mkdir -p frontend/public/data
+          cp -r data/aggregated/* frontend/public/data/ 2>/dev/null || true
+
+      - name: Build Next.js static export
+        working-directory: frontend
+        run: pnpm build
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy frontend/out --project-name=ai-viz

@@ -54,6 +54,13 @@ class YFinanceCollector(BaseCollector):
                     continue
                 df_pd = df_pd.reset_index()
                 df = pl.from_pandas(df_pd)
+                # Normalize timezone-aware Date column to naive UTC for consistent concat
+                if "Date" in df.columns:
+                    dtype = df["Date"].dtype
+                    if hasattr(dtype, "time_zone") and dtype.time_zone is not None:
+                        df = df.with_columns(
+                            pl.col("Date").dt.replace_time_zone(None)
+                        )
                 df = df.with_columns(pl.lit(symbol).alias("symbol"))
                 frames.append(df)
                 self.log(f"Collected {symbol}: {len(df)} rows")
