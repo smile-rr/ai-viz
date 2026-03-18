@@ -1,0 +1,35 @@
+{
+  "daily_report": {
+    "date": "2026-03-18",
+    "generated_at": "2026-03-18 18:15:00 CST",
+    "summary": "Markets showed mixed signals today. Shanghai Composite declined 0.85% to 4,049.9 amid thin trading volume. S&P 500 gained 0.47% on continued tech strength. Gold touched $2,990 on safe-haven demand as USD/CNY remained stable at 7.23.",
+    "highlights": [
+      {"type": "bearish", "text": "Shanghai Composite dropped 0.85%, lowest close in 5 sessions"},
+      {"type": "bullish", "text": "S&P 500 rose 0.47%, extending 3-day winning streak"},
+      {"type": "neutral", "text": "USD/CNY stable at 7.23, within 0.1% range"},
+      {"type": "bullish", "text": "Gold near all-time high at $2,990, up 1.2%"},
+      {"type": "bearish", "text": "Crypto markets quiet — BTC/ETH data pending settlement"}
+    ],
+    "market_movers": {
+      "top_gainers": [
+        {"name": "Gold", "symbol": "GC=F", "change_pct": 1.2},
+        {"name": "S&P 500", "symbol": "^GSPC", "change_pct": 0.47},
+        {"name": "NASDAQ", "symbol": "^IXIC", "change_pct": 0.35}
+      ],
+      "top_losers": [
+        {"name": "上证指数", "symbol": "000001", "change_pct": -0.85},
+        {"name": "创业板指", "symbol": "399006", "change_pct": -1.12},
+        {"name": "Natural Gas", "symbol": "NG=F", "change_pct": -0.65}
+      ]
+    }
+  },
+  "report_archive": [
+    {"date": "2026-03-18", "type": "daily", "title": "Daily Market Summary — Mar 18, 2026"},
+    {"date": "2026-03-17", "type": "daily", "title": "Daily Market Summary — Mar 17, 2026"},
+    {"date": "2026-03-16", "type": "daily", "title": "Daily Market Summary — Mar 16, 2026"},
+    {"date": "2026-03-15", "type": "weekly", "title": "Weekly Review — Week 11, 2026"},
+    {"date": "2026-03-14", "type": "daily", "title": "Daily Market Summary — Mar 14, 2026"},
+    {"date": "2026-03-13", "type": "daily", "title": "Daily Market Summary — Mar 13, 2026"},
+    {"date": "2026-03-01", "type": "monthly", "title": "Monthly Review — February 2026"}
+  ]
+}

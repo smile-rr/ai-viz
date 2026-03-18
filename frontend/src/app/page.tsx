@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import type { MarketData, MarketItem } from "@/types/market";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
@@ -11,6 +11,17 @@ import CommodityBar from "@/components/CommodityBar";
 import Heatmap from "@/components/Heatmap";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import ErrorState from "@/components/ErrorState";
+import DailyReport from "@/components/reports/DailyReport";
+import ReportArchive from "@/components/reports/ReportArchive";
+import QualityScorecard from "@/components/quality/QualityScorecard";
+import FreshnessTable from "@/components/quality/FreshnessTable";
+import CoverageMatrix from "@/components/quality/CoverageMatrix";
+import QualityChecks from "@/components/quality/QualityChecks";
+import TableStats from "@/components/quality/TableStats";
+import StarSchemaViz from "@/components/architecture/StarSchemaViz";
+import SemanticLayerViz from "@/components/architecture/SemanticLayerViz";
+import DataLineageViz from "@/components/architecture/DataLineageViz";
+import TechStackViz from "@/components/architecture/TechStackViz";
 
 /** Filter out items with null close/change_pct and clean null values from history */
 function cleanItems(items: MarketItem[]): MarketItem[] {
@@ -52,20 +63,47 @@ const SECTION_META: Record<string, { title: string; subtitle: string }> = {
     title: "Cryptocurrency",
     subtitle: "Bitcoin, Ethereum and digital asset market data",
   },
+  reports: {
+    title: "Reports",
+    subtitle: "Auto-generated daily market summaries and periodic reviews",
+  },
+  quality: {
+    title: "Data Quality",
+    subtitle: "Pipeline health, data freshness, coverage matrix and validation checks",
+  },
+  architecture: {
+    title: "Data Architecture",
+    subtitle: "Star schema, semantic layer, data lineage & tech stack",
+  },
 };
+
+/** Auto-refresh interval in milliseconds (5 minutes) */
+const REFRESH_INTERVAL_MS = 5 * 60 * 1000;
 
 export default function Home() {
   const [data, setData] = useState<MarketData | null>(null);
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const [reportsData, setReportsData] = useState<any>(null);
+  const [qualityData, setQualityData] = useState<any>(null);
+  /* eslint-enable @typescript-eslint/no-explicit-any */
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeSection, setActiveSection] = useState("overview");
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [countdown, setCountdown] = useState(REFRESH_INTERVAL_MS / 1000);
+  const countdownRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const refreshTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const fetchData = useCallback(async () => {
-    setLoading(true);
+  const fetchData = useCallback(async (silent = false) => {
+    if (silent) {
+      setIsRefreshing(true);
+    } else {
+      setLoading(true);
+    }
     setError(null);
     try {
-      const res = await fetch("/data/market_summary.json");
+      const res = await fetch("/data/market_summary.json", { cache: "no-store" });
       if (!res.ok) throw new Error(`Failed to load data (${res.status})`);
       const json: MarketData = await res.json();
       setData(json);
@@ -73,12 +111,77 @@ export default function Home() {
       setError(err instanceof Error ? err.message : "Unknown error loading data");
     } finally {
       setLoading(false);
+      setIsRefreshing(false);
     }
   }, []);
 
+  // Reset countdown
+  const resetCountdown = useCallback(() => {
+    setCountdown(REFRESH_INTERVAL_MS / 1000);
+  }, []);
+
+  // Initial fetch
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  // Fetch reports data
+  useEffect(() => {
+    fetch("/data/reports.json", { cache: "no-store" })
+      .then((res) => res.json())
+      .then((json) => setReportsData(json))
+      .catch(() => {/* reports data is optional */});
+  }, []);
+
+  // Fetch quality data
+  useEffect(() => {
+    fetch("/data/data_quality.json", { cache: "no-store" })
+      .then((res) => res.json())
+      .then((json) => setQualityData(json))
+      .catch(() => {/* quality data is optional */});
+  }, []);
+
+  // Auto-refresh interval
+  useEffect(() => {
+    refreshTimerRef.current = setInterval(() => {
+      fetchData(true);
+      resetCountdown();
+    }, REFRESH_INTERVAL_MS);
+
+    return () => {
+      if (refreshTimerRef.current) clearInterval(refreshTimerRef.current);
+    };
+  }, [fetchData, resetCountdown]);
+
+  // Countdown ticker (updates every second)
+  useEffect(() => {
+    countdownRef.current = setInterval(() => {
+      setCountdown((prev) => (prev <= 1 ? REFRESH_INTERVAL_MS / 1000 : prev - 1));
+    }, 1000);
+
+    return () => {
+      if (countdownRef.current) clearInterval(countdownRef.current);
+    };
+  }, []);
+
+  // Format countdown as M:SS
+  const formatCountdown = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}:${s.toString().padStart(2, "0")}`;
+  };
+
+  // Manual refresh handler — resets auto-refresh timer
+  const handleManualRefresh = useCallback(() => {
+    fetchData(true);
+    resetCountdown();
+    // Reset the auto-refresh interval
+    if (refreshTimerRef.current) clearInterval(refreshTimerRef.current);
+    refreshTimerRef.current = setInterval(() => {
+      fetchData(true);
+      resetCountdown();
+    }, REFRESH_INTERVAL_MS);
+  }, [fetchData, resetCountdown]);
 
   const handleNavigate = useCallback((section: string) => {
     setActiveSection(section);
@@ -538,6 +641,98 @@ export default function Home() {
     </>
   );
 
+  /** Reports — daily briefs and archive */
+  const renderReports = () => (
+    <>
+      {reportsData?.daily_report && (
+        <section>
+          <DailyReport report={reportsData.daily_report} />
+        </section>
+      )}
+      {reportsData?.report_archive && (
+        <section>
+          <ReportArchive entries={reportsData.report_archive} />
+        </section>
+      )}
+      {!reportsData && (
+        <section>
+          <div className="bg-card border border-border rounded-lg p-8 text-center">
+            <p className="text-sm text-muted">No reports data available.</p>
+          </div>
+        </section>
+      )}
+    </>
+  );
+
+  /** Data Quality — monitoring dashboard */
+  const renderQuality = () => {
+    if (!qualityData) {
+      return (
+        <section>
+          <div className="bg-card border border-border rounded-lg p-8 text-center">
+            <p className="text-sm text-muted">No quality data available.</p>
+          </div>
+        </section>
+      );
+    }
+
+    const checks = qualityData.checks ?? [];
+    const passCount = checks.filter((c: { status: string }) => c.status === "pass").length;
+    const warnCount = checks.filter((c: { status: string }) => c.status === "warn").length;
+    const failCount = checks.filter((c: { status: string }) => c.status === "fail").length;
+
+    return (
+      <>
+        {/* Scorecard + Coverage Matrix */}
+        <section>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <QualityScorecard
+              score={qualityData.overall_score}
+              generatedAt={qualityData.generated_at}
+              passCount={passCount}
+              warnCount={warnCount}
+              failCount={failCount}
+            />
+            <div className="lg:col-span-2">
+              <CoverageMatrix coverage={qualityData.coverage} />
+            </div>
+          </div>
+        </section>
+
+        {/* Freshness Table */}
+        <section>
+          <FreshnessTable items={qualityData.freshness} />
+        </section>
+
+        {/* Quality Checks + Table Stats */}
+        <section>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <QualityChecks checks={qualityData.checks} />
+            <TableStats tables={qualityData.tables} />
+          </div>
+        </section>
+      </>
+    );
+  };
+
+  /** Architecture — data modeling showcase */
+  const renderArchitecture = () => (
+    <>
+      <section>
+        <StarSchemaViz />
+      </section>
+      <section>
+        <SemanticLayerViz />
+      </section>
+      <section>
+        <DataLineageViz />
+      </section>
+      <section>
+        <TechStackViz />
+      </section>
+    </>
+  );
+
   /* ──────────────────────────────────────────
      Section router
      ────────────────────────────────────────── */
@@ -553,6 +748,12 @@ export default function Home() {
         return renderCommodities();
       case "crypto":
         return renderCrypto();
+      case "reports":
+        return renderReports();
+      case "quality":
+        return renderQuality();
+      case "architecture":
+        return renderArchitecture();
       case "overview":
       default:
         return renderOverview();
@@ -563,8 +764,11 @@ export default function Home() {
     <div className="min-h-screen">
       <Header
         date={data?.date ?? ""}
+        generatedAt={data?.generated_at}
         sidebarOpen={sidebarOpen}
         onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+        isRefreshing={isRefreshing}
+        refreshCountdown={formatCountdown(countdown)}
       />
       <Sidebar
         open={sidebarOpen}
@@ -592,15 +796,30 @@ export default function Home() {
                   Updated: {data.generated_at}
                 </span>
               )}
+              <span className="text-[10px] text-muted font-mono hidden md:inline">
+                Next refresh in {formatCountdown(countdown)}
+              </span>
               <button
-                onClick={fetchData}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-card border border-border text-xs text-secondary hover:text-foreground hover:border-border-hover transition-colors"
+                onClick={handleManualRefresh}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-card border border-border text-xs text-secondary hover:text-foreground hover:border-border-hover transition-colors ${
+                  isRefreshing ? "animate-pulse" : ""
+                }`}
               >
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className={isRefreshing ? "animate-spin" : ""}
+                >
                   <polyline points="23 4 23 10 17 10" />
                   <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
                 </svg>
-                Refresh
+                {isRefreshing ? "Refreshing..." : "Refresh"}
               </button>
             </div>
           </div>
@@ -609,6 +828,7 @@ export default function Home() {
           {error && <ErrorState message={error} onRetry={fetchData} />}
 
           {!loading && !error && data && renderSection()}
+          {!loading && !data && !error && (activeSection === "quality" || activeSection === "architecture") && renderSection()}
 
           {/* Footer */}
           <footer className="text-center py-6 border-t border-border">

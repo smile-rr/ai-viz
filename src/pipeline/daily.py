@@ -2,7 +2,7 @@
 
 import json
 import sys
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 import duckdb
@@ -205,7 +205,8 @@ def generate_market_summary(
 
     summary = {
         "date": str(today),
-        "generated_at": str(date.today()),
+        "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S CST"),
+        "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "cn_indices": _build_items_cn(cn_index),
         "global_indices": _build_items_yf(global_index, name_map),
         "fx": _build_items_yf(fx, fx_names),

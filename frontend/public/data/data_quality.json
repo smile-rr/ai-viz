@@ -1,0 +1,46 @@
+{
+  "generated_at": "2026-03-18 12:30:45 CST",
+  "overall_score": 95,
+  "checks": [
+    {"name": "CN indices have data", "category": "completeness", "status": "pass", "details": "6 items"},
+    {"name": "Global indices have data", "category": "completeness", "status": "pass", "details": "8 items"},
+    {"name": "FX pairs have data", "category": "completeness", "status": "pass", "details": "4 pairs"},
+    {"name": "Commodities have data", "category": "completeness", "status": "pass", "details": "5 items"},
+    {"name": "Crypto assets have data", "category": "completeness", "status": "pass", "details": "3 assets"},
+    {"name": "Macro indicators present", "category": "completeness", "status": "pass", "details": "GDP, CPI, PMI"},
+    {"name": "No null close prices", "category": "validity", "status": "pass", "details": "0 nulls found"},
+    {"name": "No null change_pct", "category": "validity", "status": "pass", "details": "0 nulls found"},
+    {"name": "Prices within expected range", "category": "validity", "status": "pass", "details": "All within 3 sigma"},
+    {"name": "Change % within ±20%", "category": "validity", "status": "pass", "details": "Max observed: 4.2%"},
+    {"name": "History arrays length = 30", "category": "validity", "status": "warn", "details": "2 items have 28 points"},
+    {"name": "CN market hours aligned", "category": "consistency", "status": "pass", "details": "All timestamps CST"},
+    {"name": "US market hours aligned", "category": "consistency", "status": "pass", "details": "All timestamps EST"},
+    {"name": "Cross-market date alignment", "category": "consistency", "status": "pass", "details": "Dates match within 1 day"},
+    {"name": "No duplicate symbols", "category": "consistency", "status": "pass", "details": "26 unique symbols"},
+    {"name": "FX inverse rate consistency", "category": "consistency", "status": "fail", "details": "USD/CNY vs CNY/USD divergence 0.3%"}
+  ],
+  "freshness": [
+    {"source": "AKShare", "market": "China A-Shares", "last_update": "2026-03-18 15:00 CST", "status": "fresh", "frequency": "Daily"},
+    {"source": "yfinance", "market": "US Equities", "last_update": "2026-03-18 04:00 EST", "status": "fresh", "frequency": "Daily"},
+    {"source": "yfinance", "market": "FX", "last_update": "2026-03-18 04:00 EST", "status": "fresh", "frequency": "Daily"},
+    {"source": "yfinance", "market": "Commodities", "last_update": "2026-03-18 04:00 EST", "status": "fresh", "frequency": "Daily"},
+    {"source": "yfinance", "market": "Crypto", "last_update": "2026-03-18 04:00 EST", "status": "fresh", "frequency": "Daily"},
+    {"source": "AKShare", "market": "Macro (GDP/CPI/PMI)", "last_update": "2026-03-16 10:00 CST", "status": "stale", "frequency": "Weekly (Mon)"}
+  ],
+  "coverage": {
+    "CN": {"equity": true, "index": true, "macro": true, "fx": false, "commodity": false, "crypto": false},
+    "US": {"equity": false, "index": true, "macro": false, "fx": true, "commodity": true, "crypto": true},
+    "HK": {"equity": false, "index": true, "macro": false, "fx": false, "commodity": false, "crypto": false},
+    "EU": {"equity": false, "index": true, "macro": false, "fx": true, "commodity": false, "crypto": false},
+    "JP": {"equity": false, "index": true, "macro": false, "fx": true, "commodity": false, "crypto": false}
+  },
+  "tables": {
+    "fact_price": {"rows": 0, "last_update": null},
+    "fact_index": {"rows": 35000, "last_update": "2026-03-18"},
+    "fact_macro": {"rows": 200, "last_update": "2026-03-16"},
+    "fact_fx": {"rows": 128, "last_update": "2026-03-18"},
+    "fact_commodity": {"rows": 155, "last_update": "2026-03-18"},
+    "fact_cross_border": {"rows": 0, "last_update": null},
+    "fact_fund_flow": {"rows": 0, "last_update": null}
+  }
+}

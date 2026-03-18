@@ -4,19 +4,32 @@ import React from "react";
 
 interface HeaderProps {
   date: string;
+  generatedAt?: string;
   sidebarOpen: boolean;
   onToggleSidebar: () => void;
+  isRefreshing?: boolean;
+  refreshCountdown?: string;
 }
 
-export default function Header({ date, sidebarOpen, onToggleSidebar }: HeaderProps) {
-  const formattedDate = date
-    ? new Date(date + "T00:00:00").toLocaleDateString("en-US", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : "";
+export default function Header({
+  date,
+  generatedAt,
+  sidebarOpen,
+  onToggleSidebar,
+  isRefreshing,
+  refreshCountdown,
+}: HeaderProps) {
+  // Show full timestamp if available, otherwise fall back to date-only formatting
+  const displayTimestamp = generatedAt
+    ? generatedAt
+    : date
+      ? new Date(date + "T00:00:00").toLocaleDateString("en-US", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })
+      : "";
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-14 px-4 border-b border-border bg-[#0c0c14]/95 backdrop-blur-md">
@@ -68,11 +81,23 @@ export default function Header({ date, sidebarOpen, onToggleSidebar }: HeaderPro
             <circle cx="12" cy="12" r="10" />
             <polyline points="12 6 12 12 16 14" />
           </svg>
-          <span className="font-mono">{formattedDate}</span>
+          <span className="font-mono">{displayTimestamp}</span>
         </div>
-        <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-green-dim text-green text-xs font-medium">
-          <div className="w-1.5 h-1.5 rounded-full bg-green" />
-          LIVE
+        <div className="flex items-center gap-2">
+          <div
+            className={`flex items-center gap-1.5 px-2 py-1 rounded-md bg-green-dim text-green text-xs font-medium ${
+              isRefreshing ? "animate-pulse" : ""
+            }`}
+          >
+            <div className={`w-1.5 h-1.5 rounded-full bg-green ${isRefreshing ? "animate-ping" : ""}`} />
+            LIVE
+          </div>
+          <span className="hidden md:inline text-[10px] text-muted font-mono">
+            Auto-refresh: 5min
+            {refreshCountdown && (
+              <span className="ml-1 text-secondary">({refreshCountdown})</span>
+            )}
+          </span>
         </div>
       </div>
     </header>

@@ -1,0 +1,20 @@
+{
+  "metrics": [
+    {"name": "daily_return", "display_name": "日收益率", "display_name_en": "Daily Return", "formula": "(close - lag(close)) / lag(close) * 100", "unit": "percent", "source_table": "fact_price", "category": "price"},
+    {"name": "cumulative_return", "display_name": "累计收益率", "display_name_en": "Cumulative Return", "formula": "(close - first_close) / first_close * 100", "unit": "percent", "source_table": "fact_price", "category": "price"},
+    {"name": "volatility_20d", "display_name": "20日波动率", "display_name_en": "20D Volatility", "formula": "stddev(daily_return) over 20 days * sqrt(252)", "unit": "percent", "source_table": "fact_price", "category": "price"},
+    {"name": "volume_ratio", "display_name": "量比", "display_name_en": "Volume Ratio", "formula": "volume / avg(volume) over 5 days", "unit": "ratio", "source_table": "fact_price", "category": "price"},
+    {"name": "pe_percentile", "display_name": "PE历史分位", "display_name_en": "PE Percentile", "formula": "percent_rank(pe_ttm) over 10 years", "unit": "percent", "source_table": "fact_index", "category": "valuation"},
+    {"name": "pb_percentile", "display_name": "PB历史分位", "display_name_en": "PB Percentile", "formula": "percent_rank(pb) over 10 years", "unit": "percent", "source_table": "fact_index", "category": "valuation"},
+    {"name": "northbound_net", "display_name": "北向资金净买入", "display_name_en": "Northbound Net Buy", "formula": "buy_amount - sell_amount", "unit": "CNY_100M", "source_table": "fact_cross_border", "category": "flow"},
+    {"name": "sector_net_inflow", "display_name": "板块净流入", "display_name_en": "Sector Net Inflow", "formula": "main_inflow - main_outflow", "unit": "CNY_100M", "source_table": "fact_fund_flow", "category": "flow"},
+    {"name": "gdp_yoy", "display_name": "GDP同比增速", "display_name_en": "GDP YoY Growth", "formula": "yoy_change where indicator = 'gdp'", "unit": "percent", "source_table": "fact_macro", "category": "macro"},
+    {"name": "cpi_yoy", "display_name": "CPI同比", "display_name_en": "CPI YoY", "formula": "value where indicator = 'cpi'", "unit": "percent", "source_table": "fact_macro", "category": "macro"},
+    {"name": "pmi_value", "display_name": "制造业PMI", "display_name_en": "Manufacturing PMI", "formula": "value where indicator = 'pmi'", "unit": "index", "source_table": "fact_macro", "category": "macro"}
+  ],
+  "dimensions": [
+    {"name": "region", "display_name": "市场区域", "hierarchy": ["Global Region", "Country", "Market"], "values": ["Asia Pacific", "North America", "Europe"]},
+    {"name": "asset_class", "display_name": "资产类别", "hierarchy": ["Class", "Sub-class"], "values": ["Equity", "Fixed Income", "Commodity", "FX", "Crypto"]},
+    {"name": "time_grain", "display_name": "时间粒度", "values": ["Daily", "Weekly", "Monthly", "Quarterly", "Yearly"]}
+  ]
+}

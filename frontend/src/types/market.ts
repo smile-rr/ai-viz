@@ -13,6 +13,7 @@ export interface MarketItem {
 export interface MarketData {
   date: string;
   generated_at?: string;
+  generated_at_utc?: string;
   cn_indices: MarketItem[];
   global_indices: MarketItem[];
   fx: MarketItem[];
