@@ -39,10 +39,35 @@ const unitLabels: Record<string, string> = {
   index: "idx",
 };
 
+// Detailed metric explanations keyed by metric name
+const metricExplanations: Record<string, {
+  exampleKey: string;
+  usageKey: string;
+  joinsKey: string;
+}> = {
+  daily_return: { exampleKey: "semantic.example.daily_return", usageKey: "semantic.usage.daily_return", joinsKey: "semantic.joins.daily_return" },
+  cumulative_return: { exampleKey: "semantic.example.cumulative_return", usageKey: "semantic.usage.cumulative_return", joinsKey: "semantic.joins.cumulative_return" },
+  volatility_20d: { exampleKey: "semantic.example.volatility_20d", usageKey: "semantic.usage.volatility_20d", joinsKey: "semantic.joins.volatility_20d" },
+  volume_ratio: { exampleKey: "semantic.example.volume_ratio", usageKey: "semantic.usage.volume_ratio", joinsKey: "semantic.joins.volume_ratio" },
+  turnover_rate: { exampleKey: "semantic.example.turnover_rate", usageKey: "semantic.usage.turnover_rate", joinsKey: "semantic.joins.turnover_rate" },
+  pe_percentile: { exampleKey: "semantic.example.pe_percentile", usageKey: "semantic.usage.pe_percentile", joinsKey: "semantic.joins.pe_percentile" },
+  pb_percentile: { exampleKey: "semantic.example.pb_percentile", usageKey: "semantic.usage.pb_percentile", joinsKey: "semantic.joins.pb_percentile" },
+  northbound_net: { exampleKey: "semantic.example.northbound_net", usageKey: "semantic.usage.northbound_net", joinsKey: "semantic.joins.northbound_net" },
+  sector_net_inflow: { exampleKey: "semantic.example.sector_net_inflow", usageKey: "semantic.usage.sector_net_inflow", joinsKey: "semantic.joins.sector_net_inflow" },
+  gdp_yoy: { exampleKey: "semantic.example.gdp_yoy", usageKey: "semantic.usage.gdp_yoy", joinsKey: "semantic.joins.gdp_yoy" },
+  cpi_yoy: { exampleKey: "semantic.example.cpi_yoy", usageKey: "semantic.usage.cpi_yoy", joinsKey: "semantic.joins.cpi_yoy" },
+  pmi_value: { exampleKey: "semantic.example.pmi_value", usageKey: "semantic.usage.pmi_value", joinsKey: "semantic.joins.pmi_value" },
+  sharpe_ratio: { exampleKey: "semantic.example.sharpe_ratio", usageKey: "semantic.usage.sharpe_ratio", joinsKey: "semantic.joins.sharpe_ratio" },
+  max_drawdown: { exampleKey: "semantic.example.max_drawdown", usageKey: "semantic.usage.max_drawdown", joinsKey: "semantic.joins.max_drawdown" },
+  dividend_yield: { exampleKey: "semantic.example.dividend_yield", usageKey: "semantic.usage.dividend_yield", joinsKey: "semantic.joins.dividend_yield" },
+  rsi_14d: { exampleKey: "semantic.example.rsi_14d", usageKey: "semantic.usage.rsi_14d", joinsKey: "semantic.joins.rsi_14d" },
+};
+
 export default function SemanticLayerViz() {
   const { t } = useI18n();
   const [data, setData] = useState<SemanticData | null>(null);
   const [activeCategory, setActiveCategory] = useState("price");
+  const [expandedMetric, setExpandedMetric] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/data/semantic_layer.json")
@@ -83,7 +108,7 @@ export default function SemanticLayerViz() {
         {Object.entries(categoryMeta).map(([key, cat]) => (
           <button
             key={key}
-            onClick={() => setActiveCategory(key)}
+            onClick={() => { setActiveCategory(key); setExpandedMetric(null); }}
             className={`px-4 py-1.5 rounded-md text-xs font-medium transition-all duration-200 ${
               activeCategory === key
                 ? "text-foreground shadow-sm"
@@ -99,35 +124,80 @@ export default function SemanticLayerViz() {
 
       {/* Metric Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
-        {filteredMetrics.map((metric) => (
-          <div
-            key={metric.name}
-            className="rounded-lg border p-4 transition-all duration-200 hover:shadow-lg"
-            style={{ backgroundColor: meta.bgColor, borderColor: meta.borderColor }}
-          >
-            <div className="flex items-start justify-between mb-2">
-              <div>
-                <div className="text-sm font-semibold" style={{ color: meta.color }}>{metric.display_name}</div>
-                <div className="text-[11px] text-secondary">{metric.display_name_en}</div>
+        {filteredMetrics.map((metric) => {
+          const isExpanded = expandedMetric === metric.name;
+          const explanation = metricExplanations[metric.name];
+          return (
+            <div
+              key={metric.name}
+              className={`rounded-lg border transition-all duration-200 hover:shadow-lg cursor-pointer ${isExpanded ? "md:col-span-2" : ""}`}
+              style={{ backgroundColor: meta.bgColor, borderColor: isExpanded ? meta.color : meta.borderColor }}
+              onClick={() => setExpandedMetric(isExpanded ? null : metric.name)}
+            >
+              <div className="p-4">
+                <div className="flex items-start justify-between mb-2">
+                  <div>
+                    <div className="text-sm font-semibold" style={{ color: meta.color }}>{metric.display_name}</div>
+                    <div className="text-[11px] text-secondary">{metric.display_name_en}</div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="text-[10px] font-mono px-2 py-0.5 rounded-full border"
+                      style={{ borderColor: meta.borderColor, color: meta.color }}
+                    >
+                      {unitLabels[metric.unit] ?? metric.unit}
+                    </span>
+                    <svg
+                      width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={meta.color} strokeWidth="2"
+                      className={`transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
+                    >
+                      <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="mt-3 p-2 rounded bg-[#0a0a0f]/60 border border-border/50">
+                  <code className="text-[11px] font-mono text-secondary leading-relaxed break-all">{metric.formula}</code>
+                </div>
+                <div className="mt-2 flex items-center gap-2">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-muted">
+                    <path d="M4 7V4h16v3" /><path d="M9 20h6" /><path d="M12 4v16" />
+                  </svg>
+                  <span className="text-[10px] font-mono text-muted">{metric.source_table}</span>
+                </div>
               </div>
-              <span
-                className="text-[10px] font-mono px-2 py-0.5 rounded-full border"
-                style={{ borderColor: meta.borderColor, color: meta.color }}
-              >
-                {unitLabels[metric.unit] ?? metric.unit}
-              </span>
+
+              {/* Expandable detail section */}
+              {isExpanded && explanation && (
+                <div className="border-t border-border/30 px-4 py-3 bg-[#0a0a0f]/40 space-y-3 animate-fade-in" onClick={(e) => e.stopPropagation()}>
+                  {/* Example calculation */}
+                  <div>
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={meta.color} strokeWidth="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: meta.color }}>{t("semantic.exampleCalc")}</span>
+                    </div>
+                    <div className="text-[11px] text-secondary leading-relaxed pl-5">{t(explanation.exampleKey)}</div>
+                  </div>
+                  {/* When to use */}
+                  <div>
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={meta.color} strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: meta.color }}>{t("semantic.whenToUse")}</span>
+                    </div>
+                    <div className="text-[11px] text-secondary leading-relaxed pl-5">{t(explanation.usageKey)}</div>
+                  </div>
+                  {/* Source & joins */}
+                  <div>
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={meta.color} strokeWidth="2"><polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" /></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: meta.color }}>{t("semantic.sourceJoins")}</span>
+                    </div>
+                    <div className="text-[11px] text-secondary leading-relaxed pl-5 font-mono">{t(explanation.joinsKey)}</div>
+                  </div>
+                </div>
+              )}
             </div>
-            <div className="mt-3 p-2 rounded bg-[#0a0a0f]/60 border border-border/50">
-              <code className="text-[11px] font-mono text-secondary leading-relaxed break-all">{metric.formula}</code>
-            </div>
-            <div className="mt-2 flex items-center gap-2">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-muted">
-                <path d="M4 7V4h16v3" /><path d="M9 20h6" /><path d="M12 4v16" />
-              </svg>
-              <span className="text-[10px] font-mono text-muted">{metric.source_table}</span>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Dimensions Section */}

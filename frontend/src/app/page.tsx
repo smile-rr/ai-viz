@@ -25,6 +25,7 @@ import DataLineageViz from "@/components/architecture/DataLineageViz";
 import TechStackViz from "@/components/architecture/TechStackViz";
 import InsightsCard from "@/components/InsightsCard";
 import TabNav from "@/components/TabNav";
+import GuideToggle from "@/components/GuideToggle";
 
 /** Filter out items with null close/change_pct and clean null values from history */
 function cleanItems(items: MarketItem[]): MarketItem[] {
@@ -192,6 +193,18 @@ export default function Home() {
 
   const sidebarWidth = sidebarOpen ? "pl-48" : "pl-14";
   const meta = getSectionMeta(activeSection, t);
+
+  const guideKeyMap: Record<string, string> = {
+    overview: "guide.overview",
+    "cn-markets": "guide.cn",
+    global: "guide.global",
+    fx: "guide.fx",
+    commodities: "guide.commodities",
+    crypto: "guide.crypto",
+    reports: "guide.reports",
+    quality: "guide.quality",
+  };
+  const guideKey = guideKeyMap[activeSection];
 
   /* ──────────────────────────────────────────
      Section-specific rendering helpers
@@ -876,10 +889,13 @@ export default function Home() {
         <div className="p-4 lg:p-6 max-w-[1800px] mx-auto space-y-5">
           {/* Page title */}
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-xl font-semibold tracking-tight">
-                {meta.title}
-              </h1>
+            <div className="relative">
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl font-semibold tracking-tight">
+                  {meta.title}
+                </h1>
+                {guideKey && <GuideToggle content={t(guideKey)} />}
+              </div>
               <p className="text-xs text-secondary mt-0.5">
                 {meta.subtitle}
               </p>

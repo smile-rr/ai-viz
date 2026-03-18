@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useI18n } from "@/i18n/context";
 
 interface LineageNode {
@@ -18,6 +18,7 @@ interface LineageLayer {
   bgColor: string;
   borderColor: string;
   accentColor: string;
+  explanationKey: string;
 }
 
 const layers: LineageLayer[] = [
@@ -28,6 +29,7 @@ const layers: LineageLayer[] = [
     bgColor: "rgba(255,193,7,0.06)",
     borderColor: "rgba(255,193,7,0.2)",
     accentColor: "#ffc107",
+    explanationKey: "lineage.explain.source",
     nodes: [
       { name: "AKShare", descKey: "lineage.node.akshare", detail: "Daily 18:00 CST", color: "#ffc107" },
       { name: "yfinance", descKey: "lineage.node.yfinance", detail: "Daily 06:00 UTC", color: "#ff9100" },
@@ -41,6 +43,7 @@ const layers: LineageLayer[] = [
     bgColor: "rgba(224,64,251,0.06)",
     borderColor: "rgba(224,64,251,0.2)",
     accentColor: "#e040fb",
+    explanationKey: "lineage.explain.ods",
     nodes: [
       { name: "ods_cn_index", descKey: "lineage.node.ods_cn_index", detail: "JSON / CSV", color: "#e040fb" },
       { name: "ods_global_quote", descKey: "lineage.node.ods_global_quote", detail: "JSON", color: "#ce93d8" },
@@ -54,6 +57,7 @@ const layers: LineageLayer[] = [
     bgColor: "rgba(41,121,255,0.06)",
     borderColor: "rgba(41,121,255,0.2)",
     accentColor: "#2979ff",
+    explanationKey: "lineage.explain.dwd",
     nodes: [
       { name: "dwd_price", descKey: "lineage.node.dwd_price", detail: "Polars transform", color: "#2979ff" },
       { name: "dwd_index", descKey: "lineage.node.dwd_index", detail: "DuckDB validation", color: "#448aff" },
@@ -67,6 +71,7 @@ const layers: LineageLayer[] = [
     bgColor: "rgba(0,200,83,0.06)",
     borderColor: "rgba(0,200,83,0.2)",
     accentColor: "#00c853",
+    explanationKey: "lineage.explain.dws",
     nodes: [
       { name: "fact_price", descKey: "lineage.node.fact_price", detail: "~2.5M rows", color: "#00c853" },
       { name: "fact_index", descKey: "lineage.node.fact_index", detail: "~180K rows", color: "#4caf50" },
@@ -81,6 +86,7 @@ const layers: LineageLayer[] = [
     bgColor: "rgba(0,229,255,0.06)",
     borderColor: "rgba(0,229,255,0.2)",
     accentColor: "#00e5ff",
+    explanationKey: "lineage.explain.serving",
     nodes: [
       { name: "market_summary", descKey: "lineage.node.market_summary", detail: "< 500KB JSON", color: "#00e5ff" },
       { name: "semantic_layer", descKey: "lineage.node.semantic_layer", detail: "YAML config", color: "#00bcd4" },
@@ -90,6 +96,8 @@ const layers: LineageLayer[] = [
 
 export default function DataLineageViz() {
   const { t } = useI18n();
+  const [expandedLayer, setExpandedLayer] = useState<string | null>(null);
+
   return (
     <div className="card p-6 animate-fade-in">
       <div className="flex items-center gap-3 mb-6">
@@ -103,6 +111,9 @@ export default function DataLineageViz() {
           <h3 className="text-sm font-semibold">{t("lineage.title")}</h3>
           <p className="text-[10px] text-muted">{t("lineage.subtitle")}</p>
         </div>
+        <div className="ml-auto">
+          <span className="text-[10px] text-muted">{t("lineage.clickToExpand")}</span>
+        </div>
       </div>
 
       {/* Horizontal lineage flow */}
@@ -112,15 +123,24 @@ export default function DataLineageViz() {
             <React.Fragment key={layer.id}>
               {/* Layer column */}
               <div className="flex-1 min-w-[160px]">
-                {/* Layer header */}
-                <div className="text-center mb-3">
-                  <div className="text-xs font-semibold" style={{ color: layer.accentColor }}>{t(layer.labelKey)}</div>
+                {/* Layer header - clickable */}
+                <button
+                  className="text-center mb-3 w-full cursor-pointer group"
+                  onClick={() => setExpandedLayer(expandedLayer === layer.id ? null : layer.id)}
+                >
+                  <div className="text-xs font-semibold group-hover:underline" style={{ color: layer.accentColor }}>{t(layer.labelKey)}</div>
                   <div className="text-[9px] text-muted uppercase tracking-wider">{t(layer.sublabelKey)}</div>
-                </div>
+                  <svg
+                    width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={layer.accentColor} strokeWidth="2"
+                    className={`mx-auto mt-1 transition-transform duration-200 ${expandedLayer === layer.id ? "rotate-180" : ""}`}
+                  >
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </button>
                 {/* Nodes */}
                 <div
                   className="rounded-lg border p-2 space-y-2 min-h-[240px]"
-                  style={{ backgroundColor: layer.bgColor, borderColor: layer.borderColor }}
+                  style={{ backgroundColor: layer.bgColor, borderColor: expandedLayer === layer.id ? layer.accentColor : layer.borderColor, transition: "border-color 0.2s" }}
                 >
                   {layer.nodes.map((node) => (
                     <div
@@ -182,13 +202,35 @@ export default function DataLineageViz() {
         }
       `}</style>
 
+      {/* Expanded layer explanation */}
+      {expandedLayer && (() => {
+        const layer = layers.find(l => l.id === expandedLayer)!;
+        return (
+          <div
+            className="mt-2 mb-4 rounded-lg border p-4 animate-fade-in"
+            style={{ backgroundColor: layer.bgColor, borderColor: layer.accentColor }}
+          >
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: layer.accentColor, boxShadow: `0 0 8px ${layer.accentColor}` }} />
+              <span className="text-xs font-semibold" style={{ color: layer.accentColor }}>{t(layer.labelKey)}</span>
+              <span className="text-[10px] text-muted">- {t("lineage.stageDetails")}</span>
+            </div>
+            <div className="text-[11px] text-secondary leading-relaxed whitespace-pre-line">{t(layer.explanationKey)}</div>
+          </div>
+        );
+      })()}
+
       {/* Summary stats */}
       <div className="mt-4 pt-4 border-t border-border grid grid-cols-5 gap-3">
         {layers.map((layer) => (
-          <div key={layer.id} className="text-center">
+          <button
+            key={layer.id}
+            className="text-center cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={() => setExpandedLayer(expandedLayer === layer.id ? null : layer.id)}
+          >
             <div className="text-lg font-semibold" style={{ color: layer.accentColor }}>{layer.nodes.length}</div>
             <div className="text-[10px] text-muted">{t(layer.labelKey)} {t("lineage.tables")}</div>
-          </div>
+          </button>
         ))}
       </div>
     </div>
