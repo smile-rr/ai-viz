@@ -50,7 +50,7 @@ def run_daily_pipeline(target_date: date | None = None):
     yf_collector = YFinanceCollector(DATA_DIR / "raw")
 
     start_7d = today - timedelta(days=7)
-    start_30d = today - timedelta(days=45)  # Extra buffer for 30 trading days
+    start_30d = today - timedelta(days=400)  # ~1 year + buffer for time range selection
 
     # Chinese indices (full history for sparkline)
     cn_index = pl.DataFrame()
@@ -253,8 +253,8 @@ def _build_items_cn(df: pl.DataFrame) -> list[dict]:
                 if prev_close and prev_close != 0 and close_val is not None:
                     change_pct = round((close_val - prev_close) / prev_close * 100, 2)
 
-            # 30-day sparkline
-            history = _extract_history(subset.tail(30), "close")
+            # ~1 year sparkline (260 trading days)
+            history = _extract_history(subset.tail(260), "close")
 
             items.append({
                 "symbol": code,
@@ -290,6 +290,15 @@ def _build_items_yf(df: pl.DataFrame, name_map: dict) -> list[dict]:
 
             last = subset.tail(1).to_dicts()[0]
             close_val = _safe_float(last.get("Close"))
+
+            # If the last row has null Close (e.g. crypto before market
+            # settlement), fall back to the second-to-last row.
+            if close_val is None and len(subset) >= 2:
+                last = subset.tail(2).head(1).to_dicts()[0]
+                close_val = _safe_float(last.get("Close"))
+                # Also trim the trailing null row from history source
+                subset = subset.head(len(subset) - 1)
+
             open_val = _safe_float(last.get("Open"))
             high_val = _safe_float(last.get("High"))
             low_val = _safe_float(last.get("Low"))
@@ -302,8 +311,8 @@ def _build_items_yf(df: pl.DataFrame, name_map: dict) -> list[dict]:
                 if prev_close and prev_close != 0 and close_val is not None:
                     change_pct = round((close_val - prev_close) / prev_close * 100, 2)
 
-            # 30-day sparkline
-            history = _extract_history(subset.tail(30), "Close")
+            # ~1 year sparkline (260 trading days)
+            history = _extract_history(subset.tail(260), "Close")
 
             items.append({
                 "symbol": symbol,

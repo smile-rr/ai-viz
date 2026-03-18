@@ -23,6 +23,8 @@ import StarSchemaViz from "@/components/architecture/StarSchemaViz";
 import SemanticLayerViz from "@/components/architecture/SemanticLayerViz";
 import DataLineageViz from "@/components/architecture/DataLineageViz";
 import TechStackViz from "@/components/architecture/TechStackViz";
+import InsightsCard from "@/components/InsightsCard";
+import TabNav from "@/components/TabNav";
 
 /** Filter out items with null close/change_pct and clean null values from history */
 function cleanItems(items: MarketItem[]): MarketItem[] {
@@ -111,6 +113,8 @@ export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeSection, setActiveSection] = useState("overview");
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [activeArchTab, setActiveArchTab] = useState("star-schema");
+  const [activeQualityTab, setActiveQualityTab] = useState("scorecard");
   const [countdown, setCountdown] = useState(REFRESH_INTERVAL_MS / 1000);
   const countdownRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const refreshTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -261,6 +265,17 @@ export default function Home() {
           </div>
         </section>
       )}
+
+      {/* Market Insights */}
+      <section>
+        <InsightsCard
+          cnIndices={cnIndices}
+          globalIndices={globalIndices}
+          fx={fx}
+          commodities={commodities}
+          crypto={crypto}
+        />
+      </section>
 
       {/* China Markets Charts */}
       {cnIndices.length > 0 && (
@@ -687,6 +702,14 @@ export default function Home() {
   );
 
   /** Data Quality — monitoring dashboard */
+  const qualityTabs = [
+    { id: "scorecard", label: "Scorecard" },
+    { id: "freshness", label: "Freshness" },
+    { id: "coverage", label: "Coverage" },
+    { id: "checks", label: "Checks" },
+    { id: "tables", label: "Tables" },
+  ];
+
   const renderQuality = () => {
     if (!qualityData) {
       return (
@@ -703,54 +726,116 @@ export default function Home() {
     const warnCount = checks.filter((c: { status: string }) => c.status === "warn").length;
     const failCount = checks.filter((c: { status: string }) => c.status === "fail").length;
 
+    // Stage check counts for workflow banner
+    const stageChecks = {
+      collect: checks.filter((c: { category: string }) => c.category === "completeness").length,
+      validate: checks.filter((c: { category: string }) => c.category === "validity").length,
+      store: checks.filter((c: { category: string }) => c.category === "consistency").length,
+      serve: Object.keys(qualityData.tables ?? {}).length,
+      monitor: (qualityData.freshness ?? []).length,
+    };
+
     return (
       <>
-        {/* Scorecard + Coverage Matrix */}
+        {/* Workflow banner */}
         <section>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <QualityScorecard
-              score={qualityData.overall_score}
-              generatedAt={qualityData.generated_at}
-              passCount={passCount}
-              warnCount={warnCount}
-              failCount={failCount}
-            />
-            <div className="lg:col-span-2">
-              <CoverageMatrix coverage={qualityData.coverage} />
+          <div className="bg-card border border-border rounded-lg p-4 animate-fade-in">
+            <div className="flex items-center justify-center gap-0 flex-wrap">
+              {(
+                [
+                  { key: "collect", label: "Collect" },
+                  { key: "validate", label: "Validate" },
+                  { key: "store", label: "Store" },
+                  { key: "serve", label: "Serve" },
+                  { key: "monitor", label: "Monitor" },
+                ] as const
+              ).map((stage, i) => (
+                <React.Fragment key={stage.key}>
+                  {i > 0 && (
+                    <svg width="24" height="16" viewBox="0 0 24 16" className="text-muted flex-shrink-0">
+                      <path d="M0 8 L18 8 M14 3 L20 8 L14 13" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                    </svg>
+                  )}
+                  <div className="flex flex-col items-center px-3 py-2 border border-border rounded-md bg-background min-w-[80px]">
+                    <span className="text-[10px] text-muted uppercase tracking-wide">{stage.label}</span>
+                    <span className="text-sm font-semibold text-foreground font-mono mt-0.5">
+                      {stageChecks[stage.key]}
+                    </span>
+                  </div>
+                </React.Fragment>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Freshness Table */}
+        {/* Tab navigation */}
         <section>
-          <FreshnessTable items={qualityData.freshness} />
+          <TabNav tabs={qualityTabs} activeTab={activeQualityTab} onChange={setActiveQualityTab} />
         </section>
 
-        {/* Quality Checks + Table Stats */}
-        <section>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Tab content */}
+        {activeQualityTab === "scorecard" && (
+          <section>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              <QualityScorecard
+                score={qualityData.overall_score}
+                generatedAt={qualityData.generated_at}
+                passCount={passCount}
+                warnCount={warnCount}
+                failCount={failCount}
+              />
+              <div className="lg:col-span-2">
+                <CoverageMatrix coverage={qualityData.coverage} />
+              </div>
+            </div>
+          </section>
+        )}
+
+        {activeQualityTab === "freshness" && (
+          <section>
+            <FreshnessTable items={qualityData.freshness} />
+          </section>
+        )}
+
+        {activeQualityTab === "coverage" && (
+          <section>
+            <CoverageMatrix coverage={qualityData.coverage} />
+          </section>
+        )}
+
+        {activeQualityTab === "checks" && (
+          <section>
             <QualityChecks checks={qualityData.checks} />
+          </section>
+        )}
+
+        {activeQualityTab === "tables" && (
+          <section>
             <TableStats tables={qualityData.tables} />
-          </div>
-        </section>
+          </section>
+        )}
       </>
     );
   };
 
   /** Architecture — data modeling showcase */
+  const archTabs = [
+    { id: "star-schema", label: "Star Schema" },
+    { id: "semantic-layer", label: "Semantic Layer" },
+    { id: "data-lineage", label: "Data Lineage" },
+    { id: "tech-stack", label: "Tech Stack" },
+  ];
+
   const renderArchitecture = () => (
     <>
       <section>
-        <StarSchemaViz />
+        <TabNav tabs={archTabs} activeTab={activeArchTab} onChange={setActiveArchTab} />
       </section>
       <section>
-        <SemanticLayerViz />
-      </section>
-      <section>
-        <DataLineageViz />
-      </section>
-      <section>
-        <TechStackViz />
+        {activeArchTab === "star-schema" && <StarSchemaViz />}
+        {activeArchTab === "semantic-layer" && <SemanticLayerViz />}
+        {activeArchTab === "data-lineage" && <DataLineageViz />}
+        {activeArchTab === "tech-stack" && <TechStackViz />}
       </section>
     </>
   );

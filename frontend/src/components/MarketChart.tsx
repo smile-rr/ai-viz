@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useCallback } from "react";
 import ReactEChartsCore from "echarts-for-react/lib/core";
 import * as echarts from "echarts/core";
 import { LineChart } from "echarts/charts";
@@ -11,8 +11,18 @@ import {
 } from "echarts/components";
 import { CanvasRenderer } from "echarts/renderers";
 import type { MarketItem } from "@/types/market";
+import TimeRangeSelector from "./TimeRangeSelector";
 
 echarts.use([LineChart, GridComponent, TooltipComponent, LegendComponent, CanvasRenderer]);
+
+const RANGE_POINTS: Record<string, number> = {
+  "1W": 5,
+  "1M": 22,
+  "3M": 66,
+  "6M": 132,
+  "1Y": 252,
+  "ALL": Infinity,
+};
 
 interface MarketChartProps {
   title: string;
@@ -31,14 +41,45 @@ export default function MarketChart({
   height = 320,
   normalized: forceNormalized,
 }: MarketChartProps) {
-  const option = useMemo(() => {
-    if (!items.length) return {};
+  const [timeRange, setTimeRange] = useState("1M");
 
-    const days = items[0]?.history.length || 30;
+  // Determine which ranges are available based on the shortest history
+  const { availableRanges, slicedItems } = useMemo(() => {
+    const maxLen = Math.max(...items.map((i) => i.history.length), 0);
+    const available = Object.entries(RANGE_POINTS)
+      .filter(([, pts]) => pts <= maxLen || pts === Infinity && maxLen > 0)
+      .map(([range]) => range);
+    // Always include the smallest range if there is data
+    if (maxLen > 0 && !available.includes("1W")) available.unshift("1W");
+    // Only include ALL if history exceeds 1Y
+    if (maxLen <= 252) {
+      const allIdx = available.indexOf("ALL");
+      if (allIdx !== -1) available.splice(allIdx, 1);
+    }
+
+    const pointsToShow = RANGE_POINTS[timeRange] ?? Infinity;
+    const sliced = items.map((item) => ({
+      ...item,
+      history: pointsToShow >= item.history.length
+        ? item.history
+        : item.history.slice(-pointsToShow),
+    }));
+
+    return { availableRanges: available, slicedItems: sliced };
+  }, [items, timeRange]);
+
+  const handleRangeChange = useCallback((range: string) => {
+    setTimeRange(range);
+  }, []);
+
+  const option = useMemo(() => {
+    if (!slicedItems.length) return {};
+
+    const days = slicedItems[0]?.history.length || 30;
     const xData = Array.from({ length: days }, (_, i) => `D-${days - i}`);
 
     // Auto-detect if normalization needed: when max/min ratio > 3x
-    const closes = items.map((i) => i.close).filter(Boolean);
+    const closes = slicedItems.map((i) => i.close).filter(Boolean);
     const maxClose = Math.max(...closes);
     const minClose = Math.min(...closes);
     const shouldNormalize = forceNormalized ?? (maxClose / (minClose || 1) > 3);
@@ -78,7 +119,7 @@ export default function MarketChart({
             .map((p) => {
               if (shouldNormalize) {
                 // Show both percentage change and actual price
-                const item = items[p.seriesIndex];
+                const item = slicedItems[p.seriesIndex];
                 const actualPrice = item?.history[p.dataIndex];
                 const formatted = actualPrice != null
                   ? actualPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
@@ -118,7 +159,7 @@ export default function MarketChart({
         },
         scale: true,
       },
-      series: items.map((item, idx) => {
+      series: slicedItems.map((item, idx) => {
         let data: number[];
         if (shouldNormalize && item.history.length > 0) {
           const base = item.history[0] || 1;
@@ -140,20 +181,27 @@ export default function MarketChart({
         };
       }),
     };
-  }, [items, colors, forceNormalized]);
+  }, [slicedItems, colors, forceNormalized]);
 
   const subtitle = useMemo(() => {
-    const closes = items.map((i) => i.close).filter(Boolean);
+    const closes = slicedItems.map((i) => i.close).filter(Boolean);
     const maxClose = Math.max(...closes);
     const minClose = Math.min(...closes);
     return (maxClose / (minClose || 1) > 3) ? "(Normalized %)" : "";
-  }, [items]);
+  }, [slicedItems]);
 
   return (
     <div className="card p-4 animate-fade-in">
-      <div className="flex items-baseline gap-2">
-        <div className="section-title">{title}</div>
-        {subtitle && <span className="text-[10px] text-muted">{subtitle}</span>}
+      <div className="flex items-center justify-between mb-1">
+        <div className="flex items-baseline gap-2">
+          <div className="section-title">{title}</div>
+          {subtitle && <span className="text-[10px] text-muted">{subtitle}</span>}
+        </div>
+        <TimeRangeSelector
+          selected={timeRange}
+          onChange={handleRangeChange}
+          availableRanges={availableRanges}
+        />
       </div>
       <ReactEChartsCore
         echarts={echarts}
