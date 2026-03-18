@@ -1,0 +1,126 @@
+# Semantic Layer — Metric Definitions
+# 语义层：统一指标定义，确保口径一致
+
+metrics:
+  # === 行情指标 ===
+  daily_return:
+    display_name: "日收益率"
+    display_name_en: "Daily Return"
+    formula: "(close - lag(close)) / lag(close) * 100"
+    unit: "percent"
+    source_table: fact_price
+    description: "当日收盘价相对前一交易日的变动百分比"
+
+  cumulative_return:
+    display_name: "累计收益率"
+    display_name_en: "Cumulative Return"
+    formula: "(close - first_close) / first_close * 100"
+    unit: "percent"
+    source_table: fact_price
+    description: "相对期初价格的累计变动百分比"
+
+  volatility_20d:
+    display_name: "20日波动率"
+    display_name_en: "20D Volatility"
+    formula: "stddev(daily_return) over 20 trading days * sqrt(252)"
+    unit: "percent"
+    source_table: fact_price
+    description: "过去20个交易日收益率标准差的年化值"
+
+  volume_ratio:
+    display_name: "量比"
+    display_name_en: "Volume Ratio"
+    formula: "volume / avg(volume) over 5 days"
+    unit: "ratio"
+    source_table: fact_price
+    description: "当日成交量与过去5日均量的比值"
+
+  turnover_rate:
+    display_name: "换手率"
+    display_name_en: "Turnover Rate"
+    formula: "volume / total_shares * 100"
+    unit: "percent"
+    source_table: fact_price
+    description: "当日成交量占流通股本的百分比"
+
+  # === 估值指标 ===
+  pe_percentile:
+    display_name: "PE历史分位"
+    display_name_en: "PE Percentile"
+    formula: "percent_rank(pe_ttm) over trailing 10 years"
+    unit: "percent"
+    source_table: fact_index
+    description: "当前PE在过去10年中的历史分位，越低越便宜"
+
+  pb_percentile:
+    display_name: "PB历史分位"
+    display_name_en: "PB Percentile"
+    formula: "percent_rank(pb) over trailing 10 years"
+    unit: "percent"
+    source_table: fact_index
+    description: "当前PB在过去10年中的历史分位"
+
+  # === 资金流指标 ===
+  northbound_net:
+    display_name: "北向资金净买入"
+    display_name_en: "Northbound Net Buy"
+    formula: "buy_amount - sell_amount"
+    unit: "CNY_100M"
+    source_table: fact_cross_border
+    description: "沪深股通当日净买入金额（亿元）"
+
+  sector_net_inflow:
+    display_name: "板块净流入"
+    display_name_en: "Sector Net Inflow"
+    formula: "main_inflow - main_outflow"
+    unit: "CNY_100M"
+    source_table: fact_fund_flow
+    description: "板块主力资金净流入额（亿元）"
+
+  # === 宏观指标 ===
+  gdp_yoy:
+    display_name: "GDP同比增速"
+    display_name_en: "GDP YoY Growth"
+    formula: "yoy_change where indicator_key = 'gdp'"
+    unit: "percent"
+    source_table: fact_macro
+    description: "国内生产总值同比增长率"
+
+  cpi_yoy:
+    display_name: "CPI同比"
+    display_name_en: "CPI YoY"
+    formula: "value where indicator_key = 'cpi'"
+    unit: "percent"
+    source_table: fact_macro
+    description: "居民消费价格指数同比变动"
+
+  pmi_value:
+    display_name: "制造业PMI"
+    display_name_en: "Manufacturing PMI"
+    formula: "value where indicator_key = 'pmi'"
+    unit: "index"
+    source_table: fact_macro
+    description: "制造业采购经理指数，50以上为扩张"
+
+dimensions:
+  region:
+    display_name: "市场区域"
+    hierarchy: ["global_region", "country", "market"]
+    values:
+      - { key: "APAC", label: "亚太", label_en: "Asia Pacific" }
+      - { key: "NA", label: "北美", label_en: "North America" }
+      - { key: "EU", label: "欧洲", label_en: "Europe" }
+
+  asset_class:
+    display_name: "资产类别"
+    hierarchy: ["class", "sub_class"]
+    values:
+      - { key: "equity", label: "股票", label_en: "Equity" }
+      - { key: "fixed_income", label: "债券", label_en: "Fixed Income" }
+      - { key: "commodity", label: "商品", label_en: "Commodity" }
+      - { key: "fx", label: "外汇", label_en: "FX" }
+      - { key: "crypto", label: "加密货币", label_en: "Crypto" }
+
+  time_grain:
+    display_name: "时间粒度"
+    values: ["daily", "weekly", "monthly", "quarterly", "yearly"]

@@ -1,0 +1,38 @@
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Node
+node_modules/
+.next/
+out/
+
+# Data (raw/processed stored locally, not in git)
+data/raw/
+data/processed/
+*.parquet
+*.duckdb
+*.db
+
+# Keep aggregated data for GitHub Pages
+!data/aggregated/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp

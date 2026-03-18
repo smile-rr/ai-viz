@@ -1,0 +1,68 @@
+# Data Lineage — 数据血缘追踪
+# 记录每个表的数据来源和转换过程
+
+lineage:
+  fact_price:
+    sources:
+      - source: "AKShare::stock_zh_a_hist"
+        market: CN
+        description: "A股日线行情（前复权）"
+      - source: "yfinance::Ticker.history"
+        market: US/HK/GLOBAL
+        description: "全球股票/ETF/指数日线"
+    transformations:
+      - "统一列名: open/high/low/close/volume"
+      - "计算 change_pct = (close - prev_close) / prev_close"
+      - "计算 amplitude = (high - low) / prev_close"
+    refresh: daily
+    quality_checks:
+      - "close > 0"
+      - "high >= low"
+      - "volume >= 0"
+      - "no duplicate (date_key, asset_key)"
+
+  fact_index:
+    sources:
+      - source: "AKShare::stock_zh_index_daily"
+        market: CN
+        description: "A股主要指数日线"
+      - source: "yfinance::Ticker.history"
+        market: GLOBAL
+        description: "全球主要指数日线"
+    transformations:
+      - "统一列名和格式"
+      - "关联PE/PB估值数据"
+    refresh: daily
+
+  fact_macro:
+    sources:
+      - source: "AKShare::macro_china_gdp"
+        indicator: gdp
+      - source: "AKShare::macro_china_cpi_monthly"
+        indicator: cpi
+      - source: "AKShare::macro_china_pmi"
+        indicator: pmi
+      - source: "AKShare::macro_china_money_supply"
+        indicator: money_supply
+    transformations:
+      - "统一时间格式"
+      - "计算同比/环比变动"
+    refresh: monthly
+
+  fact_cross_border:
+    sources:
+      - source: "AKShare::stock_hsgt_north_net_flow_in_em"
+        description: "沪深港通北向资金"
+    refresh: daily
+
+  fact_fx:
+    sources:
+      - source: "yfinance (USDCNY=X, EURUSD=X, ...)"
+        description: "主要货币对汇率"
+    refresh: daily
+
+  fact_commodity:
+    sources:
+      - source: "yfinance (GC=F, CL=F, ...)"
+        description: "大宗商品期货价格"
+    refresh: daily
