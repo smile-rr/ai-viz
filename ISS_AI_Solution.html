@@ -16,14 +16,31 @@ body{
   padding:13mm 15mm 16mm;position:relative;
 }
 @media print{
-  body{background:#fff}
-  .page{margin:0;page-break-after:always}
-  .page:last-child{page-break-after:auto}
+  @page{size:A4;margin:0}
+  body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{margin:0;width:210mm;min-height:unset;break-after:page;page-break-after:always;overflow:hidden}
+  .page:last-child{break-after:auto;page-break-after:auto}
+  .lang-toggle{display:none!important}
   .layer-tabs{display:none!important}
-  .layer-panel{display:grid!important}
+  .layer-panel{display:none!important}
   .hint-click{display:none!important}
   .print-note{display:block!important}
+  .card,.ph-box,.bet,.sec,.rt tr{break-inside:avoid;page-break-inside:avoid}
 }
+/* ── lang toggle ── */
+.lang-toggle{position:fixed;top:14px;right:16px;z-index:1000;display:flex;border:1px solid #ddd;border-radius:20px;overflow:hidden;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.ltog{font-size:8pt;font-weight:600;padding:4px 13px;border:none;cursor:pointer;background:none;color:#999;transition:all .15s}
+.ltog.active{background:#1a1a1a;color:#fff}
+/* ── i18n ── */
+.en{display:none}
+body.lang-en .zh{display:none}
+body.lang-en .en{display:inline}
+.en-bl{display:none}
+body.lang-en .zh-bl{display:none}
+body.lang-en .en-bl{display:block}
+svg text.en{display:none}
+body.lang-en svg text.zh{display:none}
+body.lang-en svg text.en{display:block}
 /* ── page header ── */
 .ph{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #1a1a1a;padding-bottom:8px;margin-bottom:13px}
 .pt{font-size:14pt;font-weight:700;line-height:1.2}
@@ -176,46 +193,51 @@ hr{border:none;border-top:.5px solid #e8e7e2;margin:11px 0}
 }
 </style>
 </head>
-<body>
+<body class="lang-zh">
+
+<div class="lang-toggle">
+  <button id="btn-zh" class="ltog active" onclick="toggleLang('zh')">中</button>
+  <button id="btn-en" class="ltog" onclick="toggleLang('en')">EN</button>
+</div>
 
 <!-- ═══════════════ PAGE 1 ═══════════════ -->
 <div class="page">
 <div class="ph">
   <div>
-    <div class="pt">ISS 数据可视化 AI 转型方案</div>
-    <div class="ps">基于 Snowflake + Oracle Analytics Cloud 现有平台的 AI 能力叠加路径</div>
+    <div class="pt"><span class="zh">ISS 数据可视化 AI 转型方案</span><span class="en">ISS Data Visualisation AI Transformation</span></div>
+    <div class="ps"><span class="zh">基于 Snowflake + Oracle Analytics Cloud 现有平台的 AI 能力叠加路径</span><span class="en">AI Enhancement Pathway on the Existing Snowflake + Oracle Analytics Cloud Platform</span></div>
   </div>
-  <div class="pm">2026年3月<br>Principal Data Visualisation Engineer<br><span class="pb">第 1 页 / 共 3 页</span></div>
+  <div class="pm"><span class="zh">2026年3月</span><span class="en">March 2026</span><br><span class="pb"><span class="zh">第 1 页 / 共 3 页</span><span class="en">Page 1 of 3</span></span></div>
 </div>
 
 <div class="sec">
-  <div class="sl">当前真实问题</div>
-  <div class="st">数据不缺，缺的是让 AI 能读懂它的方式</div>
-  <p class="bt">Fidelity ISS 已在 Snowflake 上积累了覆盖权益、固收、量化研究与风险管理的大规模数据平台。问题不是数据不够——而是数据和投研人员之间还隔着太多中间步骤。以下四个结构性障碍阻碍了 AI 驱动分析的转型：</p>
+  <div class="sl"><span class="zh">当前真实问题</span><span class="en">CURRENT STATE</span></div>
+  <div class="st"><span class="zh">数据不缺，缺的是让 AI 能读懂它的方式</span><span class="en">The Data Exists — What's Missing Is How AI Can Read It</span></div>
+  <p class="bt"><span class="zh">Fidelity ISS 已在 Snowflake 上积累了覆盖权益、固收、量化研究与风险管理的大规模数据平台。问题不是数据不够——而是数据和投研人员之间还隔着太多中间步骤。以下四个结构性障碍阻碍了 AI 驱动分析的转型：</span><span class="en">Fidelity ISS has built a large-scale data platform on Snowflake covering equity, fixed income, quantitative research, and risk management. The problem isn't insufficient data — it's the layers of friction between that data and the analysts who need it. Four structural barriers block the shift to AI-driven analysis:</span></p>
   <div class="g2" style="margin-top:8px">
-    <div class="card al"><div class="ct">Snowflake 缺少 AI 可读的语义层</div><div class="cb">几万张表，表名如 <b>fcst_rev_v3_adj</b>，列名如 <b>amt_usd_net</b>。数据模型正确，业务含义只存在于人脑中。AI 路由需要机器可读描述——目前几乎没有。</div></div>
-    <div class="card al"><div class="ct">投研文档与结构化数据完全割裂</div><div class="cb">研究报告、市场评论、风险备忘录分散在 S3、SharePoint、邮件附件里，与 Snowflake 数字毫无关联。没有任何系统能同时用两者回答"为什么"。</div></div>
-    <div class="card am"><div class="ct">OAC 提供答案，但不支持探索</div><div class="cb">静态仪表盘只能回答预设好的问题。投研分析日益需要临时的探索性即席查询——这不是 OAC 推报表模式设计用来解决的场景。</div></div>
-    <div class="card am"><div class="ct">Data Viz 团队是交付瓶颈</div><div class="cb">当前"业务提需求、团队构建报表"的模式在 AI 时代无法扩展。团队的杠杆应该来自建设平台，而不是执行单个报表请求。</div></div>
+    <div class="card al"><div class="ct"><span class="zh">Snowflake 缺少 AI 可读的语义层</span><span class="en">Snowflake Has No AI-Readable Semantic Layer</span></div><div class="cb"><span class="zh">几万张表，表名如 <b>fcst_rev_v3_adj</b>，列名如 <b>amt_usd_net</b>。数据模型正确，业务含义只存在于人脑中。AI 路由需要机器可读描述——目前几乎没有。</span><span class="en">Tens of thousands of tables — names like <b>fcst_rev_v3_adj</b>, columns like <b>amt_usd_net</b>. The data model is correct; the business meaning exists only in people's heads. AI routing requires machine-readable descriptions — and there are almost none.</span></div></div>
+    <div class="card al"><div class="ct"><span class="zh">投研文档与结构化数据完全割裂</span><span class="en">Research Docs Are Completely Siloed from Structured Data</span></div><div class="cb"><span class="zh">研究报告、市场评论、风险备忘录分散在 S3、SharePoint、邮件附件里，与 Snowflake 数字毫无关联。没有任何系统能同时用两者回答"为什么"。</span><span class="en">Research reports, market commentaries, and risk memos are scattered across S3, SharePoint, and email attachments — with no connection to Snowflake numbers. No system can use both to answer "why".</span></div></div>
+    <div class="card am"><div class="ct"><span class="zh">OAC 提供答案，但不支持探索</span><span class="en">OAC Answers Pre-Set Questions — It Doesn't Support Exploration</span></div><div class="cb"><span class="zh">静态仪表盘只能回答预设好的问题。投研分析日益需要临时的探索性即席查询——这不是 OAC 推报表模式设计用来解决的场景。</span><span class="en">Static dashboards answer questions designed in advance. Investment research increasingly requires ad hoc exploratory queries — not what OAC's report-push model was built to solve.</span></div></div>
+    <div class="card am"><div class="ct"><span class="zh">Data Viz 团队是交付瓶颈</span><span class="en">The Data Viz Team Is the Delivery Bottleneck</span></div><div class="cb"><span class="zh">当前"业务提需求、团队构建报表"的模式在 AI 时代无法扩展。团队的杠杆应该来自建设平台，而不是执行单个报表请求。</span><span class="en">The current "business requests, team builds" model doesn't scale in the AI era. The team's leverage should come from building platforms, not executing individual report requests.</span></div></div>
   </div>
 </div>
 
 <hr>
 
 <div class="sec">
-  <div class="sl">目标愿景</div>
-  <div class="st">用自然语言作为所有投研数据的统一入口</div>
-  <p class="bt">投研人员用普通语言提问，系统在 30 秒内从结构化数据和非结构化文档中联合检索，返回带图表、带来源引用的答案——无需提工单，无需等仪表盘。</p>
+  <div class="sl"><span class="zh">目标愿景</span><span class="en">VISION</span></div>
+  <div class="st"><span class="zh">用自然语言作为所有投研数据的统一入口</span><span class="en">Natural Language as the Unified Entry Point for All Research Data</span></div>
+  <p class="bt"><span class="zh">投研人员用普通语言提问，系统在 30 秒内从结构化数据和非结构化文档中联合检索，返回带图表、带来源引用的答案——无需提工单，无需等仪表盘。</span><span class="en">An investment professional asks a question in plain language. Within 30 seconds, the system retrieves from both structured data and unstructured documents, returning a chart-backed, citation-linked answer — no tickets, no waiting for dashboards.</span></p>
   <div class="g2" style="margin-top:8px">
     <div class="scene">
-      <div class="sq">场景 A · 即时分析问答</div>
-      <div class="si">"为什么亚太区权益敞口在 Q4 相对风险预算出现下滑？"</div>
-      <div class="sa">30 秒内返回：敞口 vs 预算折线图 + 驱动下滑的具体持仓 + 风险备忘录引用段落，每条数据都标注可点击的来源链路。</div>
+      <div class="sq"><span class="zh">场景 A · 即时分析问答</span><span class="en">Scene A · Instant Analysis Q&amp;A</span></div>
+      <div class="si"><span class="zh">"为什么亚太区权益敞口在 Q4 相对风险预算出现下滑？"</span><span class="en">"Why did APAC equity exposure decline against risk budget in Q4?"</span></div>
+      <div class="sa"><span class="zh">30 秒内返回：敞口 vs 预算折线图 + 驱动下滑的具体持仓 + 风险备忘录引用段落，每条数据都标注可点击的来源链路。</span><span class="en">Returns within 30 seconds: exposure vs. budget chart + specific holdings driving the decline + cited paragraphs from the risk memo — every data point with a clickable source link.</span></div>
     </div>
     <div class="scene">
-      <div class="sq">场景 B · 大型报表构建</div>
-      <div class="si">"生成本季度所有固收交易的交易对手敞口明细。"</div>
-      <div class="sa">系统展示查询定义和预估行数（约 4 万行），用户确认后后台异步执行并推送下载——AI 构建查询，用户决定何时执行。</div>
+      <div class="sq"><span class="zh">场景 B · 大型报表构建</span><span class="en">Scene B · Large-Scale Report Generation</span></div>
+      <div class="si"><span class="zh">"生成本季度所有固收交易的交易对手敞口明细。"</span><span class="en">"Generate full counterparty exposure detail for all fixed income trades this quarter."</span></div>
+      <div class="sa"><span class="zh">系统展示查询定义和预估行数（约 4 万行），用户确认后后台异步执行并推送下载——AI 构建查询，用户决定何时执行。</span><span class="en">System shows the query definition and estimated row count (~40K rows). User confirms; execution runs async in the background with a download notification — AI builds the query, user decides when to run it.</span></div>
     </div>
   </div>
 </div>
@@ -223,15 +245,16 @@ hr{border:none;border-top:.5px solid #e8e7e2;margin:11px 0}
 <hr>
 
 <div class="sec">
-  <div class="sl">为什么现在可以做到</div>
-  <div class="g3">
-    <div class="card bl"><div class="ct"><span class="tag tsf">Snowflake</span> 平台原生 AI 能力</div><div class="cb">Cortex Search（混合检索）、Document AI（PDF解析）、Arctic Embed（向量化）——均为 Snowflake 现有功能，无需额外采购部署。</div></div>
-    <div class="card am"><div class="ct"><span class="tag toac">OAC</span> 保留并扩展，不替换</div><div class="cb">Oracle Analytics 继续承载正式报表和监管仪表盘。AI 层提供探索性查询入口——同一套数据，两种访问模式，双轨并行。</div></div>
-    <div class="card pl"><div class="ct"><span class="tag tai">AI 层</span> 自动构建基础设施</div><div class="cb">现有 dbt 模型和 Snowflake 表作为 AI Agent 的输入，自动生成语义描述并建立索引——不需要用户手工准备任何数据。</div></div>
+  <div class="sl"><span class="zh">为什么现在可以做到</span><span class="en">WHY THIS IS ACHIEVABLE NOW</span></div>
+  <div class="g2">
+    <div class="card bl"><div class="ct"><span class="tag tsf">Snowflake</span> <span class="zh">平台原生 AI 能力 + 数据驻留</span><span class="en">Native AI Capabilities + Data Residency</span></div><div class="cb"><span class="zh">Cortex Search（混合检索）、Document AI（PDF解析）、Arctic Embed（向量化）、<b>Cortex LLMs（模型推理）</b>——均在 Snowflake 平台内部执行，<b>数据不离开平台</b>，满足金融机构数据驻留合规要求，无需额外采购部署。</span><span class="en">Cortex Search, Document AI, Arctic Embed, <b>Cortex LLMs</b> — all execute within Snowflake. <b>Data never leaves the platform</b>, satisfying financial institution data residency requirements. No additional procurement needed.</span></div></div>
+    <div class="card am"><div class="ct"><span class="tag toac">OAC</span> <span class="zh">保留并扩展，不替换</span><span class="en">Retained &amp; Extended — Not Replaced</span></div><div class="cb"><span class="zh">Oracle Analytics 继续承载正式报表和监管仪表盘。AI 层提供探索性查询入口——同一套数据，两种访问模式，双轨并行。</span><span class="en">Oracle Analytics continues to serve formal reports and regulatory dashboards. The AI layer provides exploratory query access — the same data, two access modes, running in parallel.</span></div></div>
+    <div class="card pl"><div class="ct"><span class="tag tai">AI</span> <span class="zh">层自动构建基础设施</span><span class="en">Layer Auto-Builds the Infrastructure</span></div><div class="cb"><span class="zh">现有 dbt 模型和 Snowflake 表作为 AI Agent 的输入，自动生成语义描述并建立索引——不需要用户手工准备任何数据。</span><span class="en">Existing dbt models and Snowflake tables serve as AI Agent inputs. Semantic descriptions are auto-generated and indexed — no manual data preparation required.</span></div></div>
+    <div class="card" style="border-left:3px solid #1D9E75"><div class="ct"><span class="tag taut"><span class="zh">治理</span><span class="en">Governance</span></span> <span class="zh">安全与合规前置设计</span><span class="en">Security &amp; Compliance by Design</span></div><div class="cb"><span class="zh">查询引擎透传用户 Snowflake 行级权限（RLS），AI 不创造新访问路径。所有生成查询写入审计日志，满足监管追溯要求。置信度低于阈值时系统拒绝作答，而非猜测。</span><span class="en">Query engine passes through the user's Snowflake row-level permissions (RLS) — AI creates no new access paths. All generated queries are written to audit logs. Below-threshold confidence returns a refusal, not a guess.</span></div></div>
   </div>
 </div>
 
-<div class="pf"><span>ISS Data Visualisation — AI 转型方案</span><span>2026年3月</span></div>
+<div class="pf"><span><span class="zh">ISS Data Visualisation — AI 转型方案</span><span class="en">ISS Data Visualisation — AI Transformation</span></span><span><span class="zh">2026年3月</span><span class="en">March 2026</span></span></div>
 </div>
 
 
@@ -239,166 +262,239 @@ hr{border:none;border-top:.5px solid #e8e7e2;margin:11px 0}
 <div class="page">
 <div class="ph">
   <div>
-    <div class="pt">技术架构</div>
-    <div class="ps">点击任意层查看该层组件的详细说明</div>
+    <div class="pt"><span class="zh">技术架构</span><span class="en">Technical Architecture</span></div>
+    <div class="ps"><span class="zh">点击任意层查看该层组件的详细说明</span><span class="en">Click any layer to view detailed component descriptions</span></div>
   </div>
-  <div class="pm">2026年3月<br>Principal Data Visualisation Engineer<br><span class="pb">第 2 页 / 共 3 页</span></div>
+  <div class="pm"><span class="zh">2026年3月</span><span class="en">March 2026</span><br><span class="pb"><span class="zh">第 2 页 / 共 3 页</span><span class="en">Page 2 of 3</span></span></div>
 </div>
 
 <div class="sec">
-  <div class="sl">系统五层架构 — 点击层查看组件说明</div>
+  <div class="sl"><span class="zh">系统五层架构 — 点击层查看组件说明</span><span class="en">5-LAYER ARCHITECTURE — CLICK A LAYER TO SEE COMPONENT DETAILS</span></div>
 
   <div class="arch-wrap">
   <!-- ═══ SVG ═══ -->
   <svg id="arch-svg" width="100%" viewBox="0 0 680 618" xmlns="http://www.w3.org/2000/svg" style="display:block">
   <defs>
     <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </marker>
   </defs>
 
   <!-- LAYER 0: red -->
   <rect x="28" y="8" width="644" height="84" rx="9" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.75"/>
-  <text x="350" y="24" text-anchor="middle" font-size="8.5" font-weight="700" fill="#A32D2D" font-family="PingFang SC,Microsoft YaHei,sans-serif">当前状态（AI 不就绪）</text>
+  <text x="350" y="24" text-anchor="middle" font-size="9.5" font-weight="700" fill="#A32D2D" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">当前状态（AI 不就绪）</text>
+  <text x="350" y="24" text-anchor="middle" font-size="9.5" font-weight="700" fill="#A32D2D" font-family="Arial,sans-serif" class="en">Current State (Not AI-Ready)</text>
   <rect x="36"  y="30" width="148" height="54" rx="6" fill="#F7C1C1" stroke="#E24B4A" stroke-width="0.5"/>
-  <text x="110" y="48" text-anchor="middle" font-size="8" font-weight="700" fill="#791F1F" font-family="PingFang SC,Microsoft YaHei,sans-serif">Snowflake / 数仓</text>
-  <text x="110" y="62" text-anchor="middle" font-size="7" fill="#A32D2D" font-family="PingFang SC,Microsoft YaHei,sans-serif">几万张表</text>
-  <text x="110" y="75" text-anchor="middle" font-size="7" fill="#A32D2D" font-family="PingFang SC,Microsoft YaHei,sans-serif">无业务描述</text>
+  <text x="110" y="48" text-anchor="middle" font-size="9" font-weight="700" fill="#791F1F" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">Snowflake / 数仓</text>
+  <text x="110" y="48" text-anchor="middle" font-size="9" font-weight="700" fill="#791F1F" font-family="Arial,sans-serif" class="en">Snowflake / DWH</text>
+  <text x="110" y="62" text-anchor="middle" font-size="8" fill="#A32D2D" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">几万张表</text>
+  <text x="110" y="62" text-anchor="middle" font-size="8" fill="#A32D2D" font-family="Arial,sans-serif" class="en">Tens of K tables</text>
+  <text x="110" y="75" text-anchor="middle" font-size="8" fill="#A32D2D" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">无业务描述</text>
+  <text x="110" y="75" text-anchor="middle" font-size="8" fill="#A32D2D" font-family="Arial,sans-serif" class="en">No business descriptions</text>
   <rect x="192" y="30" width="148" height="54" rx="6" fill="#F7C1C1" stroke="#E24B4A" stroke-width="0.5"/>
-  <text x="266" y="48" text-anchor="middle" font-size="8" font-weight="700" fill="#791F1F" font-family="PingFang SC,Microsoft YaHei,sans-serif">dbt 模型</text>
-  <text x="266" y="62" text-anchor="middle" font-size="7" fill="#A32D2D" font-family="PingFang SC,Microsoft YaHei,sans-serif">SQL 逻辑存在</text>
-  <text x="266" y="75" text-anchor="middle" font-size="7" fill="#A32D2D" font-family="PingFang SC,Microsoft YaHei,sans-serif">描述缺失/不完整</text>
+  <text x="266" y="48" text-anchor="middle" font-size="9" font-weight="700" fill="#791F1F" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">dbt 模型</text>
+  <text x="266" y="48" text-anchor="middle" font-size="9" font-weight="700" fill="#791F1F" font-family="Arial,sans-serif" class="en">dbt Models</text>
+  <text x="266" y="62" text-anchor="middle" font-size="8" fill="#A32D2D" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">SQL 逻辑存在</text>
+  <text x="266" y="62" text-anchor="middle" font-size="8" fill="#A32D2D" font-family="Arial,sans-serif" class="en">SQL logic exists</text>
+  <text x="266" y="75" text-anchor="middle" font-size="8" fill="#A32D2D" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">描述缺失/不完整</text>
+  <text x="266" y="75" text-anchor="middle" font-size="8" fill="#A32D2D" font-family="Arial,sans-serif" class="en">Descriptions missing</text>
   <rect x="348" y="30" width="148" height="54" rx="6" fill="#F7C1C1" stroke="#E24B4A" stroke-width="0.5"/>
-  <text x="422" y="48" text-anchor="middle" font-size="8" font-weight="700" fill="#791F1F" font-family="PingFang SC,Microsoft YaHei,sans-serif">非结构化文档</text>
-  <text x="422" y="62" text-anchor="middle" font-size="7" fill="#A32D2D" font-family="PingFang SC,Microsoft YaHei,sans-serif">PDF / 报告散落</text>
-  <text x="422" y="75" text-anchor="middle" font-size="7" fill="#A32D2D" font-family="PingFang SC,Microsoft YaHei,sans-serif">S3 / Stage / SharePoint</text>
+  <text x="422" y="48" text-anchor="middle" font-size="9" font-weight="700" fill="#791F1F" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">非结构化文档</text>
+  <text x="422" y="48" text-anchor="middle" font-size="9" font-weight="700" fill="#791F1F" font-family="Arial,sans-serif" class="en">Unstructured Docs</text>
+  <text x="422" y="62" text-anchor="middle" font-size="8" fill="#A32D2D" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">PDF / 报告散落</text>
+  <text x="422" y="62" text-anchor="middle" font-size="8" fill="#A32D2D" font-family="Arial,sans-serif" class="en">PDFs &amp; reports scattered</text>
+  <text x="422" y="75" text-anchor="middle" font-size="8" fill="#A32D2D" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">S3 / Stage / SharePoint</text>
+  <text x="422" y="75" text-anchor="middle" font-size="8" fill="#A32D2D" font-family="Arial,sans-serif" class="en">S3 / Stage / SharePoint</text>
   <rect x="504" y="30" width="160" height="54" rx="6" fill="#F7C1C1" stroke="#E24B4A" stroke-width="0.5"/>
-  <text x="584" y="48" text-anchor="middle" font-size="8" font-weight="700" fill="#791F1F" font-family="PingFang SC,Microsoft YaHei,sans-serif">现有搜索工具</text>
-  <text x="584" y="62" text-anchor="middle" font-size="7" fill="#A32D2D" font-family="PingFang SC,Microsoft YaHei,sans-serif">ES / Solr</text>
-  <text x="584" y="75" text-anchor="middle" font-size="7" fill="#A32D2D" font-family="PingFang SC,Microsoft YaHei,sans-serif">独立运行</text>
+  <text x="584" y="48" text-anchor="middle" font-size="9" font-weight="700" fill="#791F1F" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">现有搜索工具</text>
+  <text x="584" y="48" text-anchor="middle" font-size="9" font-weight="700" fill="#791F1F" font-family="Arial,sans-serif" class="en">Existing Search</text>
+  <text x="584" y="62" text-anchor="middle" font-size="8" fill="#A32D2D" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">ES / Solr</text>
+  <text x="584" y="62" text-anchor="middle" font-size="8" fill="#A32D2D" font-family="Arial,sans-serif" class="en">ES / Solr</text>
+  <text x="584" y="75" text-anchor="middle" font-size="8" fill="#A32D2D" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">独立运行</text>
+  <text x="584" y="75" text-anchor="middle" font-size="8" fill="#A32D2D" font-family="Arial,sans-serif" class="en">Siloed</text>
   <!-- hit area -->
   <rect class="layer-hit" id="hit-0" x="28" y="8" width="644" height="84" rx="9" onclick="showLayer(0)"/>
 
   <line x1="350" y1="92" x2="350" y2="108" stroke="#999" stroke-width="1" marker-end="url(#ar)"/>
-  <text x="378" y="103" font-size="7" fill="#aaa" font-family="PingFang SC,Microsoft YaHei,sans-serif">AI 自动改造</text>
+  <text x="378" y="103" font-size="8" fill="#aaa" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">AI 自动改造</text>
+  <text x="378" y="103" font-size="8" fill="#aaa" font-family="Arial,sans-serif" class="en">AI-driven upgrade</text>
 
   <!-- LAYER 1: purple -->
   <rect x="28" y="110" width="644" height="130" rx="9" fill="#EEEDFE" stroke="#7F77DD" stroke-width="0.75"/>
-  <text x="350" y="126" text-anchor="middle" font-size="8.5" font-weight="700" fill="#3C3489" font-family="PingFang SC,Microsoft YaHei,sans-serif">基础设施层（AI 自动构建，不需要用户手工准备）</text>
+  <text x="350" y="126" text-anchor="middle" font-size="9.5" font-weight="700" fill="#3C3489" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">基础设施层（AI 自动构建，不需要用户手工准备）</text>
+  <text x="350" y="126" text-anchor="middle" font-size="9.5" font-weight="700" fill="#3C3489" font-family="Arial,sans-serif" class="en">Infrastructure Layer (AI Auto-Built — No Manual Setup)</text>
   <rect x="36"  y="132" width="308" height="100" rx="7" fill="#CECBF6" stroke="#534AB7" stroke-width="0.5"/>
-  <text x="190" y="147" text-anchor="middle" font-size="8" font-weight="700" fill="#26215C" font-family="PingFang SC,Microsoft YaHei,sans-serif">Schema 智能化管道</text>
+  <text x="190" y="147" text-anchor="middle" font-size="9" font-weight="700" fill="#26215C" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">Schema 智能化管道</text>
+  <text x="190" y="147" text-anchor="middle" font-size="9" font-weight="700" fill="#26215C" font-family="Arial,sans-serif" class="en">Schema Intelligence Pipeline</text>
   <rect x="44"  y="152" width="140" height="30" rx="5" fill="#EEEDFE" stroke="#7F77DD" stroke-width="0.5"/>
-  <text x="114" y="164" text-anchor="middle" font-size="7.5" font-weight="700" fill="#3C3489" font-family="PingFang SC,Microsoft YaHei,sans-serif">dbt 描述 Agent</text>
-  <text x="114" y="176" text-anchor="middle" font-size="7" fill="#534AB7" font-family="PingFang SC,Microsoft YaHei,sans-serif">自动生成业务描述</text>
+  <text x="114" y="164" text-anchor="middle" font-size="8.5" font-weight="700" fill="#3C3489" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">dbt 描述 Agent</text>
+  <text x="114" y="164" text-anchor="middle" font-size="8.5" font-weight="700" fill="#3C3489" font-family="Arial,sans-serif" class="en">dbt Description Agent</text>
+  <text x="114" y="176" text-anchor="middle" font-size="8" fill="#534AB7" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">自动生成业务描述</text>
+  <text x="114" y="176" text-anchor="middle" font-size="8" fill="#534AB7" font-family="Arial,sans-serif" class="en">Auto-generate descriptions</text>
   <rect x="192" y="152" width="144" height="30" rx="5" fill="#EEEDFE" stroke="#7F77DD" stroke-width="0.5"/>
-  <text x="264" y="164" text-anchor="middle" font-size="7.5" font-weight="700" fill="#3C3489" font-family="PingFang SC,Microsoft YaHei,sans-serif">Schema 向量化</text>
-  <text x="264" y="176" text-anchor="middle" font-size="7" fill="#534AB7" font-family="PingFang SC,Microsoft YaHei,sans-serif">语义搜索索引</text>
+  <text x="264" y="164" text-anchor="middle" font-size="8.5" font-weight="700" fill="#3C3489" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">Schema 向量化</text>
+  <text x="264" y="164" text-anchor="middle" font-size="8.5" font-weight="700" fill="#3C3489" font-family="Arial,sans-serif" class="en">Schema Vectorisation</text>
+  <text x="264" y="176" text-anchor="middle" font-size="8" fill="#534AB7" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">语义搜索索引</text>
+  <text x="264" y="176" text-anchor="middle" font-size="8" fill="#534AB7" font-family="Arial,sans-serif" class="en">Semantic search index</text>
   <rect x="44"  y="188" width="140" height="30" rx="5" fill="#EEEDFE" stroke="#7F77DD" stroke-width="0.5"/>
-  <text x="114" y="200" text-anchor="middle" font-size="7.5" font-weight="700" fill="#3C3489" font-family="PingFang SC,Microsoft YaHei,sans-serif">关系图谱构建</text>
-  <text x="114" y="212" text-anchor="middle" font-size="7" fill="#534AB7" font-family="PingFang SC,Microsoft YaHei,sans-serif">表间 JOIN 关系</text>
+  <text x="114" y="200" text-anchor="middle" font-size="8.5" font-weight="700" fill="#3C3489" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">关系图谱构建</text>
+  <text x="114" y="200" text-anchor="middle" font-size="8.5" font-weight="700" fill="#3C3489" font-family="Arial,sans-serif" class="en">Relationship Graph</text>
+  <text x="114" y="212" text-anchor="middle" font-size="8" fill="#534AB7" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">表间 JOIN 关系</text>
+  <text x="114" y="212" text-anchor="middle" font-size="8" fill="#534AB7" font-family="Arial,sans-serif" class="en">Cross-table JOINs</text>
   <rect x="192" y="188" width="144" height="30" rx="5" fill="#EEEDFE" stroke="#7F77DD" stroke-width="0.5"/>
-  <text x="264" y="200" text-anchor="middle" font-size="7.5" font-weight="700" fill="#3C3489" font-family="PingFang SC,Microsoft YaHei,sans-serif">Few-shot 库初始化</text>
-  <text x="264" y="212" text-anchor="middle" font-size="7" fill="#534AB7" font-family="PingFang SC,Microsoft YaHei,sans-serif">查询参考例题库</text>
+  <text x="264" y="200" text-anchor="middle" font-size="8.5" font-weight="700" fill="#3C3489" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">Few-shot 库初始化</text>
+  <text x="264" y="200" text-anchor="middle" font-size="8.5" font-weight="700" fill="#3C3489" font-family="Arial,sans-serif" class="en">Few-shot Library Init</text>
+  <text x="264" y="212" text-anchor="middle" font-size="8" fill="#534AB7" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">查询参考例题库</text>
+  <text x="264" y="212" text-anchor="middle" font-size="8" fill="#534AB7" font-family="Arial,sans-serif" class="en">Query example store</text>
   <rect x="352" y="132" width="312" height="100" rx="7" fill="#CECBF6" stroke="#534AB7" stroke-width="0.5"/>
-  <text x="508" y="147" text-anchor="middle" font-size="8" font-weight="700" fill="#26215C" font-family="PingFang SC,Microsoft YaHei,sans-serif">文档智能化管道</text>
+  <text x="508" y="147" text-anchor="middle" font-size="9" font-weight="700" fill="#26215C" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">文档智能化管道</text>
+  <text x="508" y="147" text-anchor="middle" font-size="9" font-weight="700" fill="#26215C" font-family="Arial,sans-serif" class="en">Document Intelligence Pipeline</text>
   <rect x="360" y="152" width="144" height="30" rx="5" fill="#EEEDFE" stroke="#7F77DD" stroke-width="0.5"/>
-  <text x="432" y="164" text-anchor="middle" font-size="7.5" font-weight="700" fill="#3C3489" font-family="PingFang SC,Microsoft YaHei,sans-serif">数据源连接器</text>
-  <text x="432" y="176" text-anchor="middle" font-size="7" fill="#534AB7" font-family="PingFang SC,Microsoft YaHei,sans-serif">S3 / SharePoint 接入</text>
+  <text x="432" y="164" text-anchor="middle" font-size="8.5" font-weight="700" fill="#3C3489" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">数据源连接器</text>
+  <text x="432" y="164" text-anchor="middle" font-size="8.5" font-weight="700" fill="#3C3489" font-family="Arial,sans-serif" class="en">Data Source Connectors</text>
+  <text x="432" y="176" text-anchor="middle" font-size="8" fill="#534AB7" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">S3 / SharePoint 接入</text>
+  <text x="432" y="176" text-anchor="middle" font-size="8" fill="#534AB7" font-family="Arial,sans-serif" class="en">S3 / SharePoint ingest</text>
   <rect x="512" y="152" width="144" height="30" rx="5" fill="#EEEDFE" stroke="#7F77DD" stroke-width="0.5"/>
-  <text x="584" y="164" text-anchor="middle" font-size="7.5" font-weight="700" fill="#3C3489" font-family="PingFang SC,Microsoft YaHei,sans-serif">Document AI 解析</text>
-  <text x="584" y="176" text-anchor="middle" font-size="7" fill="#534AB7" font-family="PingFang SC,Microsoft YaHei,sans-serif">PDF / 图表文字提取</text>
+  <text x="584" y="164" text-anchor="middle" font-size="8.5" font-weight="700" fill="#3C3489" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">Document AI 解析</text>
+  <text x="584" y="164" text-anchor="middle" font-size="8.5" font-weight="700" fill="#3C3489" font-family="Arial,sans-serif" class="en">Document AI Parsing</text>
+  <text x="584" y="176" text-anchor="middle" font-size="8" fill="#534AB7" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">PDF / 图表文字提取</text>
+  <text x="584" y="176" text-anchor="middle" font-size="8" fill="#534AB7" font-family="Arial,sans-serif" class="en">PDF / chart extraction</text>
   <rect x="360" y="188" width="144" height="30" rx="5" fill="#EEEDFE" stroke="#7F77DD" stroke-width="0.5"/>
-  <text x="432" y="200" text-anchor="middle" font-size="7.5" font-weight="700" fill="#3C3489" font-family="PingFang SC,Microsoft YaHei,sans-serif">Cortex Search 建服务</text>
-  <text x="432" y="212" text-anchor="middle" font-size="7" fill="#534AB7" font-family="PingFang SC,Microsoft YaHei,sans-serif">混合检索索引</text>
+  <text x="432" y="200" text-anchor="middle" font-size="8.5" font-weight="700" fill="#3C3489" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">Cortex Search 建服务</text>
+  <text x="432" y="200" text-anchor="middle" font-size="8.5" font-weight="700" fill="#3C3489" font-family="Arial,sans-serif" class="en">Cortex Search Service</text>
+  <text x="432" y="212" text-anchor="middle" font-size="8" fill="#534AB7" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">混合检索索引</text>
+  <text x="432" y="212" text-anchor="middle" font-size="8" fill="#534AB7" font-family="Arial,sans-serif" class="en">Hybrid search index</text>
   <rect x="512" y="188" width="144" height="30" rx="5" fill="#EEEDFE" stroke="#7F77DD" stroke-width="0.5"/>
-  <text x="584" y="200" text-anchor="middle" font-size="7.5" font-weight="700" fill="#3C3489" font-family="PingFang SC,Microsoft YaHei,sans-serif">增量索引 Pipeline</text>
-  <text x="584" y="212" text-anchor="middle" font-size="7" fill="#534AB7" font-family="PingFang SC,Microsoft YaHei,sans-serif">新文件自动处理</text>
+  <text x="584" y="200" text-anchor="middle" font-size="8.5" font-weight="700" fill="#3C3489" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">增量索引 Pipeline</text>
+  <text x="584" y="200" text-anchor="middle" font-size="8.5" font-weight="700" fill="#3C3489" font-family="Arial,sans-serif" class="en">Incremental Index Pipeline</text>
+  <text x="584" y="212" text-anchor="middle" font-size="8" fill="#534AB7" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">新文件自动处理</text>
+  <text x="584" y="212" text-anchor="middle" font-size="8" fill="#534AB7" font-family="Arial,sans-serif" class="en">Auto-process new files</text>
   <rect class="layer-hit" id="hit-1" x="28" y="110" width="644" height="130" rx="9" onclick="showLayer(1)"/>
 
   <line x1="350" y1="240" x2="350" y2="256" stroke="#999" stroke-width="1" marker-end="url(#ar)"/>
 
   <!-- LAYER 2: blue -->
   <rect x="28" y="258" width="644" height="130" rx="9" fill="#E6F1FB" stroke="#378ADD" stroke-width="0.75"/>
-  <text x="350" y="274" text-anchor="middle" font-size="8.5" font-weight="700" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif">查询智能层</text>
+  <text x="350" y="274" text-anchor="middle" font-size="9.5" font-weight="700" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">查询智能层</text>
+  <text x="350" y="274" text-anchor="middle" font-size="9.5" font-weight="700" fill="#0C447C" font-family="Arial,sans-serif" class="en">Query Intelligence Layer</text>
   <rect x="36"  y="280" width="116" height="52" rx="6" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
-  <text x="94"  y="297" text-anchor="middle" font-size="7.5" font-weight="700" fill="#042C53" font-family="PingFang SC,Microsoft YaHei,sans-serif">意图分类器</text>
-  <text x="94"  y="310" text-anchor="middle" font-size="7" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif">交互 vs 报表</text>
-  <text x="94"  y="322" text-anchor="middle" font-size="7" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif">vs 文档检索</text>
+  <text x="94"  y="297" text-anchor="middle" font-size="8.5" font-weight="700" fill="#042C53" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">意图分类器</text>
+  <text x="94"  y="297" text-anchor="middle" font-size="8.5" font-weight="700" fill="#042C53" font-family="Arial,sans-serif" class="en">Intent Classifier</text>
+  <text x="94"  y="310" text-anchor="middle" font-size="8" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">交互 vs 报表</text>
+  <text x="94"  y="310" text-anchor="middle" font-size="8" fill="#0C447C" font-family="Arial,sans-serif" class="en">Q&amp;A vs Report</text>
+  <text x="94"  y="322" text-anchor="middle" font-size="8" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">vs 文档检索</text>
+  <text x="94"  y="322" text-anchor="middle" font-size="8" fill="#0C447C" font-family="Arial,sans-serif" class="en">vs Doc Retrieval</text>
   <rect x="160" y="280" width="116" height="52" rx="6" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
-  <text x="218" y="297" text-anchor="middle" font-size="7.5" font-weight="700" fill="#042C53" font-family="PingFang SC,Microsoft YaHei,sans-serif">Schema 路由器</text>
-  <text x="218" y="310" text-anchor="middle" font-size="7" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif">向量召回候选表</text>
-  <text x="218" y="322" text-anchor="middle" font-size="7" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif">LLM 精选表/列</text>
+  <text x="218" y="297" text-anchor="middle" font-size="8.5" font-weight="700" fill="#042C53" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">Schema 路由器</text>
+  <text x="218" y="297" text-anchor="middle" font-size="8.5" font-weight="700" fill="#042C53" font-family="Arial,sans-serif" class="en">Schema Router</text>
+  <text x="218" y="310" text-anchor="middle" font-size="8" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">向量召回候选表</text>
+  <text x="218" y="310" text-anchor="middle" font-size="8" fill="#0C447C" font-family="Arial,sans-serif" class="en">Vector table recall</text>
+  <text x="218" y="322" text-anchor="middle" font-size="8" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">LLM 精选表/列</text>
+  <text x="218" y="322" text-anchor="middle" font-size="8" fill="#0C447C" font-family="Arial,sans-serif" class="en">LLM table/col select</text>
   <rect x="284" y="280" width="116" height="52" rx="6" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
-  <text x="342" y="297" text-anchor="middle" font-size="7.5" font-weight="700" fill="#042C53" font-family="PingFang SC,Microsoft YaHei,sans-serif">SQL 生成器</text>
-  <text x="342" y="310" text-anchor="middle" font-size="7" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif">Text-to-SQL</text>
-  <text x="342" y="322" text-anchor="middle" font-size="7" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif">EXPLAIN 验证+重试</text>
+  <text x="342" y="297" text-anchor="middle" font-size="8.5" font-weight="700" fill="#042C53" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">SQL 生成器</text>
+  <text x="342" y="297" text-anchor="middle" font-size="8.5" font-weight="700" fill="#042C53" font-family="Arial,sans-serif" class="en">SQL Generator</text>
+  <text x="342" y="310" text-anchor="middle" font-size="8" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">Text-to-SQL</text>
+  <text x="342" y="310" text-anchor="middle" font-size="8" fill="#0C447C" font-family="Arial,sans-serif" class="en">Text-to-SQL</text>
+  <text x="342" y="322" text-anchor="middle" font-size="8" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">EXPLAIN 验证+重试</text>
+  <text x="342" y="322" text-anchor="middle" font-size="8" fill="#0C447C" font-family="Arial,sans-serif" class="en">EXPLAIN validate+retry</text>
   <rect x="408" y="280" width="116" height="52" rx="6" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
-  <text x="466" y="297" text-anchor="middle" font-size="7.5" font-weight="700" fill="#042C53" font-family="PingFang SC,Microsoft YaHei,sans-serif">RAG 检索器</text>
-  <text x="466" y="310" text-anchor="middle" font-size="7" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif">混合检索</text>
-  <text x="466" y="322" text-anchor="middle" font-size="7" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif">BM25+向量+Reranker</text>
+  <text x="466" y="297" text-anchor="middle" font-size="8.5" font-weight="700" fill="#042C53" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">RAG 检索器</text>
+  <text x="466" y="297" text-anchor="middle" font-size="8.5" font-weight="700" fill="#042C53" font-family="Arial,sans-serif" class="en">RAG Retriever</text>
+  <text x="466" y="310" text-anchor="middle" font-size="8" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">混合检索</text>
+  <text x="466" y="310" text-anchor="middle" font-size="8" fill="#0C447C" font-family="Arial,sans-serif" class="en">Hybrid retrieval</text>
+  <text x="466" y="322" text-anchor="middle" font-size="8" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">BM25+向量+Reranker</text>
+  <text x="466" y="322" text-anchor="middle" font-size="8" fill="#0C447C" font-family="Arial,sans-serif" class="en">BM25+Vector+Reranker</text>
   <rect x="532" y="280" width="132" height="52" rx="6" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
-  <text x="598" y="297" text-anchor="middle" font-size="7.5" font-weight="700" fill="#042C53" font-family="PingFang SC,Microsoft YaHei,sans-serif">联邦路由器</text>
-  <text x="598" y="310" text-anchor="middle" font-size="7" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif">多源 Trino</text>
-  <text x="598" y="322" text-anchor="middle" font-size="7" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif">跨库 JOIN</text>
+  <text x="598" y="297" text-anchor="middle" font-size="8.5" font-weight="700" fill="#042C53" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">联邦路由器</text>
+  <text x="598" y="297" text-anchor="middle" font-size="8.5" font-weight="700" fill="#042C53" font-family="Arial,sans-serif" class="en">Federation Router</text>
+  <text x="598" y="310" text-anchor="middle" font-size="8" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">多源 Trino</text>
+  <text x="598" y="310" text-anchor="middle" font-size="8" fill="#0C447C" font-family="Arial,sans-serif" class="en">Multi-source Trino</text>
+  <text x="598" y="322" text-anchor="middle" font-size="8" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">跨库 JOIN</text>
+  <text x="598" y="322" text-anchor="middle" font-size="8" fill="#0C447C" font-family="Arial,sans-serif" class="en">Cross-DB JOIN</text>
   <rect x="36"  y="340" width="628" height="38" rx="6" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
-  <text x="350" y="355" text-anchor="middle" font-size="8" font-weight="700" fill="#042C53" font-family="PingFang SC,Microsoft YaHei,sans-serif">上下文组装器</text>
-  <text x="350" y="369" text-anchor="middle" font-size="7.5" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif">Token 预算管理 · 多源结果格式化 · 来源标签注入 · 优先级截断</text>
+  <text x="350" y="355" text-anchor="middle" font-size="9" font-weight="700" fill="#042C53" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">上下文组装器</text>
+  <text x="350" y="355" text-anchor="middle" font-size="9" font-weight="700" fill="#042C53" font-family="Arial,sans-serif" class="en">Context Assembler</text>
+  <text x="350" y="369" text-anchor="middle" font-size="8.5" fill="#0C447C" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">Token 预算管理 · 多源结果格式化 · 来源标签注入 · 优先级截断</text>
+  <text x="350" y="369" text-anchor="middle" font-size="8.5" fill="#0C447C" font-family="Arial,sans-serif" class="en">Token budget · Multi-source formatting · Source tagging · Priority truncation</text>
   <rect class="layer-hit" id="hit-2" x="28" y="258" width="644" height="130" rx="9" onclick="showLayer(2)"/>
 
   <line x1="350" y1="388" x2="350" y2="404" stroke="#999" stroke-width="1" marker-end="url(#ar)"/>
 
   <!-- LAYER 3: teal -->
   <rect x="28" y="406" width="644" height="90" rx="9" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.75"/>
-  <text x="350" y="422" text-anchor="middle" font-size="8.5" font-weight="700" fill="#085041" font-family="PingFang SC,Microsoft YaHei,sans-serif">输出生成层</text>
+  <text x="350" y="422" text-anchor="middle" font-size="9.5" font-weight="700" fill="#085041" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">输出生成层</text>
+  <text x="350" y="422" text-anchor="middle" font-size="9.5" font-weight="700" fill="#085041" font-family="Arial,sans-serif" class="en">Output Generation Layer</text>
   <rect x="36"  y="428" width="150" height="60" rx="6" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
-  <text x="111" y="445" text-anchor="middle" font-size="7.5" font-weight="700" fill="#04342C" font-family="PingFang SC,Microsoft YaHei,sans-serif">自然语言答案</text>
-  <text x="111" y="458" text-anchor="middle" font-size="7" fill="#085041" font-family="PingFang SC,Microsoft YaHei,sans-serif">带引用来源 · Markdown 渲染</text>
-  <text x="111" y="471" text-anchor="middle" font-size="7" fill="#085041" font-family="PingFang SC,Microsoft YaHei,sans-serif">置信度标注</text>
+  <text x="111" y="445" text-anchor="middle" font-size="8.5" font-weight="700" fill="#04342C" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">自然语言答案</text>
+  <text x="111" y="445" text-anchor="middle" font-size="8.5" font-weight="700" fill="#04342C" font-family="Arial,sans-serif" class="en">Natural Language Answer</text>
+  <text x="111" y="458" text-anchor="middle" font-size="8" fill="#085041" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">带引用来源 · Markdown 渲染</text>
+  <text x="111" y="458" text-anchor="middle" font-size="8" fill="#085041" font-family="Arial,sans-serif" class="en">Citations · Markdown render</text>
+  <text x="111" y="471" text-anchor="middle" font-size="8" fill="#085041" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">置信度标注</text>
+  <text x="111" y="471" text-anchor="middle" font-size="8" fill="#085041" font-family="Arial,sans-serif" class="en">Confidence scoring</text>
   <rect x="194" y="428" width="150" height="60" rx="6" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
-  <text x="269" y="445" text-anchor="middle" font-size="7.5" font-weight="700" fill="#04342C" font-family="PingFang SC,Microsoft YaHei,sans-serif">图表生成</text>
-  <text x="269" y="458" text-anchor="middle" font-size="7" fill="#085041" font-family="PingFang SC,Microsoft YaHei,sans-serif">ECharts JSON 配置</text>
-  <text x="269" y="471" text-anchor="middle" font-size="7" fill="#085041" font-family="PingFang SC,Microsoft YaHei,sans-serif">前端直接渲染交互图表</text>
+  <text x="269" y="445" text-anchor="middle" font-size="8.5" font-weight="700" fill="#04342C" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">图表生成</text>
+  <text x="269" y="445" text-anchor="middle" font-size="8.5" font-weight="700" fill="#04342C" font-family="Arial,sans-serif" class="en">Chart Generation</text>
+  <text x="269" y="458" text-anchor="middle" font-size="8" fill="#085041" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">ECharts JSON 配置</text>
+  <text x="269" y="458" text-anchor="middle" font-size="8" fill="#085041" font-family="Arial,sans-serif" class="en">ECharts JSON config</text>
+  <text x="269" y="471" text-anchor="middle" font-size="8" fill="#085041" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">前端直接渲染交互图表</text>
+  <text x="269" y="471" text-anchor="middle" font-size="8" fill="#085041" font-family="Arial,sans-serif" class="en">Frontend renders interactively</text>
   <rect x="352" y="428" width="150" height="60" rx="6" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
-  <text x="427" y="445" text-anchor="middle" font-size="7.5" font-weight="700" fill="#04342C" font-family="PingFang SC,Microsoft YaHei,sans-serif">报表构建器</text>
-  <text x="427" y="458" text-anchor="middle" font-size="7" fill="#085041" font-family="PingFang SC,Microsoft YaHei,sans-serif">SQL 定义展示</text>
-  <text x="427" y="471" text-anchor="middle" font-size="7" fill="#085041" font-family="PingFang SC,Microsoft YaHei,sans-serif">用户确认后触发下载</text>
+  <text x="427" y="445" text-anchor="middle" font-size="8.5" font-weight="700" fill="#04342C" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">报表构建器</text>
+  <text x="427" y="445" text-anchor="middle" font-size="8.5" font-weight="700" fill="#04342C" font-family="Arial,sans-serif" class="en">Report Builder</text>
+  <text x="427" y="458" text-anchor="middle" font-size="8" fill="#085041" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">SQL 定义展示</text>
+  <text x="427" y="458" text-anchor="middle" font-size="8" fill="#085041" font-family="Arial,sans-serif" class="en">SQL definition preview</text>
+  <text x="427" y="471" text-anchor="middle" font-size="8" fill="#085041" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">用户确认后触发下载</text>
+  <text x="427" y="471" text-anchor="middle" font-size="8" fill="#085041" font-family="Arial,sans-serif" class="en">User-confirmed download</text>
   <rect x="510" y="428" width="154" height="60" rx="6" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
-  <text x="587" y="445" text-anchor="middle" font-size="7.5" font-weight="700" fill="#04342C" font-family="PingFang SC,Microsoft YaHei,sans-serif">溯源面板</text>
-  <text x="587" y="458" text-anchor="middle" font-size="7" fill="#085041" font-family="PingFang SC,Microsoft YaHei,sans-serif">数据来源链路</text>
-  <text x="587" y="471" text-anchor="middle" font-size="7" fill="#085041" font-family="PingFang SC,Microsoft YaHei,sans-serif">SQL 可查看 · 文档定位</text>
+  <text x="587" y="445" text-anchor="middle" font-size="8.5" font-weight="700" fill="#04342C" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">溯源面板</text>
+  <text x="587" y="445" text-anchor="middle" font-size="8.5" font-weight="700" fill="#04342C" font-family="Arial,sans-serif" class="en">Provenance Panel</text>
+  <text x="587" y="458" text-anchor="middle" font-size="8" fill="#085041" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">数据来源链路</text>
+  <text x="587" y="458" text-anchor="middle" font-size="8" fill="#085041" font-family="Arial,sans-serif" class="en">Data lineage view</text>
+  <text x="587" y="471" text-anchor="middle" font-size="8" fill="#085041" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">SQL 可查看 · 文档定位</text>
+  <text x="587" y="471" text-anchor="middle" font-size="8" fill="#085041" font-family="Arial,sans-serif" class="en">SQL viewable · Doc locate</text>
   <rect class="layer-hit" id="hit-3" x="28" y="406" width="644" height="90" rx="9" onclick="showLayer(3)"/>
 
   <line x1="350" y1="496" x2="350" y2="512" stroke="#999" stroke-width="1" marker-end="url(#ar)"/>
 
   <!-- LAYER 4: green -->
   <rect x="28" y="514" width="644" height="84" rx="9" fill="#EAF3DE" stroke="#639922" stroke-width="0.75"/>
-  <text x="350" y="530" text-anchor="middle" font-size="8.5" font-weight="700" fill="#27500A" font-family="PingFang SC,Microsoft YaHei,sans-serif">反馈与持续优化层（系统越用越准）</text>
+  <text x="350" y="530" text-anchor="middle" font-size="9.5" font-weight="700" fill="#27500A" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">反馈与持续优化层（系统越用越准）</text>
+  <text x="350" y="530" text-anchor="middle" font-size="9.5" font-weight="700" fill="#27500A" font-family="Arial,sans-serif" class="en">Feedback &amp; Continuous Improvement (Gets Better With Use)</text>
   <rect x="36"  y="536" width="150" height="54" rx="6" fill="#C0DD97" stroke="#3B6D11" stroke-width="0.5"/>
-  <text x="111" y="552" text-anchor="middle" font-size="7.5" font-weight="700" fill="#173404" font-family="PingFang SC,Microsoft YaHei,sans-serif">查询日志收集</text>
-  <text x="111" y="565" text-anchor="middle" font-size="7" fill="#27500A" font-family="PingFang SC,Microsoft YaHei,sans-serif">成功/失败分类记录</text>
+  <text x="111" y="552" text-anchor="middle" font-size="8.5" font-weight="700" fill="#173404" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">查询日志收集</text>
+  <text x="111" y="552" text-anchor="middle" font-size="8.5" font-weight="700" fill="#173404" font-family="Arial,sans-serif" class="en">Query Log Collection</text>
+  <text x="111" y="565" text-anchor="middle" font-size="8" fill="#27500A" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">成功/失败分类记录</text>
+  <text x="111" y="565" text-anchor="middle" font-size="8" fill="#27500A" font-family="Arial,sans-serif" class="en">Success/failure logging</text>
   <rect x="194" y="536" width="150" height="54" rx="6" fill="#C0DD97" stroke="#3B6D11" stroke-width="0.5"/>
-  <text x="269" y="552" text-anchor="middle" font-size="7.5" font-weight="700" fill="#173404" font-family="PingFang SC,Microsoft YaHei,sans-serif">Few-shot 库更新</text>
-  <text x="269" y="565" text-anchor="middle" font-size="7" fill="#27500A" font-family="PingFang SC,Microsoft YaHei,sans-serif">自动追加成功案例</text>
+  <text x="269" y="552" text-anchor="middle" font-size="8.5" font-weight="700" fill="#173404" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">Few-shot 库更新</text>
+  <text x="269" y="552" text-anchor="middle" font-size="8.5" font-weight="700" fill="#173404" font-family="Arial,sans-serif" class="en">Few-shot Library Update</text>
+  <text x="269" y="565" text-anchor="middle" font-size="8" fill="#27500A" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">自动追加成功案例</text>
+  <text x="269" y="565" text-anchor="middle" font-size="8" fill="#27500A" font-family="Arial,sans-serif" class="en">Auto-append successes</text>
   <rect x="352" y="536" width="150" height="54" rx="6" fill="#C0DD97" stroke="#3B6D11" stroke-width="0.5"/>
-  <text x="427" y="552" text-anchor="middle" font-size="7.5" font-weight="700" fill="#173404" font-family="PingFang SC,Microsoft YaHei,sans-serif">描述质量评分</text>
-  <text x="427" y="565" text-anchor="middle" font-size="7" fill="#27500A" font-family="PingFang SC,Microsoft YaHei,sans-serif">低分触发重生成</text>
+  <text x="427" y="552" text-anchor="middle" font-size="8.5" font-weight="700" fill="#173404" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">描述质量评分</text>
+  <text x="427" y="552" text-anchor="middle" font-size="8.5" font-weight="700" fill="#173404" font-family="Arial,sans-serif" class="en">Description Quality Score</text>
+  <text x="427" y="565" text-anchor="middle" font-size="8" fill="#27500A" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">低分触发重生成</text>
+  <text x="427" y="565" text-anchor="middle" font-size="8" fill="#27500A" font-family="Arial,sans-serif" class="en">Low score → regenerate</text>
   <rect x="510" y="536" width="154" height="54" rx="6" fill="#C0DD97" stroke="#3B6D11" stroke-width="0.5"/>
-  <text x="587" y="552" text-anchor="middle" font-size="7.5" font-weight="700" fill="#173404" font-family="PingFang SC,Microsoft YaHei,sans-serif">用户反馈收集</text>
-  <text x="587" y="565" text-anchor="middle" font-size="7" fill="#27500A" font-family="PingFang SC,Microsoft YaHei,sans-serif">差评触发人工标注</text>
+  <text x="587" y="552" text-anchor="middle" font-size="8.5" font-weight="700" fill="#173404" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">用户反馈收集</text>
+  <text x="587" y="552" text-anchor="middle" font-size="8.5" font-weight="700" fill="#173404" font-family="Arial,sans-serif" class="en">User Feedback Collection</text>
+  <text x="587" y="565" text-anchor="middle" font-size="8" fill="#27500A" font-family="PingFang SC,Microsoft YaHei,sans-serif" class="zh">差评触发人工标注</text>
+  <text x="587" y="565" text-anchor="middle" font-size="8" fill="#27500A" font-family="Arial,sans-serif" class="en">Negative → manual label</text>
   <path d="M28 563 L13 563 L13 184 L28 184" fill="none" stroke="#639922" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ar)"/>
   <rect class="layer-hit" id="hit-4" x="28" y="514" width="644" height="84" rx="9" onclick="showLayer(4)"/>
   </svg>
 
   <!-- Tab bar -->
-  <div class="hint-click">↑ 点击上方任意层，在下方查看该层的组件详细说明</div>
-  <div class="print-note">各层组件说明见下方</div>
+  <div class="hint-click"><span class="zh">↑ 点击上方任意层，在下方查看该层的组件详细说明</span><span class="en">↑ Click any layer above to view detailed component descriptions below</span></div>
+  <div class="print-note"><span class="zh">各层组件详情请访问在线交互版本</span><span class="en">Interactive layer details available in the online version</span></div>
 
   <div class="layer-tabs" id="layer-tabs">
-    <div class="ltab ltab-0" id="tab-0" onclick="showLayer(0)">现状层</div>
-    <div class="ltab ltab-1 active" id="tab-1" onclick="showLayer(1)">基础设施层</div>
-    <div class="ltab ltab-2" id="tab-2" onclick="showLayer(2)">查询智能层</div>
-    <div class="ltab ltab-3" id="tab-3" onclick="showLayer(3)">输出生成层</div>
-    <div class="ltab ltab-4" id="tab-4" onclick="showLayer(4)">反馈层</div>
+    <div class="ltab ltab-0" id="tab-0" onclick="showLayer(0)"><span class="zh">现状层</span><span class="en">Current State</span></div>
+    <div class="ltab ltab-1 active" id="tab-1" onclick="showLayer(1)"><span class="zh">基础设施层</span><span class="en">Infrastructure</span></div>
+    <div class="ltab ltab-2" id="tab-2" onclick="showLayer(2)"><span class="zh">查询智能层</span><span class="en">Query Intelligence</span></div>
+    <div class="ltab ltab-3" id="tab-3" onclick="showLayer(3)"><span class="zh">输出生成层</span><span class="en">Output Layer</span></div>
+    <div class="ltab ltab-4" id="tab-4" onclick="showLayer(4)"><span class="zh">反馈层</span><span class="en">Feedback</span></div>
   </div>
 
   <!-- ══ PANEL 0: 现状层 ══ -->
@@ -423,6 +519,11 @@ hr{border:none;border-top:.5px solid #e8e7e2;margin:11px 0}
       <div class="xcard-head"><div class="xdot d0"></div><div class="xname">现有的搜索工具（ES / Solr）</div></div>
       <div class="xone">已经有关键词搜索能力，但只能精确匹配，不理解语义</div>
       <div class="xdetail">现有 Elasticsearch 的能力：搜"销售报告" → 找到包含这两个词的文档。缺的能力：搜"Q4 收入下滑原因" → 找到语义相关但词不同的分析文档。好消息：这些索引不需要推翻重建，我们会在它上面加一层语义理解。<span class="xtag tsem">可复用</span></div>
+    </div>
+    <div class="xcard" onclick="xToggle(this)">
+      <div class="xcard-head"><div class="xdot d0"></div><div class="xname">缺少统一权限与查询审计机制</div></div>
+      <div class="xone">数据访问分散在各工具，没有"谁查了什么数据"的统一记录，难以满足金融监管审计要求</div>
+      <div class="xdetail">OAC 有访问日志但颗粒度粗（"用户打开了这个报表"）；Snowflake 有查询历史但与业务意图无关联；非结构化文档系统（S3 / SharePoint）日志各自独立。AI 层的引入实际上是建立统一审计的机会——所有数据访问通过同一入口，统一记录，统一审查，形成合规所需的完整链路。<span class="xtag tinf">待建设</span></div>
     </div>
   </div>
 
@@ -504,6 +605,16 @@ hr{border:none;border-top:.5px solid #e8e7e2;margin:11px 0}
       <div class="xone">把 SQL 结果、文档段落、来源信息按优先级整理好，控制总量，交给 AI 生成回答</div>
       <div class="xdetail">① 每个数据块打上来源标签（"来自 Snowflake 销售表"、"来自 Q4 分析报告第3页"）② 核心数据全量放入，次要数据只放摘要 ③ 计算总 token 数，超出就按优先级截断 ④ 组成结构化提示词交给 AI。AI 拿到清晰、有来源标注的数据，回答时知道引用哪里，用户可以验证。<span class="xtag taut">全自动</span></div>
     </div>
+    <div class="xcard" onclick="xToggle(this)">
+      <div class="xcard-head"><div class="xdot d2"></div><div class="xname">行级权限透传（AI 不创造新的数据访问路径）</div></div>
+      <div class="xone">查询引擎使用发起请求的用户身份调用 Snowflake，AI 无法返回该用户无权直接查看的数据</div>
+      <div class="xdetail">实现方式：Snowflake OAuth / JWT 令牌透传，查询以用户身份执行而非平台服务账号。关键风险：若用平台统一服务账号调用，所有用户共享最高权限，形成绕过 RLS 的安全漏洞。验证节点：P0 原型期间必须测试跨权限边界查询——确认 AI 不能返回直接 SQL 查询时看不到的数据。<span class="xtag tman">P0 必须验证</span></div>
+    </div>
+    <div class="xcard" onclick="xToggle(this)">
+      <div class="xcard-head"><div class="xdot d2"></div><div class="xname">查询审计日志（金融监管合规要求）</div></div>
+      <div class="xone">每条 AI 生成的查询需完整记录：谁问、问了什么、生成了什么 SQL、查了什么数据</div>
+      <div class="xdetail">记录字段：用户 ID、原始自然语言问题、意图分类结果、生成 SQL 全文、Snowflake 实际查询 ID、返回数据行数、响应时间、用户反馈信号。合规用途：MiFID II 等监管框架要求数据访问可追溯；内部风控要求 AI 辅助决策不能是黑盒。存储位置：Snowflake 独立合规 schema，访问权限限制给合规与风控团队。<span class="xtag tman">监管要求</span></div>
+    </div>
   </div>
 
   <!-- ══ PANEL 3: 输出层 ══ -->
@@ -528,6 +639,11 @@ hr{border:none;border-top:.5px solid #e8e7e2;margin:11px 0}
       <div class="xcard-head"><div class="xdot d3"></div><div class="xname">数据溯源面板（每句话都知道从哪来）</div></div>
       <div class="xone">每个回答段落旁边标注数据来源，用户可以点击查看原始 SQL 或原始文档位置</div>
       <div class="xdetail">结构化数据的来源：显示"数据来源：Snowflake / sales_db / quarterly_summary"，可点击查看原始 SQL。非结构化的来源：显示"引用自：Q4市场分析报告.pdf，第3页，第2段"，可点击跳转原文。这是防止 AI 编造数据的关键机制——每句话必须有可追溯的来源。<span class="xtag taut">全自动</span></div>
+    </div>
+    <div class="xcard" onclick="xToggle(this)">
+      <div class="xcard-head"><div class="xdot d3"></div><div class="xname">幻觉风险防护（金融数据不能依赖 AI 推断）</div></div>
+      <div class="xone">AI 的每个数字必须锚定实际执行的 SQL 结果或文档原文，不允许基于推断或训练记忆填充数据</div>
+      <div class="xdetail">三层防护：① 结构化输出强制每个数字附 citations 字段（来源 SQL 行 ID 或文档段落 ID），前端发现 citations 为空则拦截并提示"数据来源无法验证"；② Schema 路由置信度低于阈值（0.7）时返回"请确认数据范围"而非猜测；③ SQL EXPLAIN 只验证语法，语义正确性由溯源面板（用户可见完整 SQL）保障。财务数据错误的成本远高于"无法回答"——系统应优先承认不确定性。<span class="xtag tman">必须实施</span></div>
     </div>
   </div>
 
@@ -564,7 +680,7 @@ hr{border:none;border-top:.5px solid #e8e7e2;margin:11px 0}
   </div><!-- end arch-wrap -->
 </div>
 
-<div class="pf"><span>ISS Data Visualisation — AI 转型方案</span><span>2026年3月</span></div>
+<div class="pf"><span><span class="zh">ISS Data Visualisation — AI 转型方案</span><span class="en">ISS Data Visualisation — AI Transformation</span></span><span><span class="zh">2026年3月</span><span class="en">March 2026</span></span></div>
 </div>
 
 
@@ -572,34 +688,42 @@ hr{border:none;border-top:.5px solid #e8e7e2;margin:11px 0}
 <div class="page">
 <div class="ph">
   <div>
-    <div class="pt">落地路线图、团队角色与关键判断</div>
-    <div class="ps">分阶段交付，每阶段有可演示成果——以及我认为常规做法哪里会出问题</div>
+    <div class="pt"><span class="zh">落地路线图、团队角色与关键判断</span><span class="en">Delivery Roadmap, Team Roles &amp; Key Judgements</span></div>
+    <div class="ps"><span class="zh">分阶段交付，每阶段有可演示成果——以及我认为常规做法哪里会出问题</span><span class="en">Phased delivery with demonstrable output at each stage — and where conventional approaches go wrong</span></div>
   </div>
-  <div class="pm">2026年3月<br>Principal Data Visualisation Engineer<br><span class="pb">第 3 页 / 共 3 页</span></div>
+  <div class="pm"><span class="zh">2026年3月</span><span class="en">March 2026</span><br><span class="pb"><span class="zh">第 3 页 / 共 3 页</span><span class="en">Page 3 of 3</span></span></div>
 </div>
 
 <div class="sec">
-  <div class="sl">分阶段路线图 — 每个阶段都有可演示的交付物</div>
+  <div class="sl"><span class="zh">分阶段路线图 — 每个阶段都有可演示的交付物</span><span class="en">PHASED ROADMAP — DEMONSTRABLE OUTPUT AT EACH STAGE</span></div>
   <div class="g4">
     <div class="ph-box ph0">
-      <div class="pn">P0</div><div class="pname">原型验证</div><div class="ptime">第 1–6 周</div>
-      <div class="pitems">· 手工标注 20 张核心表<br>· Schema 向量检索原型<br>· 选一个 ISS 投研场景跑通<br>· 100 份投研文档接入 Cortex Search</div>
-      <div class="pout">交付：向 Stakeholder 可演示原型</div>
+      <div class="pn">P0</div>
+      <div class="pname"><span class="zh">原型验证</span><span class="en">Prototype</span></div>
+      <div class="ptime"><span class="zh">第 1–6 周</span><span class="en">Weeks 1–6</span></div>
+      <div class="pitems"><span class="zh">· 手工标注 20 张核心表<br>· Schema 向量检索原型<br>· 选一个 ISS 投研场景跑通<br>· 100 份投研文档接入 Cortex Search</span><span class="en">· Manually annotate 20 core tables<br>· Schema vector retrieval prototype<br>· One ISS research scenario end-to-end<br>· 100 research docs into Cortex Search</span></div>
+      <div class="pout"><span class="zh">交付：向 Stakeholder 可演示原型</span><span class="en">Output: Stakeholder-demonstrable prototype</span></div>
     </div>
     <div class="ph-box ph1">
-      <div class="pn">P1</div><div class="pname">基础设施 AI 化</div><div class="ptime">第 2–4 个月</div>
-      <div class="pitems">· dbt Agent 覆盖所有核心表<br>· 所有文档源接入，增量 Pipeline 上线<br>· Cortex Search 服务注册<br>· Few-shot 库从查询日志初始化</div>
-      <div class="pout">交付：自我维护的语义索引</div>
+      <div class="pn">P1</div>
+      <div class="pname"><span class="zh">基础设施 AI 化</span><span class="en">AI Infrastructure</span></div>
+      <div class="ptime"><span class="zh">第 2–4 个月</span><span class="en">Months 2–4</span></div>
+      <div class="pitems"><span class="zh">· dbt Agent 覆盖所有核心表<br>· 所有文档源接入，增量 Pipeline 上线<br>· Cortex Search 服务注册<br>· Few-shot 库从查询日志初始化</span><span class="en">· dbt Agent covers all core tables<br>· All doc sources connected, incremental pipeline live<br>· Cortex Search service registered<br>· Few-shot library initialised from query logs</span></div>
+      <div class="pout"><span class="zh">交付：自我维护的语义索引</span><span class="en">Output: Self-maintaining semantic index</span></div>
     </div>
     <div class="ph-box ph2">
-      <div class="pn">P2</div><div class="pname">查询智能生产化</div><div class="ptime">第 5–7 个月</div>
-      <div class="pitems">· Schema 路由器 + SQL 生成器上线<br>· 报表构建器（确认后执行）<br>· 多源联邦查询（Trino）<br>· OAC 图表集成</div>
-      <div class="pout">交付：准确率 80%+，全 ISS 开放</div>
+      <div class="pn">P2</div>
+      <div class="pname"><span class="zh">查询智能生产化</span><span class="en">Query Intelligence</span></div>
+      <div class="ptime"><span class="zh">第 5–7 个月</span><span class="en">Months 5–7</span></div>
+      <div class="pitems"><span class="zh">· Schema 路由器 + SQL 生成器上线<br>· 报表构建器（确认后执行）<br>· OAC 图表集成<br>· 权限透传与审计日志上线</span><span class="en">· Schema router + SQL generator live<br>· Report builder (user-confirmed execution)<br>· OAC chart integration<br>· RLS pass-through &amp; audit log live</span></div>
+      <div class="pout"><span class="zh">交付：准确率 80%+，全 ISS 开放</span><span class="en">Output: 80%+ accuracy, open to all ISS</span></div>
     </div>
     <div class="ph-box ph3">
-      <div class="pn">P3</div><div class="pname">推广与持续优化</div><div class="ptime">第 8 个月起</div>
-      <div class="pitems">· 全 ISS 跨资产类别推广<br>· 反馈闭环自动驱动改进<br>· Data Viz 团队转向平台治理<br>· 准确率目标 85–90%</div>
-      <div class="pout">交付：自我优化的数据对话平台</div>
+      <div class="pn">P3</div>
+      <div class="pname"><span class="zh">推广与持续优化</span><span class="en">Scale &amp; Optimise</span></div>
+      <div class="ptime"><span class="zh">第 8 个月起</span><span class="en">Month 8+</span></div>
+      <div class="pitems"><span class="zh">· 全 ISS 跨资产类别推广<br>· 多源联邦查询（Trino）上线<br>· 反馈闭环自动驱动改进<br>· 准确率目标 85–90%</span><span class="en">· Roll out across all ISS asset classes<br>· Multi-source federation (Trino) live<br>· Feedback loop drives continuous improvement<br>· Target accuracy 85–90%</span></div>
+      <div class="pout"><span class="zh">交付：自我优化的数据对话平台</span><span class="en">Output: Self-optimising data dialogue platform</span></div>
     </div>
   </div>
 </div>
@@ -607,41 +731,41 @@ hr{border:none;border-top:.5px solid #e8e7e2;margin:11px 0}
 <hr>
 
 <div class="sec">
-  <div class="sl">成功标准 — 可量化，不含糊</div>
+  <div class="sl"><span class="zh">成功标准 — 可量化，不含糊</span><span class="en">SUCCESS CRITERIA — MEASURABLE, NOT VAGUE</span></div>
   <div class="mets">
-    <div class="met"><div class="mn">80%+</div><div class="ml">P2 完成时自然语言查询准确率</div></div>
-    <div class="met"><div class="mn">70%</div><div class="ml">临时分析需求业务方自助解决比例</div></div>
-    <div class="met"><div class="mn">&lt;30s</div><div class="ml">即时分析问答的响应时间</div></div>
-    <div class="met"><div class="mn">100%</div><div class="ml">投研文档 P1 完成时进入 AI 可检索索引</div></div>
+    <div class="met"><div class="mn">80%+</div><div class="ml"><span class="zh">P2 完成时自然语言查询准确率</span><span class="en">NL query accuracy at P2 completion</span></div></div>
+    <div class="met"><div class="mn">70%</div><div class="ml"><span class="zh">临时分析需求业务方自助解决比例</span><span class="en">Ad hoc queries self-served by business users</span></div></div>
+    <div class="met"><div class="mn">&lt;30s</div><div class="ml"><span class="zh">即时分析问答目标响应时间</span><span class="en">Target response time for instant Q&amp;A</span></div><div style="font-size:6.5pt;color:#bbb;margin-top:2px"><span class="zh">流式输出降低感知延迟；复杂多表查询异步处理</span><span class="en">Streaming output reduces perceived latency; complex queries run async</span></div></div>
+    <div class="met"><div class="mn">100%</div><div class="ml"><span class="zh">投研文档 P1 完成时进入 AI 可检索索引</span><span class="en">Research docs in AI-searchable index by P1</span></div></div>
   </div>
-  <p class="bt" style="margin-top:8px;font-size:8pt;color:#999">冷启动期（P0–P1）准确率约 60–70%，这是正常节奏，不是失败信号。反馈闭环是驱动改进的机制——成功查询补充 Few-shot 库，失败查询标记描述待审核。提前管理这个预期至关重要。</p>
+  <p class="bt" style="margin-top:8px;font-size:8pt;color:#999"><span class="zh">冷启动期（P0–P1）准确率约 60–70%，这是正常节奏，不是失败信号。反馈闭环是驱动改进的机制——成功查询补充 Few-shot 库，失败查询标记描述待审核。提前管理这个预期至关重要。</span><span class="en">Cold-start accuracy (P0–P1) of 60–70% is expected pace, not a failure signal. The feedback loop is the improvement mechanism — successful queries feed the Few-shot library, failed queries flag descriptions for review. Managing this expectation upfront is critical.</span></p>
 </div>
 
 <hr>
 
 <div class="sec">
-  <div class="sl">各团队角色与投入</div>
+  <div class="sl"><span class="zh">各团队角色与投入</span><span class="en">TEAM ROLES &amp; COMMITMENT</span></div>
   <table class="rt">
-    <tr><th style="width:115px">团队</th><th>主要职责</th><th style="width:110px">投入程度</th></tr>
+    <tr><th style="width:115px"><span class="zh">团队</span><span class="en">Team</span></th><th><span class="zh">主要职责</span><span class="en">Responsibilities</span></th><th style="width:110px"><span class="zh">投入程度</span><span class="en">Commitment</span></th></tr>
     <tr>
       <td class="rw"><span class="tag tsf">Snowflake</span><br>Data Platform</td>
-      <td>Cortex Search 服务配置、数据访问权限、查询性能调优、增量 Pipeline 监控。核心技术伙伴，全程参与。</td>
-      <td class="rtime">P0：核心参与<br>P1–2：技术伙伴</td>
+      <td><span class="zh">Cortex Search 服务配置、数据访问权限、查询性能调优、增量 Pipeline 监控。核心技术伙伴，全程参与。</span><span class="en">Cortex Search service config, data access permissions, query performance tuning, incremental pipeline monitoring. Core technical partner throughout.</span></td>
+      <td class="rtime"><span class="zh">P0：核心参与<br>P1–2：技术伙伴</span><span class="en">P0: Core involvement<br>P1–2: Technical partner</span></td>
     </tr>
     <tr>
       <td class="rw"><span class="tag toac">OAC</span><br>Data Viz</td>
-      <td>定义 OAC 与 AI 查询层的边界（标准报表走 OAC，探索查询走 AI）；维护现有报表不变；P2 评估将 AI 入口嵌入 OAC 工作簿。</td>
-      <td class="rtime">P0：边界定义<br>P2：集成评估</td>
+      <td><span class="zh">定义 OAC 与 AI 查询层的边界（标准报表走 OAC，探索查询走 AI）；维护现有报表不变；P2 评估将 AI 入口嵌入 OAC 工作簿。</span><span class="en">Define the OAC/AI boundary (formal reports via OAC, exploratory queries via AI); maintain existing reports unchanged; P2: evaluate embedding the AI entry point into OAC workbooks.</span></td>
+      <td class="rtime"><span class="zh">P0：边界定义<br>P2：集成评估</span><span class="en">P0: Boundary definition<br>P2: Integration eval</span></td>
     </tr>
     <tr>
       <td class="rw"><span class="tag tai">AI Engineering</span></td>
-      <td>dbt 描述 Agent、Schema 路由器、SQL 生成器、RAG 检索链路、上下文组装器、输出层、反馈 Pipeline 全部构建与维护。</td>
-      <td class="rtime">全程主力<br>2–3 人核心</td>
+      <td><span class="zh">dbt 描述 Agent、Schema 路由器、SQL 生成器、RAG 检索链路、上下文组装器、输出层、反馈 Pipeline 全部构建与维护。</span><span class="en">Build and maintain all components: dbt description agent, schema router, SQL generator, RAG retrieval chain, context assembler, output layer, and feedback pipeline.</span></td>
+      <td class="rtime"><span class="zh">全程主力<br>2–3 人核心</span><span class="en">Full-time lead<br>2–3 core engineers</span></td>
     </tr>
     <tr>
       <td class="rw"><span class="tag tbiz">Business / ISS</span></td>
-      <td>提供 2 个原型场景真实需求；审核低置信度的 AI 生成描述（约每周 2 小时）；提供满意 / 不满意反馈信号。</td>
-      <td class="rtime">全程轻度参与<br>约每周 2 小时</td>
+      <td><span class="zh">提供 2 个原型场景真实需求；审核低置信度的 AI 生成描述（约每周 2 小时）；提供满意 / 不满意反馈信号。</span><span class="en">Provide 2 real prototype scenarios; review low-confidence AI-generated descriptions (~2 hrs/week); provide thumbs up/down feedback signals.</span></td>
+      <td class="rtime"><span class="zh">全程轻度参与<br>约每周 2 小时</span><span class="en">Light ongoing input<br>~2 hrs/week</span></td>
     </tr>
   </table>
 </div>
@@ -649,71 +773,116 @@ hr{border:none;border-top:.5px solid #e8e7e2;margin:11px 0}
 <hr>
 
 <div class="sec">
-  <div class="sl">我的三个关键判断 — 可能和常规做法不同</div>
+  <div class="sl"><span class="zh">关键风险与对策</span><span class="en">KEY RISKS &amp; MITIGATIONS</span></div>
+  <table class="rt">
+    <tr><th style="width:145px"><span class="zh">风险</span><span class="en">Risk</span></th><th><span class="zh">对策</span><span class="en">Mitigation</span></th><th style="width:90px"><span class="zh">阶段</span><span class="en">Phase</span></th></tr>
+    <tr>
+      <td class="rw"><span class="zh">AI 返回错误财务数据</span><span class="en">AI returns wrong financial data</span></td>
+      <td><span class="zh">强制来源标注；置信度低于阈值时拒绝作答而非猜测；SQL 全程可见可验证</span><span class="en">Mandatory citations; below-threshold confidence returns refusal not guess; SQL visible and verifiable throughout</span></td>
+      <td class="rtime"><span class="zh">P0 起执行</span><span class="en">From P0</span></td>
+    </tr>
+    <tr>
+      <td class="rw"><span class="zh">数据驻留 / 合规</span><span class="en">Data residency / compliance</span></td>
+      <td><span class="zh">全程使用 Snowflake Cortex LLMs，模型推理在平台内部完成，数据不流出；审计日志满足监管要求</span><span class="en">Use Snowflake Cortex LLMs throughout — inference stays on-platform, data never leaves; audit logs meet regulatory requirements</span></td>
+      <td class="rtime"><span class="zh">架构决策</span><span class="en">Arch decision</span></td>
+    </tr>
+    <tr>
+      <td class="rw"><span class="zh">用户权限越权访问</span><span class="en">Privilege escalation via AI</span></td>
+      <td><span class="zh">查询引擎透传用户 Snowflake 行级权限（RLS），AI 不创造新访问路径；P0 强制测试权限边界</span><span class="en">Query engine passes through user Snowflake RLS — AI creates no new access paths; P0 must test permission boundaries</span></td>
+      <td class="rtime"><span class="zh">P0 必须验证</span><span class="en">P0 mandatory</span></td>
+    </tr>
+    <tr>
+      <td class="rw"><span class="zh">响应延迟超 30s</span><span class="en">Response latency exceeds 30s</span></td>
+      <td><span class="zh">高频查询结果缓存；流式输出降低感知延迟；复杂报表异步执行；P2 引入延迟监控告警</span><span class="en">Cache frequent queries; streaming output reduces perceived latency; complex reports run async; P2 introduces latency monitoring</span></td>
+      <td class="rtime"><span class="zh">P2 优化</span><span class="en">P2 optimise</span></td>
+    </tr>
+    <tr>
+      <td class="rw"><span class="zh">Trino 联邦基础设施延期</span><span class="en">Trino federation infra delays</span></td>
+      <td><span class="zh">联邦路由器推迟至 P3，P2 仅对接 Snowflake 单源，不阻塞主线交付</span><span class="en">Federation router deferred to P3; P2 targets Snowflake single-source only — main delivery unblocked</span></td>
+      <td class="rtime"><span class="zh">P2 范围调整</span><span class="en">P2 scope adj.</span></td>
+    </tr>
+    <tr>
+      <td class="rw"><span class="zh">冷启动准确率影响采用意愿</span><span class="en">Cold-start accuracy dampens adoption</span></td>
+      <td><span class="zh">P0 演示时提前对齐预期：60–70% 为正常冷启动节奏，3 个月后反馈闭环驱动提升至 80%+</span><span class="en">Align expectations at P0 demo: 60–70% is normal cold-start pace; feedback loop drives improvement to 80%+ within 3 months</span></td>
+      <td class="rtime"><span class="zh">P0 沟通</span><span class="en">P0 comms</span></td>
+    </tr>
+  </table>
+</div>
+
+<hr>
+
+<div class="sec">
+  <div class="sl"><span class="zh">我的三个关键判断 — 可能和常规做法不同</span><span class="en">THREE KEY JUDGEMENTS — WHERE I DIVERGE FROM CONVENTION</span></div>
   <div class="bet">
     <div class="bn">1</div>
     <div>
-      <div class="btt">语义层必须先于所有 AI 功能——顺序不能反</div>
-      <div class="bbd">直觉是先做用户看得见的 AI 对话界面，数据接入往后放。这个顺序会产出漂亮的 Demo 和糟糕的生产准确率。我会用前 6 周完全投入在 dbt 描述 Agent 和 Schema 索引上——业务用户短期内看不到成果，但这是后续所有查询准确率的地基。原型出来得慢，但出来时是可靠的。</div>
+      <div class="btt"><span class="zh">语义层必须先于所有 AI 功能——顺序不能反</span><span class="en">The Semantic Layer Must Come Before All AI Features — The Sequence Cannot Be Reversed</span></div>
+      <div class="bbd"><span class="zh">直觉是先做用户看得见的 AI 对话界面，数据接入往后放。这个顺序会产出漂亮的 Demo 和糟糕的生产准确率。我会用前 6 周完全投入在 dbt 描述 Agent 和 Schema 索引上——业务用户短期内看不到成果，但这是后续所有查询准确率的地基。原型出来得慢，但出来时是可靠的。</span><span class="en">The instinct is to build the visible AI chat interface first and handle data ingestion later. That sequence produces beautiful demos and poor production accuracy. I will spend the first 6 weeks entirely on the dbt description agent and schema index — business users won't see results immediately, but this is the foundation for every accuracy metric that follows. The prototype takes longer to appear, but when it does, it's trustworthy.</span></div>
     </div>
   </div>
   <div class="bet">
     <div class="bn">2</div>
     <div>
-      <div class="btt">OAC 不是被替代的目标，而是获得了更好的上游</div>
-      <div class="bbd">把 AI 分析层定义为"替代仪表盘"会制造不必要的阻力，而且判断本身也是错的。定期调度的、有治理要求的正式报表永远需要 OAC。AI 层处理 OAC 从来没打算做的事：投研人员需要立即得到答案的探索性、临时性、多数据源联合查询。两者都必要，互不替代。</div>
+      <div class="btt"><span class="zh">OAC 不是被替代的目标，而是获得了更好的上游</span><span class="en">OAC Is Not a Replacement Target — It Gets a Better Upstream</span></div>
+      <div class="bbd"><span class="zh">把 AI 分析层定义为"替代仪表盘"会制造不必要的阻力，而且判断本身也是错的。定期调度的、有治理要求的正式报表永远需要 OAC。AI 层处理 OAC 从来没打算做的事：投研人员需要立即得到答案的探索性、临时性、多数据源联合查询。两者都必要，互不替代。</span><span class="en">Framing the AI layer as a "dashboard replacement" creates unnecessary resistance — and the framing is wrong. Scheduled, governed, formal reports will always need OAC. The AI layer handles what OAC never intended to cover: exploratory, ad hoc, multi-source queries that investment professionals need answered immediately. Both are necessary; neither replaces the other.</span></div>
     </div>
   </div>
   <div class="bet">
     <div class="bn">3</div>
     <div>
-      <div class="btt">Data Viz 团队的价值从"交付报表"转向"建设平台能力"</div>
-      <div class="bbd">随着 AI 承担越来越多的临时查询，团队的杠杆来自：定义语义层标准、建立 Metric 规范、确保 AI 系统产出可信赖的结果——而不是执行更多报表请求。这是更有价值的角色，但需要从 P1 阶段就有意识地开始转型，而不是等平台建好再说。</div>
+      <div class="btt"><span class="zh">Data Viz 团队的价值从"交付报表"转向"建设平台能力"</span><span class="en">The Data Viz Team's Value Shifts from "Delivering Reports" to "Building Platform Capability"</span></div>
+      <div class="bbd"><span class="zh">随着 AI 承担越来越多的临时查询，团队的杠杆来自：定义语义层标准、建立 Metric 规范、确保 AI 系统产出可信赖的结果——而不是执行更多报表请求。这是更有价值的角色，但需要从 P1 阶段就有意识地开始转型，而不是等平台建好再说。</span><span class="en">As AI absorbs more ad hoc queries, the team's leverage comes from defining semantic layer standards, establishing metric definitions, and ensuring the AI system produces trustworthy outputs — not from executing more report requests. This is a more valuable role, but it requires a deliberate shift starting at P1, not waiting until the platform is built.</span></div>
     </div>
   </div>
 </div>
 
-<div class="pf"><span>ISS Data Visualisation — AI 转型方案</span><span>2026年3月</span></div>
+<div class="pf"><span><span class="zh">ISS Data Visualisation — AI 转型方案</span><span class="en">ISS Data Visualisation — AI Transformation</span></span><span><span class="zh">2026年3月</span><span class="en">March 2026</span></span></div>
 </div>
 
 <script>
-var current = 1;
+function toggleLang(lang) {
+  document.body.className = 'lang-' + lang;
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  document.title = lang === 'zh'
+    ? 'ISS 数据可视化 AI 转型方案'
+    : 'ISS Data Visualisation AI Transformation';
+  document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+}
+
+let current = 1;
 
 function showLayer(n) {
-  // hide all panels
-  for (var i = 0; i < 5; i++) {
-    var p = document.getElementById('panel-' + i);
-    var t = document.getElementById('tab-' + i);
-    var h = document.getElementById('hit-' + i);
+  for (let i = 0; i < 5; i++) {
+    const p = document.getElementById('panel-' + i);
+    const t = document.getElementById('tab-' + i);
+    const h = document.getElementById('hit-' + i);
     if (p) p.classList.remove('visible');
     if (t) t.classList.remove('active');
     if (h) h.classList.remove('active');
   }
-  // show selected
-  var panel = document.getElementById('panel-' + n);
-  var tab   = document.getElementById('tab-' + n);
-  var hit   = document.getElementById('hit-' + n);
+  const panel = document.getElementById('panel-' + n);
+  const tab   = document.getElementById('tab-' + n);
+  const hit   = document.getElementById('hit-' + n);
   if (panel) panel.classList.add('visible');
   if (tab)   tab.classList.add('active');
   if (hit)   hit.classList.add('active');
   current = n;
 
-  // smooth scroll to panel
   if (panel) {
-    setTimeout(function() {
-      panel.scrollIntoView({behavior:'smooth', block:'nearest'});
+    setTimeout(() => {
+      panel.scrollIntoView({behavior: 'smooth', block: 'nearest'});
     }, 50);
   }
 }
 
 function xToggle(card) {
-  var d = card.querySelector('.xdetail');
+  const d = card.querySelector('.xdetail');
   d.classList.toggle('open');
 }
 
-// init: show hit-1 as active
-document.addEventListener('DOMContentLoaded', function() {
-  var h = document.getElementById('hit-1');
+document.addEventListener('DOMContentLoaded', () => {
+  const h = document.getElementById('hit-1');
   if (h) h.classList.add('active');
 });
 </script>
