@@ -11,14 +11,14 @@ var DATA_EN = {
       page: 'Page 1 of 3',
     },
     currentState: {
-      label: 'CURRENT STATE',
+      label: 'TYPICAL CHALLENGES BEFORE AI INTEGRATION',
       title: "The Data Exists — What's Missing Is How AI Can Read It",
       body: 'Fidelity ISS has built a large-scale data platform on Snowflake covering equity, fixed income, quantitative research, and risk management. The problem isn\'t insufficient data — it\'s the layers of friction between that data and the analysts who need it. Four structural barriers block the shift to AI-driven analysis:',
       cards: [
         { style:'al', title:'Snowflake Has No AI-Readable Semantic Layer', body:'Tens of thousands of tables — names like <b>fcst_rev_v3_adj</b>, columns like <b>amt_usd_net</b>. The data model is correct; the business meaning exists only in people\'s heads. AI routing requires machine-readable descriptions — and there are almost none.' },
         { style:'al', title:'Research Docs Are Completely Siloed from Structured Data', body:'Research reports, market commentaries, and risk memos are scattered across S3, SharePoint, and email attachments — with no connection to Snowflake numbers. No system can use both to answer "why".' },
         { style:'am', title:"OAC Answers Pre-Set Questions — It Doesn't Support Exploration", body:"Static dashboards answer questions designed in advance. Investment research increasingly requires ad hoc exploratory queries — not what OAC's report-push model was built to solve." },
-        { style:'am', title:'The Data Viz Team Is the Delivery Bottleneck', body:"The current 'business requests, team builds' model doesn't scale in the AI era. The team's leverage should come from building platforms, not executing individual report requests." },
+        { style:'am', title:'The Data Viz Team Is the Delivery Bottleneck', body:"The traditional 'business requests, team builds' model is difficult to scale in the AI era. The team's leverage should come from building platforms, not executing individual report requests." },
       ],
     },
     vision: {
@@ -43,7 +43,7 @@ var DATA_EN = {
 
   svgTexts: [
     // Layer 0
-    { x:350, y:24, anchor:'middle', size:11, weight:700, fill:'#A32D2D', text:'Current State (Not AI-Ready)' },
+    { x:350, y:24, anchor:'middle', size:11, weight:700, fill:'#A32D2D', text:'Pre-Integration (Typical Challenges)' },
     { x:110, y:48, anchor:'middle', size:10, weight:700, fill:'#791F1F', text:'Snowflake / DWH' },
     { x:110, y:62, anchor:'middle', size:9, fill:'#A32D2D', text:'Tens of K tables' },
     { x:110, y:75, anchor:'middle', size:9, fill:'#A32D2D', text:'No business descriptions' },
@@ -122,13 +122,13 @@ var DATA_EN = {
     { x:587, y:565, anchor:'middle', size:9, fill:'#27500A', text:'Negative → manual label' },
   ],
 
-  tabs: ['Current State','Infrastructure','Query Intelligence','Output Layer','Feedback'],
+  tabs: ['Pre-Integration','Infrastructure','Query Intelligence','Output Layer','Feedback'],
   hint: '\u2191 Click any layer above to view detailed component descriptions below',
   printNote: 'Interactive layer details available in the online version',
 
   panels: [
     { // Panel 0: Current State
-      label: 'Current State — What Exists But AI Cannot Read',
+      label: 'Pre-Integration — Existing Assets & Typical Barriers',
       cards: [
         { name:'Snowflake DWH — Tens of Thousands of Tables', one:'Structured data storage, but table and column names are opaque to AI', detail:'Example: a table named <b>fcst_rev_v3_final</b>, column <b>amt_usd_adj</b>. A human knows this is "adjusted USD revenue forecast", but AI has no idea. The problem isn\'t missing data — it\'s the missing "dictionary" for AI to understand abbreviations and business meaning. Every table and column needs an AI-readable description.<span class="xtag tinf">To Fix</span>' },
         { name:'dbt Models (Existing SQL Transform Logic)', one:'Business processing logic already written in SQL — but with no accompanying business descriptions', detail:'Good news: the SQL logic already exists, and AI can read SQL to infer what a table does. Bad news: there\'s no natural language description, so AI routing doesn\'t know which table to query.<span class="xtag tinf">To Fix</span>' },
@@ -143,7 +143,7 @@ var DATA_EN = {
         { name:'dbt Description Agent', one:'Automatically reads existing SQL logic and generates business descriptions for every table and column', detail:'Reads dbt SQL code + column names + data samples, then auto-writes descriptions like "This table records quarterly sales forecasts by product line; amt_usd_adj is the refund-adjusted amount in USD." With tens of thousands of tables, manual annotation is impossible — the Agent covers most in one pass. Business teams just confirm "is this right?", no writing needed.<span class="xtag tsem">AI-Generated + Human-Confirmed</span>' },
         { name:'Schema Vectorisation (Semantic Index for Tables)', one:'Converts each table\'s business description into numerical vectors for rapid semantic search', detail:'Turns "This table records quarterly sales forecasts" into a vector stored in a vector database. When a user asks "Q4 revenue forecast", the system vectorises the question and finds the nearest tables. Effective result: from tens of thousands of tables, finds the 20-30 most relevant candidates in milliseconds.<span class="xtag taut">Fully Automatic</span>' },
         { name:'Relationship Graph', one:'Automatically analyses cross-table relationships to help AI generate correct multi-table joins', detail:'Scans existing JOIN statements in dbt, extracts "which table connects to which via which field", forming a relationship map. dbt SQL already contains JOINs — the system parses and extracts automatically, no manual effort needed. Without this, AI-generated SQL would produce incorrect joins.<span class="xtag taut">Fully Automatic</span>' },
-        { name:'Few-shot Library Init (Reference Examples for AI)', one:'Collects "question\u2192correct SQL" pairs as reference; shown to AI before each query to improve accuracy', detail:'Like a student reviewing example problems before an exam. Initialisation: \u2460 extract successful SQL from historical query logs \u2461 business teams contribute 10-20 typical question+SQL pairs \u2462 system auto-supplements from user-approved queries. Cold start: 20-30 examples, growing to hundreds within 3 months, continuously improving accuracy.<span class="xtag tsem">Initial Manual + Auto After</span>' },
+        { name:'Few-shot Library Init (Reference Examples for AI)', one:'Collects "question\u2192correct SQL" pairs as reference; shown to AI before each query to improve accuracy', detail:'Few-shot prompting is the standard method for improving LLM output quality — injecting high-quality reference examples at inference time. Initialisation: \u2460 extract successful SQL from historical query logs \u2461 business teams contribute 10-20 typical question+SQL pairs \u2462 system auto-supplements from user-approved queries. Cold start: 20-30 examples, growing to hundreds within 3 months, continuously improving accuracy.<span class="xtag tsem">Initial Manual + Auto After</span>' },
         { name:'Document Data Source Connectors', one:'Connects to S3, SharePoint, Confluence etc., auto-discovers new files — no manual upload needed', detail:'Periodically scans file storage \u2192 discovers new or updated files \u2192 automatically triggers downstream parsing. Files stay where they are — connectors only "read", never "move". Existing storage structure and permissions remain unchanged.<span class="xtag taut">Fully Automatic</span>' },
         { name:'Document AI Parsing', one:'Extracts text and data from PDFs, scanned documents, and chart screenshots into AI-searchable text', detail:'\u2460 PDFs \u2192 extract text and tables per page \u2461 Images \u2192 OCR text recognition \u2462 Complex charts \u2192 structured data extraction \u2463 Preserves metadata (page numbers, sections) for citation. This is a built-in Cortex feature in Snowflake — no additional deployment needed.<span class="xtag taut">Fully Automatic</span>' },
         { name:'Cortex Search Service Registration', one:'Sets up a search service in Snowflake for parsed documents, enabling natural language document search', detail:'We write a configuration telling Snowflake "create a search service for these columns in this document table". Configured once, new documents auto-join. Supports both exact keyword matching and semantic fuzzy matching — more capable than pure ES with added semantic understanding.<span class="xtag tinf">One-Time Config + Auto After</span>' },

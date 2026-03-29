@@ -11,14 +11,14 @@ var DATA_ZH = {
       page: '第 1 页 / 共 3 页',
     },
     currentState: {
-      label: '当前真实问题',
+      label: 'AI 集成前的典型挑战',
       title: '数据不缺，缺的是让 AI 能读懂它的方式',
       body: 'Fidelity ISS 已在 Snowflake 上积累了覆盖权益、固收、量化研究与风险管理的大规模数据平台。问题不是数据不够——而是数据和投研人员之间还隔着太多中间步骤。以下四个结构性障碍阻碍了 AI 驱动分析的落地：',
       cards: [
         { style: 'al', title: 'Snowflake 缺少 AI 可读的语义层', body: '几万张表，表名如 <b>fcst_rev_v3_adj</b>，列名如 <b>amt_usd_net</b>。数据模型正确，业务含义只存在于人脑中。AI 路由需要机器可读描述——目前几乎没有。' },
         { style: 'al', title: '投研文档与结构化数据完全割裂', body: '研究报告、市场评论、风险备忘录分散在 S3、SharePoint、邮件附件里，与 Snowflake 数字毫无关联。没有任何系统能同时用两者回答"为什么"。' },
         { style: 'am', title: 'OAC 提供答案，但不支持探索', body: '静态仪表盘只能回答预设好的问题。投研分析日益需要临时的探索性即席查询——这不是 OAC 推报表模式设计用来解决的场景。' },
-        { style: 'am', title: 'Data Viz 团队是交付瓶颈', body: '当前"业务提需求、团队构建报表"的模式在 AI 时代无法扩展。团队的杠杆应该来自建设平台，而不是执行单个报表请求。' },
+        { style: 'am', title: 'Data Viz 团队是交付瓶颈', body: '传统"业务提需求、团队构建报表"的模式在 AI 时代难以扩展。团队的杠杆应该来自建设平台，而不是执行单个报表请求。' },
       ],
     },
     vision: {
@@ -45,7 +45,7 @@ var DATA_ZH = {
   // Font sizes: layer titles=11, area titles=10.5, box titles=10, body=9, arrow label=9
   svgTexts: [
     // Layer 0: Current State (red)
-    { x:350, y:24, anchor:'middle', size:11, weight:700, fill:'#A32D2D', text:'当前状态（AI 未就绪）' },
+    { x:350, y:24, anchor:'middle', size:11, weight:700, fill:'#A32D2D', text:'AI 集成前（典型挑战）' },
     { x:110, y:48, anchor:'middle', size:10, weight:700, fill:'#791F1F', text:'Snowflake / 数仓' },
     { x:110, y:62, anchor:'middle', size:9, fill:'#A32D2D', text:'几万张表' },
     { x:110, y:75, anchor:'middle', size:9, fill:'#A32D2D', text:'无业务描述' },
@@ -125,14 +125,14 @@ var DATA_ZH = {
     { x:587, y:565, anchor:'middle', size:9, fill:'#27500A', text:'差评触发人工标注' },
   ],
 
-  tabs: ['现状层','基础设施层','查询智能层','输出生成层','反馈层'],
+  tabs: ['集成前','基础设施层','查询智能层','输出生成层','反馈层'],
   hint: '↑ 点击上方任意层，在下方查看该层的组件详细说明',
   printNote: '各层组件详情请访问在线交互版本',
 
   // 5 layer panels with xcards
   panels: [
     { // Panel 0: Current State
-      label: '现状层 — 已有但 AI 看不懂的东西',
+      label: 'AI 集成前 — 已有资产与典型障碍',
       cards: [
         { name:'Snowflake / 数仓里的几万张表', one:'结构化数据的存储地方，但表名列名对 AI 来说是天书', detail:'举个例子：你有一张表叫 <b>fcst_rev_v3_final</b>，列名叫 <b>amt_usd_adj</b>。人知道这是"调整后的美元预测收入"，但 AI 完全不知道。问题不是数据不在，而是 AI 没有"字典"来理解这些缩写和业务含义。我们要做的是给每张表、每个列都加上 AI 能理解的描述。<span class="xtag tinf">需要处理</span>' },
         { name:'dbt 模型（已有的 SQL 转换逻辑）', one:'已经有很多 SQL 写好的数据加工逻辑，但没有配套的业务说明', detail:'好消息：SQL 逻辑已经存在，AI 可以读懂 SQL 来推断这张表是干什么的。坏消息：目前没有配套的自然语言说明，导致 AI 路由时不知道该查哪张表。<span class="xtag tinf">需要处理</span>' },
@@ -147,7 +147,7 @@ var DATA_ZH = {
         { name:'dbt 描述 Agent', one:'自动读取已有的 SQL 逻辑，生成每张表和每列的业务说明', detail:'读取 dbt 里的 SQL 代码 + 列名 + 数据样本，然后自动写出类似"这张表记录了每个季度各产品线的销售预测，amt_usd_adj 是扣除退款后的调整金额（单位：美元）"这样的描述。几万张表不可能靠人工逐一填写，Agent 跑一遍自动覆盖大部分表。业务方只需确认"说对了没有"，不需要自己写。<span class="xtag tsem">AI生成 + 人工确认</span>' },
         { name:'Schema 向量化（给表建"语义索引"）', one:'把每张表的业务描述转换成数字向量，存起来，以便语义搜索快速找到相关的表', detail:'把"这张表记录季度销售预测"这句话变成一串数字，存入向量数据库。用户问"Q4 收入预测"时，系统用同样的方式把问题变成数字，找最近的表。实际效果：从几万张表里，毫秒内找到最相关的 20–30 张候选表。<span class="xtag taut">全自动</span>' },
         { name:'关系图谱构建', one:'自动分析哪些表之间有关联关系，记录下来，帮 AI 生成正确的多表联合查询', detail:'扫描 dbt 里已有的 JOIN 语句，提取"哪张表通过哪个字段和哪张表连接"，形成关系地图。dbt 的 SQL 里已经写了 JOIN，系统自动解析提取，不需要人工梳理。如果 AI 不知道表间关系，生成的 SQL 就会出错。<span class="xtag taut">全自动</span>' },
-        { name:'Few-shot 库初始化（给 AI 准备参考例题）', one:'收集"问题→正确SQL"的配对例子，每次 AI 生成 SQL 时给它看几个参考，提高准确率', detail:'学生做题前先看几道例题，AI 也一样。初始化：① 从历史查询日志找成功执行过的 SQL ② 业务方贡献 10–20 个典型问题+SQL ③ 后续系统自动从用户满意的查询中持续补充。冷启动时 20–30 个例子，3 个月后自动积累到几百个，准确率持续提升。<span class="xtag tsem">初期人工 + 后续自动</span>' },
+        { name:'Few-shot 库初始化（给 AI 准备参考例题）', one:'收集"问题→正确SQL"的配对例子，每次 AI 生成 SQL 时给它看几个参考，提高准确率', detail:'Few-shot prompting 是提升 LLM 输出质量的标准方法——在每次推理时注入若干高质量示例作为参考。初始化：① 从历史查询日志提取成功执行过的 SQL ② 业务方贡献 10–20 个典型问题+SQL ③ 后续系统自动从用户满意的查询中持续补充。冷启动时 20–30 个示例，3 个月后自动积累到数百个，准确率持续提升。<span class="xtag tsem">初期人工 + 后续自动</span>' },
         { name:'文档数据源连接器', one:'和 S3、SharePoint、Confluence 等对接，自动发现新文件，不需要用户手动上传', detail:'定期扫描各个文件存储 → 发现新文件或更新的文件 → 自动触发后续解析流程。文件原地不动，连接器只是"读取"，不是"复制搬移"。原有存储结构和权限完全不变。<span class="xtag taut">全自动</span>' },
         { name:'Document AI 解析', one:'把 PDF、扫描件、图表截图里的文字和数据提取出来，变成 AI 可以搜索的文本', detail:'① PDF → 提取每页文字和表格 ② 图片 → OCR 识别文字 ③ 复杂图表 → 结构化提取数据 ④ 保留页码、章节等元数据方便引用。在 Snowflake 里这是 Cortex 的内置功能，不需要额外部署。<span class="xtag taut">全自动</span>' },
         { name:'Cortex Search 服务注册', one:'在 Snowflake 里为解析好的文档建立搜索服务，让 AI 可以用自然语言搜索这些文档', detail:'需要我们写一段配置，告诉 Snowflake "请对这张存放文档内容的表的这几列建立搜索服务"。配置一次后，后续新文档自动加入。同时支持关键词精确匹配和语义模糊匹配，比纯 ES 多了"语义理解"能力。<span class="xtag tinf">一次性配置 + 后续自动</span>' },
