@@ -12,10 +12,19 @@ body{
 @media print{
   @page{size:A4;margin:0}
   body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .page{margin:0;width:210mm;min-height:unset;break-after:page;page-break-after:always}
-  .page:last-child{break-after:auto;page-break-after:auto}
-  .lang-toggle,.layer-tabs,.layer-panel,.hint-click{display:none!important}
+  .page{margin:0;width:210mm;min-height:unset;break-after:page;page-break-after:always;overflow:hidden;height:297mm}
+  .page:last-child{break-after:avoid;page-break-after:avoid}
+  #root{overflow:hidden}
+  .lang-toggle,.layer-tabs,.hint-click{display:none!important}
+  .layer-panel{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(180px,1fr))!important;gap:5px!important;margin-top:5px!important}
   .print-note{display:block!important}
+  .xdetail{display:none!important}
+  .xcard{padding:0!important}
+  .xcard-head{padding:5px 8px 3px!important}
+  .xone{display:none!important}
+  .xname{font-size:7.5pt!important}
+  .panel-label{font-size:6.5pt!important;margin-bottom:3px!important;padding-bottom:2px!important}
+  .arch-wrap{margin-top:2px!important}
   .card,.ph-box,.bet,.sec,.rt tr{break-inside:avoid;page-break-inside:avoid}
   /* Page 3 compact for A4 fit */
   .page:nth-child(3) .sec{margin-bottom:6px}
