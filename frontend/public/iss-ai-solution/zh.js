@@ -1,0 +1,248 @@
+var DATA_ZH = {
+  meta: {
+    title: 'ISS 数据可视化 AI 集成方案',
+    date: '2026年3月',
+    footer: 'ISS Data Visualisation — AI 集成方案',
+  },
+  p1: {
+    header: {
+      title: 'ISS 数据可视化 AI 集成方案',
+      subtitle: '基于 Snowflake + Oracle Analytics Cloud 现有平台，引入 AI 智能查询能力',
+      page: '第 1 页 / 共 3 页',
+    },
+    currentState: {
+      label: '当前真实问题',
+      title: '数据不缺，缺的是让 AI 能读懂它的方式',
+      body: 'Fidelity ISS 已在 Snowflake 上积累了覆盖权益、固收、量化研究与风险管理的大规模数据平台。问题不是数据不够——而是数据和投研人员之间还隔着太多中间步骤。以下四个结构性障碍阻碍了 AI 驱动分析的落地：',
+      cards: [
+        { style: 'al', title: 'Snowflake 缺少 AI 可读的语义层', body: '几万张表，表名如 <b>fcst_rev_v3_adj</b>，列名如 <b>amt_usd_net</b>。数据模型正确，业务含义只存在于人脑中。AI 路由需要机器可读描述——目前几乎没有。' },
+        { style: 'al', title: '投研文档与结构化数据完全割裂', body: '研究报告、市场评论、风险备忘录分散在 S3、SharePoint、邮件附件里，与 Snowflake 数字毫无关联。没有任何系统能同时用两者回答"为什么"。' },
+        { style: 'am', title: 'OAC 提供答案，但不支持探索', body: '静态仪表盘只能回答预设好的问题。投研分析日益需要临时的探索性即席查询——这不是 OAC 推报表模式设计用来解决的场景。' },
+        { style: 'am', title: 'Data Viz 团队是交付瓶颈', body: '当前"业务提需求、团队构建报表"的模式在 AI 时代无法扩展。团队的杠杆应该来自建设平台，而不是执行单个报表请求。' },
+      ],
+    },
+    vision: {
+      label: '目标愿景',
+      title: '用自然语言作为所有投研数据的统一入口',
+      body: '投研人员用普通语言提问，系统在 30 秒内从结构化数据和非结构化文档中联合检索，返回带图表、带来源引用的答案——无需提工单，无需等仪表盘。',
+      scenes: [
+        { title: '场景 A · 即时分析问答', query: '"为什么亚太区权益敞口在 Q4 相对风险预算出现下滑？"', answer: '30 秒内返回：敞口 vs 预算折线图 + 驱动下滑的具体持仓 + 风险备忘录引用段落，每条数据都标注可点击的来源链路。' },
+        { title: '场景 B · 大型报表构建', query: '"生成本季度所有固收交易的交易对手敞口明细。"', answer: '系统展示查询定义和预估行数（约 4 万行），用户确认后后台异步执行并推送下载——AI 构建查询，用户决定何时执行。' },
+      ],
+    },
+    whyNow: {
+      label: '为什么现在可以做到',
+      cards: [
+        { style: 'bl', tags: [{cls:'tsf', text:'Snowflake'}], title: '平台原生 AI 能力 + 数据驻留', body: 'Cortex Search（混合检索）、Document AI（PDF解析）、Arctic Embed（向量化）、<b>Cortex LLMs（模型推理）</b>——均在 Snowflake 平台内部执行，<b>数据不离开平台</b>，满足金融机构数据驻留合规要求，无需额外采购部署。' },
+        { style: 'am', tags: [{cls:'toac', text:'OAC'}], title: '保留并扩展，不替换', body: 'Oracle Analytics 继续承载正式报表和监管仪表盘。AI 层提供探索性查询入口——同一套数据，两种访问模式，双轨并行。' },
+        { style: 'pl', tags: [{cls:'tai', text:'AI'}], title: '层自动构建基础设施', body: '现有 dbt 模型和 Snowflake 表作为 AI Agent 的输入，自动生成语义描述并建立索引——不需要用户手工准备任何数据。' },
+        { style: '', extraStyle: 'border-left:3px solid #1D9E75', tags: [{cls:'taut', text:'治理'}], title: '安全与合规前置设计', body: '查询引擎透传用户 Snowflake 行级权限（RLS），AI 不创造新访问路径。所有生成查询写入审计日志，满足监管追溯要求。置信度低于阈值时系统拒绝作答，而非猜测。' },
+      ],
+    },
+  },
+
+  // SVG text positions — 73 items. Each has: x, y, anchor (optional), size, weight (optional), fill, text
+  // Font sizes: layer titles=11, area titles=10.5, box titles=10, body=9, arrow label=9
+  svgTexts: [
+    // Layer 0: Current State (red)
+    { x:350, y:24, anchor:'middle', size:11, weight:700, fill:'#A32D2D', text:'当前状态（AI 未就绪）' },
+    { x:110, y:48, anchor:'middle', size:10, weight:700, fill:'#791F1F', text:'Snowflake / 数仓' },
+    { x:110, y:62, anchor:'middle', size:9, fill:'#A32D2D', text:'几万张表' },
+    { x:110, y:75, anchor:'middle', size:9, fill:'#A32D2D', text:'无业务描述' },
+    { x:266, y:48, anchor:'middle', size:10, weight:700, fill:'#791F1F', text:'dbt 模型' },
+    { x:266, y:62, anchor:'middle', size:9, fill:'#A32D2D', text:'SQL 逻辑存在' },
+    { x:266, y:75, anchor:'middle', size:9, fill:'#A32D2D', text:'描述缺失/不完整' },
+    { x:422, y:48, anchor:'middle', size:10, weight:700, fill:'#791F1F', text:'非结构化文档' },
+    { x:422, y:62, anchor:'middle', size:9, fill:'#A32D2D', text:'PDF / 报告散落' },
+    { x:422, y:75, anchor:'middle', size:9, fill:'#A32D2D', text:'S3 / Stage / SharePoint' },
+    { x:584, y:48, anchor:'middle', size:10, weight:700, fill:'#791F1F', text:'现有搜索工具' },
+    { x:584, y:62, anchor:'middle', size:9, fill:'#A32D2D', text:'ES / Solr' },
+    { x:584, y:75, anchor:'middle', size:9, fill:'#A32D2D', text:'独立运行' },
+    // Arrow label
+    { x:378, y:103, size:9, fill:'#aaa', text:'AI 智能升级' },
+    // Layer 1: Infrastructure (purple)
+    { x:350, y:126, anchor:'middle', size:11, weight:700, fill:'#3C3489', text:'基础设施层（AI 自动构建，无需手工准备）' },
+    { x:190, y:147, anchor:'middle', size:10.5, weight:700, fill:'#26215C', text:'Schema 智能化管道' },
+    { x:114, y:164, anchor:'middle', size:10, weight:700, fill:'#3C3489', text:'dbt 描述 Agent' },
+    { x:114, y:176, anchor:'middle', size:9, fill:'#534AB7', text:'自动生成业务描述' },
+    { x:264, y:164, anchor:'middle', size:10, weight:700, fill:'#3C3489', text:'Schema 向量化' },
+    { x:264, y:176, anchor:'middle', size:9, fill:'#534AB7', text:'语义搜索索引' },
+    { x:114, y:200, anchor:'middle', size:10, weight:700, fill:'#3C3489', text:'关系图谱构建' },
+    { x:114, y:212, anchor:'middle', size:9, fill:'#534AB7', text:'表间 JOIN 关系' },
+    { x:264, y:200, anchor:'middle', size:10, weight:700, fill:'#3C3489', text:'Few-shot 库初始化' },
+    { x:264, y:212, anchor:'middle', size:9, fill:'#534AB7', text:'查询参考例题库' },
+    { x:508, y:147, anchor:'middle', size:10.5, weight:700, fill:'#26215C', text:'文档智能化管道' },
+    { x:432, y:164, anchor:'middle', size:10, weight:700, fill:'#3C3489', text:'数据源连接器' },
+    { x:432, y:176, anchor:'middle', size:9, fill:'#534AB7', text:'S3 / SharePoint 接入' },
+    { x:584, y:164, anchor:'middle', size:10, weight:700, fill:'#3C3489', text:'Document AI 解析' },
+    { x:584, y:176, anchor:'middle', size:9, fill:'#534AB7', text:'PDF / 图表文字提取' },
+    { x:432, y:200, anchor:'middle', size:10, weight:700, fill:'#3C3489', text:'Cortex Search 建服务' },
+    { x:432, y:212, anchor:'middle', size:9, fill:'#534AB7', text:'混合检索索引' },
+    { x:584, y:200, anchor:'middle', size:10, weight:700, fill:'#3C3489', text:'增量索引 Pipeline' },
+    { x:584, y:212, anchor:'middle', size:9, fill:'#534AB7', text:'新文件自动处理' },
+    // Layer 2: Query Intelligence (blue)
+    { x:350, y:274, anchor:'middle', size:11, weight:700, fill:'#0C447C', text:'查询智能层' },
+    { x:94, y:297, anchor:'middle', size:10, weight:700, fill:'#042C53', text:'意图分类器' },
+    { x:94, y:310, anchor:'middle', size:9, fill:'#0C447C', text:'交互 vs 报表' },
+    { x:94, y:322, anchor:'middle', size:9, fill:'#0C447C', text:'vs 文档检索' },
+    { x:218, y:297, anchor:'middle', size:10, weight:700, fill:'#042C53', text:'Schema 路由器' },
+    { x:218, y:310, anchor:'middle', size:9, fill:'#0C447C', text:'向量召回候选表' },
+    { x:218, y:322, anchor:'middle', size:9, fill:'#0C447C', text:'LLM 精选表/列' },
+    { x:342, y:297, anchor:'middle', size:10, weight:700, fill:'#042C53', text:'SQL 生成器' },
+    { x:342, y:310, anchor:'middle', size:9, fill:'#0C447C', text:'Text-to-SQL' },
+    { x:342, y:322, anchor:'middle', size:9, fill:'#0C447C', text:'EXPLAIN 验证+重试' },
+    { x:466, y:297, anchor:'middle', size:10, weight:700, fill:'#042C53', text:'RAG 检索器' },
+    { x:466, y:310, anchor:'middle', size:9, fill:'#0C447C', text:'混合检索' },
+    { x:466, y:322, anchor:'middle', size:9, fill:'#0C447C', text:'BM25+向量+Reranker' },
+    { x:598, y:297, anchor:'middle', size:10, weight:700, fill:'#042C53', text:'联邦路由器' },
+    { x:598, y:310, anchor:'middle', size:9, fill:'#0C447C', text:'多源 Trino' },
+    { x:598, y:322, anchor:'middle', size:9, fill:'#0C447C', text:'跨库 JOIN' },
+    { x:350, y:355, anchor:'middle', size:10.5, weight:700, fill:'#042C53', text:'上下文组装器' },
+    { x:350, y:369, anchor:'middle', size:9.5, fill:'#0C447C', text:'Token 预算管理 · 多源结果格式化 · 来源标签注入 · 优先级截断' },
+    // Layer 3: Output (teal)
+    { x:350, y:422, anchor:'middle', size:11, weight:700, fill:'#085041', text:'输出生成层' },
+    { x:111, y:445, anchor:'middle', size:10, weight:700, fill:'#04342C', text:'自然语言答案' },
+    { x:111, y:458, anchor:'middle', size:9, fill:'#085041', text:'带引用来源 · Markdown' },
+    { x:111, y:471, anchor:'middle', size:9, fill:'#085041', text:'置信度标注' },
+    { x:269, y:445, anchor:'middle', size:10, weight:700, fill:'#04342C', text:'图表生成' },
+    { x:269, y:458, anchor:'middle', size:9, fill:'#085041', text:'ECharts JSON 配置' },
+    { x:269, y:471, anchor:'middle', size:9, fill:'#085041', text:'前端直接渲染交互图表' },
+    { x:427, y:445, anchor:'middle', size:10, weight:700, fill:'#04342C', text:'报表构建器' },
+    { x:427, y:458, anchor:'middle', size:9, fill:'#085041', text:'SQL 定义展示' },
+    { x:427, y:471, anchor:'middle', size:9, fill:'#085041', text:'用户确认后触发下载' },
+    { x:587, y:445, anchor:'middle', size:10, weight:700, fill:'#04342C', text:'溯源面板' },
+    { x:587, y:458, anchor:'middle', size:9, fill:'#085041', text:'数据来源链路' },
+    { x:587, y:471, anchor:'middle', size:9, fill:'#085041', text:'SQL 可查看 · 文档定位' },
+    // Layer 4: Feedback (green)
+    { x:350, y:530, anchor:'middle', size:11, weight:700, fill:'#27500A', text:'反馈与持续优化层（系统越用越准）' },
+    { x:111, y:552, anchor:'middle', size:10, weight:700, fill:'#173404', text:'查询日志收集' },
+    { x:111, y:565, anchor:'middle', size:9, fill:'#27500A', text:'成功/失败分类记录' },
+    { x:269, y:552, anchor:'middle', size:10, weight:700, fill:'#173404', text:'Few-shot 库更新' },
+    { x:269, y:565, anchor:'middle', size:9, fill:'#27500A', text:'自动追加成功案例' },
+    { x:427, y:552, anchor:'middle', size:10, weight:700, fill:'#173404', text:'描述质量评分' },
+    { x:427, y:565, anchor:'middle', size:9, fill:'#27500A', text:'低分触发重生成' },
+    { x:587, y:552, anchor:'middle', size:10, weight:700, fill:'#173404', text:'用户反馈收集' },
+    { x:587, y:565, anchor:'middle', size:9, fill:'#27500A', text:'差评触发人工标注' },
+  ],
+
+  tabs: ['现状层','基础设施层','查询智能层','输出生成层','反馈层'],
+  hint: '↑ 点击上方任意层，在下方查看该层的组件详细说明',
+  printNote: '各层组件详情请访问在线交互版本',
+
+  // 5 layer panels with xcards
+  panels: [
+    { // Panel 0: Current State
+      label: '现状层 — 已有但 AI 看不懂的东西',
+      cards: [
+        { name:'Snowflake / 数仓里的几万张表', one:'结构化数据的存储地方，但表名列名对 AI 来说是天书', detail:'举个例子：你有一张表叫 <b>fcst_rev_v3_final</b>，列名叫 <b>amt_usd_adj</b>。人知道这是"调整后的美元预测收入"，但 AI 完全不知道。问题不是数据不在，而是 AI 没有"字典"来理解这些缩写和业务含义。我们要做的是给每张表、每个列都加上 AI 能理解的描述。<span class="xtag tinf">需要处理</span>' },
+        { name:'dbt 模型（已有的 SQL 转换逻辑）', one:'已经有很多 SQL 写好的数据加工逻辑，但没有配套的业务说明', detail:'好消息：SQL 逻辑已经存在，AI 可以读懂 SQL 来推断这张表是干什么的。坏消息：目前没有配套的自然语言说明，导致 AI 路由时不知道该查哪张表。<span class="xtag tinf">需要处理</span>' },
+        { name:'散落在各处的非结构化文档', one:'PDF 报告、Word 文档、图表截图，存在 S3、SharePoint、邮件附件里', detail:'这些文档是企业知识的核心，但它们：① 没有统一索引，AI 找不到；② 内容是图片/扫描件，AI 读不了；③ 分散在多个系统，没有统一入口。<span class="xtag tinf">需要处理</span>' },
+        { name:'现有的搜索工具（ES / Solr）', one:'已经有关键词搜索能力，但只能精确匹配，不理解语义', detail:'现有 Elasticsearch 的能力：搜"销售报告" → 找到包含这两个词的文档。缺的能力：搜"Q4 收入下滑原因" → 找到语义相关但词不同的分析文档。好消息：这些索引不需要推翻重建，我们会在它上面加一层语义理解。<span class="xtag tsem">可复用</span>' },
+        { name:'缺少统一权限与查询审计机制', one:'数据访问分散在各工具，没有"谁查了什么数据"的统一记录，难以满足金融监管审计要求', detail:'OAC 有访问日志但颗粒度粗（"用户打开了这个报表"）；Snowflake 有查询历史但与业务意图无关联；非结构化文档系统（S3 / SharePoint）日志各自独立。AI 层的引入实际上是建立统一审计的机会——所有数据访问通过同一入口，统一记录，统一审查，形成合规所需的完整链路。<span class="xtag tinf">待建设</span>' },
+      ],
+    },
+    { // Panel 1: Infrastructure
+      label: '基础设施层 — 让 AI 能看懂现有数据，全部由系统自动完成',
+      cards: [
+        { name:'dbt 描述 Agent', one:'自动读取已有的 SQL 逻辑，生成每张表和每列的业务说明', detail:'读取 dbt 里的 SQL 代码 + 列名 + 数据样本，然后自动写出类似"这张表记录了每个季度各产品线的销售预测，amt_usd_adj 是扣除退款后的调整金额（单位：美元）"这样的描述。几万张表不可能靠人工逐一填写，Agent 跑一遍自动覆盖大部分表。业务方只需确认"说对了没有"，不需要自己写。<span class="xtag tsem">AI生成 + 人工确认</span>' },
+        { name:'Schema 向量化（给表建"语义索引"）', one:'把每张表的业务描述转换成数字向量，存起来，以便语义搜索快速找到相关的表', detail:'把"这张表记录季度销售预测"这句话变成一串数字，存入向量数据库。用户问"Q4 收入预测"时，系统用同样的方式把问题变成数字，找最近的表。实际效果：从几万张表里，毫秒内找到最相关的 20–30 张候选表。<span class="xtag taut">全自动</span>' },
+        { name:'关系图谱构建', one:'自动分析哪些表之间有关联关系，记录下来，帮 AI 生成正确的多表联合查询', detail:'扫描 dbt 里已有的 JOIN 语句，提取"哪张表通过哪个字段和哪张表连接"，形成关系地图。dbt 的 SQL 里已经写了 JOIN，系统自动解析提取，不需要人工梳理。如果 AI 不知道表间关系，生成的 SQL 就会出错。<span class="xtag taut">全自动</span>' },
+        { name:'Few-shot 库初始化（给 AI 准备参考例题）', one:'收集"问题→正确SQL"的配对例子，每次 AI 生成 SQL 时给它看几个参考，提高准确率', detail:'学生做题前先看几道例题，AI 也一样。初始化：① 从历史查询日志找成功执行过的 SQL ② 业务方贡献 10–20 个典型问题+SQL ③ 后续系统自动从用户满意的查询中持续补充。冷启动时 20–30 个例子，3 个月后自动积累到几百个，准确率持续提升。<span class="xtag tsem">初期人工 + 后续自动</span>' },
+        { name:'文档数据源连接器', one:'和 S3、SharePoint、Confluence 等对接，自动发现新文件，不需要用户手动上传', detail:'定期扫描各个文件存储 → 发现新文件或更新的文件 → 自动触发后续解析流程。文件原地不动，连接器只是"读取"，不是"复制搬移"。原有存储结构和权限完全不变。<span class="xtag taut">全自动</span>' },
+        { name:'Document AI 解析', one:'把 PDF、扫描件、图表截图里的文字和数据提取出来，变成 AI 可以搜索的文本', detail:'① PDF → 提取每页文字和表格 ② 图片 → OCR 识别文字 ③ 复杂图表 → 结构化提取数据 ④ 保留页码、章节等元数据方便引用。在 Snowflake 里这是 Cortex 的内置功能，不需要额外部署。<span class="xtag taut">全自动</span>' },
+        { name:'Cortex Search 服务注册', one:'在 Snowflake 里为解析好的文档建立搜索服务，让 AI 可以用自然语言搜索这些文档', detail:'需要我们写一段配置，告诉 Snowflake "请对这张存放文档内容的表的这几列建立搜索服务"。配置一次后，后续新文档自动加入。同时支持关键词精确匹配和语义模糊匹配，比纯 ES 多了"语义理解"能力。<span class="xtag tinf">一次性配置 + 后续自动</span>' },
+        { name:'增量索引 Pipeline（新文件自动处理）', one:'监控新文件到来 → 自动完成解析、向量化、加入索引的全流程，持续运转', detail:'连接器检测到 S3 新增报告 → 触发 Document AI 解析 → 切段（chunk）→ 向量化 → 追加进 Cortex Search 索引。Snowflake Streams（变更检测）+ Tasks（定时任务）实现，全程无人值守。今天上传的报告，明天查询系统就能引用。<span class="xtag taut">全自动</span>' },
+      ],
+    },
+    { // Panel 2: Query Intelligence
+      label: '查询智能层 — 理解用户问题，找到正确的数据，生成查询',
+      cards: [
+        { name:'意图分类器（判断用户想要什么）', one:'分析自然语言问题，判断需要即时回答、完整报表，还是文档搜索', detail:'"Q4 各区域销售额是多少" → 即时问答；"帮我生成本季度明细报表" → 报表构建；"有没有竞品分析报告" → 文档检索；"分析销售下滑原因" → 混合查询。分类结果决定后续走哪条路。<span class="xtag taut">全自动</span>' },
+        { name:'Schema 路由器（从几万张表里找对表）', one:'向量召回候选表，再交给 AI 精确选出需要查的表和列', detail:'① 向量召回：问题向量化 → 在 Schema 向量库找最相近的 20–30 张表（毫秒级）② AI 精选：把这些表的 schema 定义给 AI 看，AI 选出真正需要的 2–5 张表和具体列。为什么两步？直接把几万张表全给 AI 看，token 爆炸，先缩小范围，再精准决策。<span class="xtag taut">全自动</span>' },
+        { name:'SQL 生成器 + 自动验证重试', one:'AI 写出 SQL，自动验证语法，失败了自动修改重试', detail:'用户问题 + 选定表结构 + Few-shot 例子 → LLM 生成 SQL → 用 EXPLAIN 验证列是否存在（不实际执行）→ 验证失败 → 把错误信息告诉 LLM → 让它修改 → 最多重试 3 次。交互模式强制加聚合+LIMIT，报表模式不加 LIMIT，供用户确认后执行。<span class="xtag taut">全自动</span>' },
+        { name:'RAG 检索器（在非结构化文档里找相关内容）', one:'同时在关键词索引和语义索引里搜文档，把最相关的段落提取出来给 AI 用', detail:'RAG = Retrieval Augmented Generation（检索增强生成）：先搜索、再回答，AI 不靠记忆，基于原文生成回答。两路并行：BM25/ES 精确词匹配 + 向量语义搜索。Reranker（精排器）：两路各取 20 个，共 40 个候选，挑出最相关的 3–5 段注入上下文。<span class="xtag taut">全自动</span>' },
+        { name:'多源联邦路由器（跨库查询调度中心）', one:'一个问题需要查多个不同数据库时，把查询分发出去、收集结果、统一返回', detail:'Trino / Starburst：专门做跨数据库查询的引擎，把 Snowflake、Hive、Postgres、MySQL 等当成一个整体来查，写一条 SQL 就能跨库 JOIN。SQL 生成器不需要知道数据在哪个库，统一交给联邦层处理。<span class="xtag tinf">一次性配置</span>' },
+        { name:'上下文组装器（把找到的数据拼成 AI 能用的格式）', one:'把 SQL 结果、文档段落、来源信息按优先级整理好，控制总量，交给 AI 生成回答', detail:'① 每个数据块打上来源标签（"来自 Snowflake 销售表"、"来自 Q4 分析报告第3页"）② 核心数据全量放入，次要数据只放摘要 ③ 计算总 token 数，超出就按优先级截断 ④ 组成结构化提示词交给 AI。AI 拿到清晰、有来源标注的数据，回答时知道引用哪里，用户可以验证。<span class="xtag taut">全自动</span>' },
+        { name:'行级权限透传（AI 不创造新的数据访问路径）', one:'查询引擎使用发起请求的用户身份调用 Snowflake，AI 无法返回该用户无权直接查看的数据', detail:'实现方式：Snowflake OAuth / JWT 令牌透传，查询以用户身份执行而非平台服务账号。关键风险：若用平台统一服务账号调用，所有用户共享最高权限，形成绕过 RLS 的安全漏洞。验证节点：P0 原型期间必须测试跨权限边界查询——确认 AI 不能返回直接 SQL 查询时看不到的数据。<span class="xtag tman">P0 必须验证</span>' },
+        { name:'查询审计日志（金融监管合规要求）', one:'每条 AI 生成的查询需完整记录：谁问、问了什么、生成了什么 SQL、查了什么数据', detail:'记录字段：用户 ID、原始自然语言问题、意图分类结果、生成 SQL 全文、Snowflake 实际查询 ID、返回数据行数、响应时间、用户反馈信号。合规用途：MiFID II 等监管框架要求数据访问可追溯；内部风控要求 AI 辅助决策不能是黑盒。存储位置：Snowflake 独立合规 schema，访问权限限制给合规与风控团队。<span class="xtag tman">监管要求</span>' },
+      ],
+    },
+    { // Panel 3: Output
+      label: '输出生成层 — 把 AI 的分析结果变成用户看得懂、用得上的东西',
+      cards: [
+        { name:'结构化输出解析器（让 AI 按固定格式输出）', one:'强制 AI 把回答拆成"文字解释"、"图表数据"、"报表内容"、"引用来源"几块', detail:'用 function calling / structured output，强制 AI 返回 JSON 格式：{ "answer": "销售下滑15%...", "chart_config": { ECharts 配置 }, "citations": [...] }。前端拿到 JSON，各部分分别渲染——文字显示为段落，chart_config 直接传给图表库，citations 显示为来源链接。<span class="xtag taut">全自动</span>' },
+        { name:'图表自动生成（AI 写说明书，前端负责画）', one:'AI 根据数据类型选合适的图表类型，生成图表配置，前端用 ECharts 渲染成可交互图表', detail:'AI 不画图，AI 写"画图说明书"。AI 输出的是 ECharts 的配置对象（JSON），类似"x 轴是月份，y 轴是销售额，用折线图，标注最高点"。前端拿到这个 JSON 直接交给 ECharts 渲染。AI 自动选图类型：时间趋势→折线图，类别对比→柱状图，占比→饼图。<span class="xtag taut">全自动</span>' },
+        { name:'报表构建器（用户确认后才执行）', one:'用户要几千几万行的完整数据报表时，AI 把查询写好，用户确认后才执行下载', detail:'流程：① 用户说"生成本月所有客户的消费明细报表" ② 系统展示：要查的表、预估行数（约 4.2 万行）、列定义、生成的 SQL ③ 用户点击"确认并执行" ④ 后台异步查询，完成后通知用户下载 Excel/CSV。AI 只负责构建查询，不占用 AI 上下文处理大数据。<span class="xtag taut">全自动</span>' },
+        { name:'数据溯源面板（每句话都知道从哪来）', one:'每个回答段落旁边标注数据来源，用户可以点击查看原始 SQL 或原始文档位置', detail:'结构化数据的来源：显示"数据来源：Snowflake / sales_db / quarterly_summary"，可点击查看原始 SQL。非结构化的来源：显示"引用自：Q4市场分析报告.pdf，第3页，第2段"，可点击跳转原文。这是防止 AI 编造数据的关键机制——每句话必须有可追溯的来源。<span class="xtag taut">全自动</span>' },
+        { name:'幻觉风险防护（金融数据不能依赖 AI 推断）', one:'AI 的每个数字必须锚定实际执行的 SQL 结果或文档原文，不允许基于推断或训练记忆填充数据', detail:'三层防护：① 结构化输出强制每个数字附 citations 字段（来源 SQL 行 ID 或文档段落 ID），前端发现 citations 为空则拦截并提示"数据来源无法验证"；② Schema 路由置信度低于阈值（0.7）时返回"请确认数据范围"而非猜测；③ SQL EXPLAIN 只验证语法，语义正确性由溯源面板（用户可见完整 SQL）保障。财务数据错误的成本远高于"无法回答"——系统应优先承认不确定性。<span class="xtag tman">必须实施</span>' },
+      ],
+    },
+    { // Panel 4: Feedback
+      label: '反馈与优化层 — 系统越用越准，不需要人工持续维护',
+      cards: [
+        { name:'查询日志收集（记录每次查询的完整过程）', one:'把用户问了什么、系统选了哪张表、生成了什么 SQL、执行结果如何、用户是否满意，全部记录', detail:'记录：用户问题 → 意图分类 → 召回候选表 → 最终选定表 → 生成 SQL → 执行是否成功 → 用户满意度。用途：① 发现哪些表经常路由错误，触发描述优化 ② 积累成功案例加入 Few-shot 库 ③ 分析准确率趋势。这是整个反馈循环的数据基础。<span class="xtag taut">全自动</span>' },
+        { name:'Few-shot 库自动更新（成功案例变成下次的参考例题）', one:'用户满意的查询，自动提取出来作为"好例子"，下次遇到类似问题时给 AI 参考', detail:'用户点了👍 → 提取这次的"问题+SQL"对 → 存入 Few-shot 库 → 下次用户问类似问题时，自动找出最相似的几个历史例子 → 注入 AI 提示词 → AI 参考例子生成 SQL。第1个月 30 个例子，准确率 65%；第6个月 500 个例子，准确率 88%。<span class="xtag taut">全自动</span>' },
+        { name:'描述质量监控 + 触发重生成（发现哪里不准，自动修）', one:'持续监测哪些表的查询经常出错，自动触发 dbt 描述 Agent 重新生成更好的描述', detail:'如果一张表在过去 7 天被查了 20 次，有 12 次失败或用户不满意 → 说明描述质量有问题 → 自动触发 Agent 重新生成 → 推送给业务方确认 → 更新向量库。系统自我修复，不需要人主动排查。<span class="xtag tsem">自动触发 + 人工确认</span>' },
+        { name:'差评标注工作流（把错误转化为改进材料）', one:'用户给了差评，业务方指出哪里错了、正确答案是什么，形成训练数据', detail:'用户点👎 → 差评进入标注队列 → 业务方打开标注界面，标注"SQL 应该查这张表"或"这个数字是错的，正确是XX" → 标注结果加入优化数据集。只有业务方知道什么是正确答案，这是整个系统里少数必须人工参与的环节。<span class="xtag tman">必须人工</span>' },
+        { name:'准确率仪表板（让团队实时知道系统表现）', one:'自动生成每周的系统健康报告：路由准确率、SQL 成功率、用户满意度、各数据源覆盖情况', detail:'关键指标：Schema 路由准确率（选对表的比例）、SQL 执行成功率（SQL 能跑通的比例）、用户满意度（👍/总数）、文档召回相关性（RAG 找到的内容是否被引用）、各数据源覆盖率。每周回顾改进方向。这个仪表板本身也是用这套系统查日志数据生成的。<span class="xtag taut">全自动</span>' },
+      ],
+    },
+  ],
+
+  p3: {
+    header: {
+      title: '落地路线图、团队角色与关键判断',
+      subtitle: '分阶段交付，每阶段有可演示成果——以及我认为常规做法哪里会出问题',
+      page: '第 3 页 / 共 3 页',
+    },
+    roadmap: {
+      label: '分阶段路线图 — 每个阶段都有可演示的交付物',
+      phases: [
+        { cls:'ph0', num:'P0', name:'原型验证', time:'第 1–6 周', items:'· 手工标注 20 张核心表<br>· Schema 向量检索原型<br>· 选一个 ISS 投研场景跑通<br>· 100 份投研文档接入 Cortex Search', out:'交付：向 Stakeholder 可演示原型' },
+        { cls:'ph1', num:'P1', name:'基础设施 AI 化', time:'第 2–4 个月', items:'· dbt Agent 覆盖所有核心表<br>· 所有文档源接入，增量 Pipeline 上线<br>· Cortex Search 服务注册<br>· Few-shot 库从查询日志初始化', out:'交付：自我维护的语义索引' },
+        { cls:'ph2', num:'P2', name:'查询智能生产化', time:'第 5–7 个月', items:'· Schema 路由器 + SQL 生成器上线<br>· 报表构建器（确认后执行）<br>· OAC 图表集成<br>· 权限透传与审计日志上线', out:'交付：准确率 80%+，全 ISS 开放' },
+        { cls:'ph3', num:'P3', name:'推广与持续优化', time:'第 8 个月起', items:'· 全 ISS 跨资产类别推广<br>· 多源联邦查询（Trino）上线<br>· 反馈闭环自动驱动改进<br>· 准确率目标 85–90%', out:'交付：自我优化的数据对话平台' },
+      ],
+    },
+    metrics: {
+      label: '成功标准 — 可量化，不含糊',
+      items: [
+        { val:'80%+', label:'P2 完成时自然语言查询准确率' },
+        { val:'70%', label:'临时分析需求业务方自助解决比例' },
+        { val:'<30s', label:'即时分析问答目标响应时间', note:'流式输出降低感知延迟；复杂多表查询异步处理' },
+        { val:'100%', label:'投研文档 P1 完成时进入 AI 可检索索引' },
+      ],
+      note: '冷启动期（P0–P1）准确率约 60–70%，这是正常节奏，不是失败信号。反馈闭环是驱动改进的机制——成功查询补充 Few-shot 库，失败查询标记描述待审核。提前管理这个预期至关重要。',
+    },
+    team: {
+      label: '各团队角色与投入',
+      headers: ['团队','主要职责','投入程度'],
+      rows: [
+        { tag:{cls:'tsf',text:'Snowflake'}, role:'Data Platform', resp:'Cortex Search 服务配置、数据访问权限、查询性能调优、增量 Pipeline 监控。核心技术伙伴，全程参与。', commit:'P0：核心参与<br>P1–2：技术伙伴' },
+        { tag:{cls:'toac',text:'OAC'}, role:'Data Viz', resp:'定义 OAC 与 AI 查询层的边界（标准报表走 OAC，探索查询走 AI）；维护现有报表不变；P2 评估将 AI 入口嵌入 OAC 工作簿。', commit:'P0：边界定义<br>P2：集成评估' },
+        { tag:{cls:'tai',text:'AI Engineering'}, role:'', resp:'dbt 描述 Agent、Schema 路由器、SQL 生成器、RAG 检索链路、上下文组装器、输出层、反馈 Pipeline 全部构建与维护。', commit:'全程主力<br>2–3 人核心' },
+        { tag:{cls:'tbiz',text:'Business / ISS'}, role:'', resp:'提供 2 个原型场景真实需求；审核低置信度的 AI 生成描述（约每周 2 小时）；提供满意 / 不满意反馈信号。', commit:'全程轻度参与<br>约每周 2 小时' },
+      ],
+    },
+    risks: {
+      label: '关键风险与对策',
+      headers: ['风险','对策','阶段'],
+      rows: [
+        { risk:'AI 返回错误财务数据', mitig:'强制来源标注；置信度低于阈值时拒绝作答而非猜测；SQL 全程可见可验证', phase:'P0 起执行' },
+        { risk:'数据驻留 / 合规', mitig:'全程使用 Snowflake Cortex LLMs，模型推理在平台内部完成，数据不流出；审计日志满足监管要求', phase:'架构决策' },
+        { risk:'用户权限越权访问', mitig:'查询引擎透传用户 Snowflake 行级权限（RLS），AI 不创造新访问路径；P0 强制测试权限边界', phase:'P0 必须验证' },
+        { risk:'响应延迟超 30s', mitig:'高频查询结果缓存；流式输出降低感知延迟；复杂报表异步执行；P2 引入延迟监控告警', phase:'P2 优化' },
+        { risk:'Trino 联邦基础设施延期', mitig:'联邦路由器推迟至 P3，P2 仅对接 Snowflake 单源，不阻塞主线交付', phase:'P2 范围调整' },
+        { risk:'冷启动准确率影响采用意愿', mitig:'P0 演示时提前对齐预期：60–70% 为正常冷启动节奏，3 个月后反馈闭环驱动提升至 80%+', phase:'P0 沟通' },
+      ],
+    },
+    bets: {
+      label: '我的三个关键判断 — 可能和常规做法不同',
+      items: [
+        { title:'语义层必须先于所有 AI 功能——顺序不能反', body:'直觉是先做用户看得见的 AI 对话界面，数据接入往后放。这个顺序会产出漂亮的 Demo 和糟糕的生产准确率。我会用前 6 周完全投入在 dbt 描述 Agent 和 Schema 索引上——业务用户短期内看不到成果，但这是后续所有查询准确率的地基。原型出来得慢，但出来时是可靠的。' },
+        { title:'OAC 不是被替代的目标，而是获得了更好的上游', body:'把 AI 分析层定义为"替代仪表盘"会制造不必要的阻力，而且判断本身也是错的。定期调度的、有治理要求的正式报表永远需要 OAC。AI 层处理 OAC 从来没打算做的事：投研人员需要立即得到答案的探索性、临时性、多数据源联合查询。两者都必要，互不替代。' },
+        { title:'Data Viz 团队的价值从"交付报表"转向"建设平台能力"', body:'随着 AI 承担越来越多的临时查询，团队的杠杆来自：定义语义层标准、建立 Metric 规范、确保 AI 系统产出可信赖的结果——而不是执行更多报表请求。这是更有价值的角色，但需要从 P1 阶段就有意识地开始转型，而不是等平台建好再说。' },
+      ],
+    },
+  },
+};
