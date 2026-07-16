@@ -7,3 +7,4 @@ Honestly, the timing couldn't be better. The models have evolved at a remarkable
 Outside of work, I build iOS apps, enjoy UI/UX design, and love hiking.
 
 Looking forward to the journey ahead with everyone!
+
