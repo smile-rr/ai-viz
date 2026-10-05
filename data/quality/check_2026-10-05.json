@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-05",
+  "tables_collected": {
+    "cn_index": 35542,
+    "global_index": 2173,
+    "fx": 1132,
+    "commodities": 1370,
+    "crypto": 800
+  },
+  "status": "success"
+}
